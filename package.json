@@ -17,9 +17,11 @@
   },
   "homepage": "https://github.com/thaynnara007/ClubeWinx_backend#readme",
   "dependencies": {
+    "ClubeWinx_models": "git+https://aabd1e5194a4a6be922ea35cd833c582f82545bb:x-oauth-basic@github.com/thaynnara007/ClubeWinx_models.git",
     "body-parser": "^1.19.0",
     "chai": "^4.2.0",
     "cors": "^2.8.5",
+    "debug": "^4.1.1",
     "express": "^4.17.1",
     "lodash": "^4.17.15",
     "mocha": "^7.1.1",
