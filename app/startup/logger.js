@@ -1,5 +1,5 @@
-const morgan = require('morgan')
-const debug = require('debug')('app:http')
+const morgan = require('morgan');
+const debug = require('debug')('app:http');
 
 module.exports = (app) => {
     app.use(

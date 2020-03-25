@@ -7,6 +7,7 @@ require('./startup/db')
 require('./startup/cors')(app)
 require('./startup/logger')(app)
 require('./startup/parser')(app)
+require('./router')(app)
 
 const port = process.env.PORT || 3000
 
