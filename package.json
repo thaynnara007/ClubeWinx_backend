@@ -5,7 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "cd src && nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "sequelize db:migrate",
+    "migrate:generate": "sequelize migration:generate",
+    "migrate:undo": "sequelize db:migrate:undo",
+    "seed": "sequelize db:seed:all",
+    "seed:generate": "sequelize seed:generate",
+    "prettier": "prettier --write \"**/*.js\"",
+    "lint": "eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -17,6 +24,18 @@
     "url": "https://github.com/thaynnara007/ClubeWinx_backend/issues"
   },
   "homepage": "https://github.com/thaynnara007/ClubeWinx_backend#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run prettier",
+      "npm run lint",
+      "git add"
+    ]
+  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
