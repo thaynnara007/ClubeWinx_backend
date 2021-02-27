@@ -4,7 +4,7 @@
   "description": "backend da aplicacao",
   "main": "index.js",
   "scripts": {
-    "start": "DEBUG=app:* node app/app.js",
+    "start": "cd src && nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,14 +18,22 @@
   },
   "homepage": "https://github.com/thaynnara007/ClubeWinx_backend#readme",
   "dependencies": {
-    "ClubeWinx_models": "git+https://aabd1e5194a4a6be922ea35cd833c582f82545bb:x-oauth-basic@github.com/thaynnara007/ClubeWinx_models.git",
     "body-parser": "^1.19.0",
-    "chai": "^4.2.0",
     "cors": "^2.8.5",
     "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "lodash": "^4.17.15",
-    "mocha": "^7.1.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "sequelize": "^5.21.13"
+  },
+  "devDependencies": {
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.21.2",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.0.5",
+    "sequelize-cli": "^5.5.1"
   }
 }
