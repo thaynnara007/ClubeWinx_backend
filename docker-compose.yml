@@ -4,10 +4,11 @@ services:
   api:
     image: winx-api-dev
     build:
+      dockerfile: ./Dockerfile
       context: .
     restart: unless-stopped
     volumes:
-      - ./app:src/app
+      - .:/app/
       - /app/node_modules
       - /app/logs
     depends_on:
@@ -25,7 +26,7 @@ services:
     tty: true
 
   db:
-    image: postgres
+    image: postgres:9.6
     restart: unless-stopped
     volumes:
       - ./config/database/init.sql:/data/application/init.sql
