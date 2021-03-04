@@ -9,7 +9,7 @@ sequelize
   })
   .catch((err) => {
     LogService.error(
-      `Sequelize com problema de conexão em *${config.env}*. \n Erro: ${err}`,
+      `host:${config.host}, username:${config.username}, senha:${config.password}`,
     );
   })
   .done();

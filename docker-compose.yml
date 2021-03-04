@@ -1,0 +1,42 @@
+version: "3.7"
+
+services:
+  api:
+    image: winx-api-dev
+    build:
+      context: .
+    restart: unless-stopped
+    volumes:
+      - ./app:src/app
+      - /app/node_modules
+      - /app/logs
+    depends_on:
+      - db
+    environment:
+      PORT: 3000
+      BASE_URL: ${BASE_URL}
+      DB_DIALECT: ${DB_DIALECT}
+      DB_PORT: 3001
+      DB_HOST: db
+      DB_NAME: $DB_NAME
+      DB_USERNAME: $DB_USERNAME
+      DB_PASSWORD: $DB_PASSWORD
+    stdin_open: true
+    tty: true
+
+  db:
+    image: postgres
+    restart: unless-stopped
+    volumes:
+      - ./config/database/init.sql:/data/application/init.sql
+      - local_db_data:/var/lib/mysql
+    environment:
+      POSTGRES_USERNAME: $DB_USERNAME
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: $DB_NAME
+    ports:
+      - 3001:3001
+
+volumes:
+  local_db_data: {}
+      

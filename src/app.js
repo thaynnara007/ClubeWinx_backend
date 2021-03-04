@@ -7,7 +7,7 @@ const routes = require('./routes');
 require('./database');
 
 const corsOptions = {
-  origin: '*'
+  origin: '*',
 };
 
 const app = express();

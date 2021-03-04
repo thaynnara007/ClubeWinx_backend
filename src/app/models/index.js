@@ -5,12 +5,16 @@ const Sequelize = require('sequelize');
 const config = require('../../config/database');
 
 const database = {};
+
+
+console.log(`host:${config.host}, username:${config.username}, senha:${config.password}`)
 const sequelize = new Sequelize(
   config.database,
   config.username,
   config.password,
   config.options,
 );
+
 
 filesystem
   .readdirSync(__dirname)
