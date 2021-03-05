@@ -9,7 +9,8 @@ sequelize
   })
   .catch((err) => {
     LogService.error(
-      `host:${config.host}, username:${config.username}, senha:${config.password}`,
+      `host:${config.host}, username:${config.username}, senha:${config.password}
+      error: ${err}`,
     );
   })
   .done();

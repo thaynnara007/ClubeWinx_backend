@@ -3,6 +3,7 @@ version: "3.7"
 services:
   api:
     image: winx-api-dev
+    container_name: 'api'
     build:
       dockerfile: ./Dockerfile
       context: .
@@ -13,6 +14,8 @@ services:
       - /app/logs
     depends_on:
       - db
+    networks: 
+      - backend
     environment:
       PORT: 3000
       BASE_URL: ${BASE_URL}
@@ -27,6 +30,7 @@ services:
 
   db:
     image: postgres:9.6
+    container_name: 'db'
     restart: unless-stopped
     volumes:
       - ./config/database/init.sql:/data/application/init.sql
@@ -36,8 +40,17 @@ services:
       POSTGRES_PASSWORD: $DB_PASSWORD
       POSTGRES_DB: $DB_NAME
     ports:
-      - 3001:3001
+      - "3001:3001"
+    expose: 
+      - "3001"
+    networks: 
+      - backend
 
 volumes:
   local_db_data: {}
-      
+  
+
+networks:
+  backend:
+    driver: 'bridge'
+  
