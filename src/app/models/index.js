@@ -1,18 +1,26 @@
 const filesystem = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
+const { options } = require('../../app');
 
 const config = require('../../config/database');
 
 const database = {};
 
-
-console.log(`host:${config.host}, username:${config.username}, senha:${config.password}`)
 const sequelize = new Sequelize(
   config.database,
   config.username,
   config.password,
-  config.options,
+  {
+    host: config.host,
+    dialect: "postgres",
+    pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+    }
+  }
 );
 
 

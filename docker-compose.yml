@@ -12,21 +12,20 @@ services:
       - .:/app/
       - /app/node_modules
       - /app/logs
-    depends_on:
-      - db
     networks: 
       - backend
+    depends_on: 
+      - db
     environment:
-      PORT: 3000
-      BASE_URL: ${BASE_URL}
-      DB_DIALECT: ${DB_DIALECT}
-      DB_PORT: 3001
+      API_PORT: 3000
+      BASE_URL: localhost
+      DB_DIALECT: postgres
+      DB_PORT: 5432
       DB_HOST: db
-      DB_NAME: $DB_NAME
-      DB_USERNAME: $DB_USERNAME
-      DB_PASSWORD: $DB_PASSWORD
-    stdin_open: true
-    tty: true
+      DB_NAME: Homemate
+      DB_USERNAME: root_winx
+      DB_PASSWORD: root_winx
+    command: ./wait-for.sh db:5432 -- npm run start
 
   db:
     image: postgres:9.6
@@ -36,20 +35,18 @@ services:
       - ./config/database/init.sql:/data/application/init.sql
       - local_db_data:/var/lib/mysql
     environment:
-      POSTGRES_USERNAME: $DB_USERNAME
-      POSTGRES_PASSWORD: $DB_PASSWORD
-      POSTGRES_DB: $DB_NAME
+      POSTGRES_USERNAME: root_winx
+      POSTGRES_PASSWORD: root_winx
+      POSTGRES_DB: Homemate
     ports:
-      - "3001:3001"
-    expose: 
-      - "3001"
+      - "5432:5432"
     networks: 
       - backend
 
 volumes:
   local_db_data: {}
+  node_modules:
   
-
 networks:
   backend:
     driver: 'bridge'
