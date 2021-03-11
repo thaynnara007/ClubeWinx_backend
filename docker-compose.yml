@@ -2,8 +2,8 @@ version: "3.7"
 
 services:
   api:
-    image: winx-api-dev
-    container_name: 'api'
+    image: homemate-api-dev
+    container_name: 'homemate-api'
     build:
       dockerfile: ./Dockerfile
       context: .
@@ -16,6 +16,8 @@ services:
       - backend
     depends_on: 
       - db
+    ports:
+      - "3000:3000"
     environment:
       API_PORT: 3000
       BASE_URL: localhost
@@ -23,19 +25,18 @@ services:
       DB_PORT: 5432
       DB_HOST: db
       DB_NAME: Homemate
-      DB_USERNAME: root_winx
+      DB_USERNAME: postgres
       DB_PASSWORD: root_winx
     command: ./wait-for.sh db:5432 -- npm run start
 
   db:
     image: postgres:9.6
-    container_name: 'db'
+    container_name: 'homemate-db'
     restart: unless-stopped
     volumes:
       - ./config/database/init.sql:/data/application/init.sql
       - local_db_data:/var/lib/mysql
     environment:
-      POSTGRES_USERNAME: root_winx
       POSTGRES_PASSWORD: root_winx
       POSTGRES_DB: Homemate
     ports:
