@@ -69,7 +69,7 @@ Indo para o nível de código, temos:
 Esse tipo de relação é a que gera tabelas associativas. Sendo assim, duas tabelas pertencem uma a outra por meio de uma tabela intermediaria. 
 Nesse contexto, suponha uma tabela Filme e outra Ator, onde um filme tem varios atores e um ator pode participar de varios filmes, teriamos então que:
 
-```
+```js
 const Movie = sequelize.define('Movie', { name: DataTypes.STRING });
 const Actor = sequelize.define('Actor', { name: DataTypes.STRING });
 const ActorMovies = sequelize.define('ActorMovies', {
