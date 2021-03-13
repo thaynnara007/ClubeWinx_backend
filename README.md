@@ -43,10 +43,10 @@ $ docker-compose run api npm run seed
 
 ### Git workflow
 
-- A branch master é onde fica a versão estável da aplicação e tambem a versão do código que está na nuvem. Apenas o código na develop, apoós testado, deve ser incorporado a essa branch.
-- A branch develop é para onde as features desenvolvidades, após ter sido testado unitariamente, devem ser subidas.
+- A branch master é onde fica a versão estável da aplicação e tambem a versão do código que estará na nuvem. Apenas o código na develop, após testado, deve ser incorporado a essa branch.
+- A branch develop é para onde as features desenvolvidades, após terem sido testadas unitariamente, devem ser subidas.
 - Após a finalização de uma task, para a mesma deve ser criado um Pull Resquest para a develop.
-- Um Pull Request só deve ser aceito depois de ter sido aprovado por pelo menos depois desenvolvedores, excluindoo o autor do PR.
+- Um Pull Request só deve ser aceito depois de ter sido aprovado por pelo menos dois desenvolvedores, excluindo o autor do PR.
 
 ### Algums comandos úteis
 
