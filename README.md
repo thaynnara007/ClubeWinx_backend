@@ -16,9 +16,17 @@ $ git clone https://github.com/thaynnara007/ClubeWinx_backend.git
 ```shell
 $ cd ClubeWinx_backend
 ```
-> Criei o diretório de logs
+> Em ambiente de desenvolvimento, criei o diretório de logs
 ```shell
 $ mkdir logs
+```
+> Em ambiente de desenvolvimento, criei o diretório do node_modules
+```shell
+$ mkdir node_modules
+```
+> Em ambiente de desenvolvimento, instale as dependências de desenvolvimento
+```shell
+$ npm install --only=dev
 ```
 > Copie e renomei o arquivo .env-example
 ```shell
