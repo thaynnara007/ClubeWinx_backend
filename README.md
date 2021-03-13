@@ -66,3 +66,5 @@ $ docker volume prune -f
 ```shell
 $ docker-compose up --build -V --force-recreate <nome_do_serviço> 
 ```
+
+**IMPORTANTE**: Nunca altere uma migration anterior a menos que você saiba exatamente o que você está fazendo.
