@@ -12,7 +12,8 @@
     "seed": "sequelize db:seed:all",
     "seed:generate": "sequelize seed:generate",
     "prettier": "prettier --write \"**/*.js\"",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "swagger-autogen": "cd src/swagger && node swagger.js"
   },
   "repository": {
     "type": "git",
@@ -45,7 +46,9 @@
     "morgan": "^1.10.0",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.21.13"
+    "sequelize": "^5.21.13",
+    "swagger-autogen": "^2.7.1",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
     "eslint": "^7.2.0",
