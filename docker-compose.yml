@@ -11,13 +11,15 @@ services:
     volumes:
       - .:/app/
       - /app/node_modules
-      - /app/logs
+      - ./logs:/app/logs
     networks: 
       - backend
     depends_on: 
       - db
     ports:
       - "3000:3000"
+    env_file: 
+      - .env
     environment:
       API_PORT: 3000
       BASE_URL: localhost
@@ -36,6 +38,8 @@ services:
     volumes:
       - ./config/database/init.sql:/data/application/init.sql
       - local_db_data:/var/lib/postgresql/data
+    env_file: 
+      - .env
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: Homemate
@@ -56,6 +60,8 @@ services:
       - backend
     ports:
       - "5050:80"
+    env_file: 
+      - .env
     environment: 
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
@@ -64,6 +70,7 @@ volumes:
   local_db_data:
   pgadmin-data:
   node_modules:
+  logs:
   
 networks:
   backend:

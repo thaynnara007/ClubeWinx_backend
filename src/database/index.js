@@ -8,9 +8,6 @@ sequelize
     LogService.info(`Sequelize conectado no ambiente *${config.env}*`);
   })
   .catch((err) => {
-    LogService.error(
-      `host:${config.host}, username:${config.username}, senha:${config.password}
-      error: ${err}`,
-    );
+    LogService.error(`error: ${err}`);
   })
   .done();
