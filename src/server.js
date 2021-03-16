@@ -4,10 +4,10 @@ const LogService = require('./app/services/log.service');
 
 const environment = require('./config/environment');
 
-const { BASE_URL, API_PORT } = environment;
+const { API_PORT } = environment;
 
 const app = require('./app');
 
-app.listen(API_PORT,() => {
+app.listen(API_PORT, () => {
   LogService.log(`API rodando na porta ${API_PORT}`);
 });

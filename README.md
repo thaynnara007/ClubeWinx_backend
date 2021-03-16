@@ -32,8 +32,12 @@ $ npm install --only=dev
 ```shell
 $ cp .env-example .env
 ```
-> Coloque os valores corretos nas variáveis de ambientes definidas no .env
+> Coloque os valores corretos nas variáveis de ambientes definidas no arquivo .env
 
+> Criando as imagens
+```shell
+$ docker-compose build
+```
 > Subindo os containers
 ```shell
 $ docker-compose up
@@ -45,6 +49,13 @@ $ docker-compose run api npm run migrate
 > Execute as seeds, se houver
 ```shell
 $ docker-compose run api npm run seed
+```
+> Pronto, agora você poderá acessar:
+```
+    * A aplicação na porta 3000
+    * A documentação em localhost:3000/doc
+    * O banco de dados na porta 5432
+    * PgAdmin na porta 5050
 ```
 ---
 ## Outras informações
@@ -58,6 +69,10 @@ $ docker-compose run api npm run seed
 
 ### Algums comandos úteis
 
+> Para descer os containers em execução
+```shell
+$ docker-compose down
+```
 > Para executar um serviço expecífico
 ```shell
 $ docker-compose up <nome_do_serviço>
@@ -74,5 +89,26 @@ $ docker volume prune -f
 ```shell
 $ docker-compose up --build -V --force-recreate <nome_do_serviço> 
 ```
+> Gerar/atualizar a documentação
+```shell
+$ npm run swagger-autogen
+```
+> Roda as migrations
+```shell
+$ npm run migrate
+```
+> Desfaz a última migration
+```shell
+$ npm run migrate:undo
+```
+> Roda as seeds
+```shell
+$ npm run seed
+```
+
+### Algums links úteis
+
+* [Swagger-autogen](https://www.npmjs.com/package/swagger-autogen)
+* [Sequelize](https://sequelize.org/v5/)
 
 **IMPORTANTE**: Nunca altere uma migration anterior a menos que você saiba exatamente o que você está fazendo.
