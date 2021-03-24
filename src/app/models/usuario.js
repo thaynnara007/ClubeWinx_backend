@@ -42,9 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
 
-  Usuario.associate = () => {
-    // associations can be defined here
-  };
+  Usuario.associate = () => {};
 
   Usuario.addHook('beforeSave', async (usuario) => {
     if (usuario.senha) usuario.senhaHash = await bcrypt.hash(usuario.senha, 5);

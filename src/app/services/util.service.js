@@ -130,5 +130,5 @@ module.exports = {
   getDate,
   getDateTime,
   check24Hours,
-  transformUnit
+  transformUnit,
 };
