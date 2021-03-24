@@ -69,6 +69,8 @@ $ docker-compose run api npm run seed
 
 ### Algums comandos úteis
 
+#### Docker
+
 > Para descer os containers em execução
 ```shell
 $ docker-compose down
@@ -89,10 +91,16 @@ $ docker volume prune -f
 ```shell
 $ docker-compose up --build -V --force-recreate <nome_do_serviço> 
 ```
+
+#### Swagger
+
 > Gerar/atualizar a documentação
 ```shell
 $ npm run swagger-autogen
 ```
+
+#### Sequelize
+
 > Roda as migrations
 ```shell
 $ npm run migrate
@@ -105,6 +113,13 @@ $ npm run migrate:undo
 ```shell
 $ npm run seed
 ```
+
+#### Test
+> Roda os testes
+```shell
+$ npm run test
+```
+
 
 ### Algums links úteis
 
