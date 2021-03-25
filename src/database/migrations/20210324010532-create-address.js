@@ -1,34 +1,40 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Usuarios', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Addresses', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    nome: {
-      type: Sequelize.STRING,
-      defaultValue: null,
-    },
-    sobrenome: {
-      type: Sequelize.STRING,
-      defaultValue: null,
-    },
-    dataDeNascimento: {
-      type: Sequelize.DATE,
-      defaultValue: null,
-    },
-    genero: {
-      type: Sequelize.STRING,
-      defaultValue: null,
-    },
-    email: {
-      type: Sequelize.STRING,
+    userId: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
       unique: true,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
     },
-    senhaHash: {
+    street: {
       type: Sequelize.STRING,
-      defaultValue: null,
+    },
+    number: {
+      type: Sequelize.INTEGER,
+    },
+    district: {
+      type: Sequelize.STRING,
+    },
+    complement: {
+      type: Sequelize.TEXT,
+    },
+    zipCode: {
+      type: Sequelize.STRING,
+    },
+    city: {
+      type: Sequelize.STRING,
+    },
+    state: {
+      type: Sequelize.STRING,
     },
     createdAt: {
       allowNull: false,
@@ -41,5 +47,5 @@ module.exports = {
       defaultValue: Sequelize.NOW,
     },
   }),
-  down: (queryInterface) => queryInterface.dropTable('Usuarios'),
+  down: (queryInterface) => queryInterface.dropTable('Addresses'),
 };

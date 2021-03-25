@@ -3,22 +3,26 @@
 const bcrypt = require('bcryptjs');
 
 module.exports = (sequelize, DataTypes) => {
-  const Usuario = sequelize.define(
-    'Usuario',
+  const User = sequelize.define(
+    'User',
     {
-      nome: {
+      name: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
-      sobrenome: {
+      lastname: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
-      dataDeNascimento: {
+      birthday: {
         type: DataTypes.DATE,
         defaultValue: null,
       },
-      genero: {
+      gender: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+      },
+      phoneNumber: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
@@ -26,8 +30,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         unique: true,
       },
-      senha: DataTypes.VIRTUAL,
-      senhaHash: {
+      password: DataTypes.VIRTUAL,
+      passwordHash: {
         type: DataTypes.STRING,
         defaultValue: null,
         allowNull: true,
@@ -36,21 +40,21 @@ module.exports = (sequelize, DataTypes) => {
     {
       defaultScope: {
         attributes: {
-          exclude: ['senha', 'senhaHash'],
+          exclude: ['password', 'passwordHash'],
         },
       },
     },
   );
 
-  Usuario.associate = () => {};
+  User.associate = () => {};
 
-  Usuario.addHook('beforeSave', async (usuario) => {
-    if (usuario.senha) usuario.senhaHash = await bcrypt.hash(usuario.senha, 5);
+  User.addHook('beforeSave', async (user) => {
+    if (user.password) user.passwordHash = await bcrypt.hash(user.password, 5);
 
-    return usuario;
+    return user;
   });
 
-  Usuario.prototype.comparaSenha = (senha) => bcrypt.compare(senha, this.senhaHash);
+  User.prototype.checkPassword = (password) => bcrypt.compare(password, this.passwordHash);
 
-  return Usuario;
+  return User;
 };
