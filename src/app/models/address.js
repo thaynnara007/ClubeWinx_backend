@@ -1,40 +1,40 @@
 module.exports = (sequelize, DataTypes) => {
-  const Endereco = sequelize.define(
-    'Endereco',
+  const Address = sequelize.define(
+    'Address',
     {
-      rua: {
+      street: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
-      numero: {
+      number: {
         type: DataTypes.INTEGER,
         defaultValue: null,
       },
-      bairro: {
+      district: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
-      complemento: {
+      complement: {
         type: DataTypes.TEXT,
         defaultValue: null,
       },
-      cep: {
+      zipCode: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
-      cidade: {
+      city: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
-      estado: {
+      state: {
         type: DataTypes.STRING,
         defaultValue: null,
       },
     },
     {},
   );
-  Endereco.associate = (models) => {
-    Endereco.belongsTo(models.Usuario, { foreignKey: 'usuarioId' });
+  Address.associate = (models) => {
+    Address.belongsTo(models.User, { foreignKey: 'userId' });
   };
-  return Endereco;
+  return Address;
 };
