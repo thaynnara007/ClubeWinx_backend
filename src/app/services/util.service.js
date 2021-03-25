@@ -126,9 +126,12 @@ function transformUnit(parent, child, multiplier) {
   return multiplier ? factor * multiplier : factor;
 }
 
+const DATE_FORMAT = 'DD/MM/YYYY';
+
 module.exports = {
   getDate,
   getDateTime,
   check24Hours,
   transformUnit,
+  DATE_FORMAT,
 };
