@@ -54,9 +54,11 @@ module.exports = (sequelize, DataTypes) => {
     return user;
   });
 
-  User.prototype.checkPassword = (password) => bcrypt.compare(password, this.passwordHash);
+  User.prototype.checkPassword = function checkPassword(password) {
+    return bcrypt.compare(password, this.passwordHash);
+  };
 
-  User.prototype.generateAuthToken = (expire = true) => {
+  User.prototype.generateAuthToken = function generateAuthToken(expire = true) {
     const { secret, expirationDays } = config.JWT;
 
     if (expire) {
