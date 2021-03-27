@@ -1,5 +1,6 @@
 const express = require('express');
 const user = require('./app/routes/user.route');
+const address = require('./app/routes/address.route');
 
 const router = express.Router();
 
@@ -10,5 +11,6 @@ router.get('/', (_, res) => {
 });
 
 router.use('/user', user);
+router.use('/address', address);
 
 module.exports = router;
