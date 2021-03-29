@@ -31,6 +31,8 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRES_TIME: 7
+      GMAIL_EMAIL: ${GMAIL_EMAIL}
+      GMAIL_PASSWORD: ${GMAIL_PASSWORD}
     command: ./wait-for.sh db:5432 -- npm run start
 
   db:

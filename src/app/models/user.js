@@ -38,10 +38,17 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: null,
         allowNull: true,
       },
+      forgetPasswordCode: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+        allowNull: true,
+      },
     },
     {
       defaultScope: {
-        attributes: { exclude: ['password', 'passwordHash'] },
+        attributes: {
+          exclude: ['password', 'passwordHash', 'forgetPasswordCode'],
+        },
       },
     },
   );

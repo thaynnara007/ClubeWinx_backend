@@ -18,7 +18,6 @@ const login = async (email, password) => {
 
   delete user.dataValues.passwordHash;
 
-  console.log('gerando token');
   return {
     token: user.generateAuthToken(),
     user,

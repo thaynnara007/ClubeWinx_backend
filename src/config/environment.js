@@ -8,6 +8,10 @@ const environment = {
     expirationDays: process.env.JWT_EXPIRES_TIME || 7,
     secret: process.env.JWT_SECRET,
   },
+  EMAIL: {
+    email: process.env.GMAIL_EMAIL,
+    password: process.env.GMAIL_PASSWORD,
+  },
 };
 
 module.exports = environment;

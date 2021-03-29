@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const { User } = require('../models');
 
 const getById = async (userId) => {
@@ -55,12 +56,26 @@ const edit = async (userId, userData) => {
 
   return getById(userId);
 };
+
 const delet = async (userId) => {
   const user = await User.findByPk(userId);
 
   if (!user) throw new Error('Usuário não encontrado');
 
   return user.destroy();
+};
+
+const saveForgetPasswordCode = async (code, email) => {
+  const codeHash = await bcrypt.hash(`${code}`, 5);
+  const userData = {
+    forgetPasswordCode: codeHash,
+  };
+
+  await User.update(userData, {
+    where: {
+      email,
+    },
+  });
 };
 
 module.exports = {
@@ -70,4 +85,5 @@ module.exports = {
   getByEmail,
   edit,
   delet,
+  saveForgetPasswordCode,
 };

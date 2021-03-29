@@ -126,12 +126,24 @@ function transformUnit(parent, child, multiplier) {
   return multiplier ? factor * multiplier : factor;
 }
 
+const getRandomNumber = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+
+  return Math.floor(Math.random() * (max - min) + min);
+};
+
 const DATE_FORMAT = 'DD/MM/YYYY';
+const FORGET_PASSWORD_CODE_MIN = 1000;
+const FORGET_PASSWORD_CODE_MAX = 10000;
 
 module.exports = {
   getDate,
   getDateTime,
   check24Hours,
   transformUnit,
+  getRandomNumber,
   DATE_FORMAT,
+  FORGET_PASSWORD_CODE_MAX,
+  FORGET_PASSWORD_CODE_MIN,
 };
