@@ -11,6 +11,6 @@ router.get('/', (_, res) => {
 });
 
 router.use('/user', user);
-router.use('/login', auth);
+router.use('/auth', auth);
 
 module.exports = router;

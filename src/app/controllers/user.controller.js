@@ -1,15 +1,15 @@
 const httpStatus = require('http-status-codes');
 const moment = require('moment');
-const addressService = require('../services/address.service');
 const {
   DATE_FORMAT,
   FORGET_PASSWORD_CODE_MIN,
   FORGET_PASSWORD_CODE_MAX,
   getRandomNumber,
 } = require('../services/util.service');
-const emailService = require('../services/email.service');
-const service = require('../services/user.service');
 const log = require('../services/log.service');
+const service = require('../services/user.service');
+const emailService = require('../services/email.service');
+const addressService = require('../services/address.service');
 
 const { StatusCodes } = httpStatus;
 

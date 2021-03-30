@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const { EMAIL } = require('../../config/environment');
-const welcomeTemplate = require('../email/welcomeTemplate');
 const { capitalizeFirstLetter } = require('./util.service');
+const welcomeTemplate = require('../email/welcomeTemplate');
 const forgetPasswordTemplate = require('../email/forgetPasswordTemplate');
 
 const transporter = nodemailer.createTransport({
