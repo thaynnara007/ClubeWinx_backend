@@ -37,7 +37,7 @@ const verifyCode = async (req, res) => {
     const { code, email } = req.body;
 
     log.info(`Iniciando verificação de código. userEmail=${email}`);
-    const result = await service.verifyForgetPasswordCode(email, code);
+    const result = await service.verifyForgetPasswordCode(email, `${code}`);
 
     if (!result) {
       return res

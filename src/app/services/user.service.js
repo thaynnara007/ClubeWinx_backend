@@ -78,6 +78,15 @@ const saveForgetPasswordCode = async (code, email) => {
   });
 };
 
+const changePassword = async (user, newPassword) => {
+  const updatedUser = user;
+
+  updatedUser.password = newPassword;
+  updatedUser.forgetPasswordCode = null;
+
+  await updatedUser.save();
+};
+
 module.exports = {
   create,
   getById,
@@ -86,4 +95,5 @@ module.exports = {
   edit,
   delet,
   saveForgetPasswordCode,
+  changePassword,
 };

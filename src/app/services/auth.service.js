@@ -41,7 +41,7 @@ const verifyForgetPasswordCode = async (email, code) => {
   if (!validCode) return null;
 
   return {
-    token: user.generateAuthToken(),
+    token: user.generateAuthToken(true),
   };
 };
 
