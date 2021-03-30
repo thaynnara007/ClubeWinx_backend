@@ -33,6 +33,8 @@ services:
       JWT_EXPIRES_TIME: 7
       GMAIL_EMAIL: ${GMAIL_EMAIL}
       GMAIL_PASSWORD: ${GMAIL_PASSWORD}
+      EMAIL_PORT: 587
+      EMAIL_SMTP_HOST: smtp.example.com
     command: ./wait-for.sh db:5432 -- npm run start
 
   db:

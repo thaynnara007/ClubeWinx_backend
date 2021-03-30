@@ -59,6 +59,10 @@ const create = async (req, res) => {
     await addressService.create(addressData);
 
     log.info(`Usário ${email} cadastrado com sucesso`);
+    log.info(`Enviando email de boas-vindas. userEmail=${newUser.email}`);
+
+    await emailService.sendWelcomeEmail(newUser);
+
     return res.status(StatusCodes.CREATED).json(newUser);
   } catch (error) {
     const errorMsg = 'Erro ao cadastrar usuário';

@@ -11,6 +11,8 @@ const environment = {
   EMAIL: {
     email: process.env.GMAIL_EMAIL,
     password: process.env.GMAIL_PASSWORD,
+    port: process.env.EMAIL_PORT,
+    smtp: process.env.EMAIL_SMTP_HOST,
   },
 };
 

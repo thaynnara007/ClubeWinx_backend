@@ -133,6 +133,8 @@ const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
+const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+
 const DATE_FORMAT = 'DD/MM/YYYY';
 const FORGET_PASSWORD_CODE_MIN = 1000;
 const FORGET_PASSWORD_CODE_MAX = 10000;
@@ -143,6 +145,7 @@ module.exports = {
   check24Hours,
   transformUnit,
   getRandomNumber,
+  capitalizeFirstLetter,
   DATE_FORMAT,
   FORGET_PASSWORD_CODE_MAX,
   FORGET_PASSWORD_CODE_MIN,
