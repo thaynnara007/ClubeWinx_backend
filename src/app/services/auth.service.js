@@ -18,13 +18,34 @@ const login = async (email, password) => {
 
   delete user.dataValues.passwordHash;
 
-  console.log('gerando token');
   return {
     token: user.generateAuthToken(),
     user,
   };
 };
 
+const verifyForgetPasswordCode = async (email, code) => {
+  const user = await User.findOne({
+    where: {
+      email,
+    },
+    attributes: {
+      include: 'forgetPasswordCode',
+    },
+  });
+
+  if (!user) return null;
+
+  const validCode = await user.checkForgetPasswordCode(code);
+
+  if (!validCode) return null;
+
+  return {
+    token: user.generateAuthToken(true),
+  };
+};
+
 module.exports = {
   login,
+  verifyForgetPasswordCode,
 };

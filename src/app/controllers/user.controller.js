@@ -1,9 +1,15 @@
 const httpStatus = require('http-status-codes');
 const moment = require('moment');
-const addressService = require('../services/address.service');
-const { DATE_FORMAT } = require('../services/util.service');
-const service = require('../services/user.service');
+const {
+  DATE_FORMAT,
+  FORGET_PASSWORD_CODE_MIN,
+  FORGET_PASSWORD_CODE_MAX,
+  getRandomNumber,
+} = require('../services/util.service');
 const log = require('../services/log.service');
+const service = require('../services/user.service');
+const emailService = require('../services/email.service');
+const addressService = require('../services/address.service');
 
 const { StatusCodes } = httpStatus;
 
@@ -53,6 +59,10 @@ const create = async (req, res) => {
     await addressService.create(addressData);
 
     log.info(`Usário ${email} cadastrado com sucesso`);
+    log.info(`Enviando email de boas-vindas. userEmail=${newUser.email}`);
+
+    await emailService.sendWelcomeEmail(newUser);
+
     return res.status(StatusCodes.CREATED).json(newUser);
   } catch (error) {
     const errorMsg = 'Erro ao cadastrar usuário';
@@ -197,10 +207,73 @@ const delet = async (req, res) => {
   }
 };
 
+const forgetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    log.info('Iniciando comportamento de recuperação de senha');
+    log.info(`Buscando usuário. userEmail=${email}`);
+
+    const user = await service.getByEmail(email);
+
+    if (!user) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Nenhum usuário com este email foi não encontrado' });
+    }
+
+    const forgetPasswordCode = getRandomNumber(
+      FORGET_PASSWORD_CODE_MIN,
+      FORGET_PASSWORD_CODE_MAX,
+    );
+
+    log.info(`Salvando codigo para recuperação de senha. userEmail=${email}`);
+    await service.saveForgetPasswordCode(forgetPasswordCode, email);
+
+    log.info(`Enviando email para o usuário. userEmail=${email}`);
+    await emailService.sendForgetPasswordEmail(email, forgetPasswordCode);
+
+    return res.status(StatusCodes.OK).json('Email enviado.');
+  } catch (error) {
+    const errorMsg = 'Erro ao recuperar senha.';
+
+    log.error(errorMsg, 'app/controllers/user.controller.js', error.message);
+
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: `${errorMsg} ${error.message}` });
+  }
+};
+
+const changePassword = async (req, res) => {
+  try {
+    const { user } = req;
+    const { newPassword } = req.body;
+
+    log.info(`Iniciando atualização de senha. userEmail=${user.email}`);
+
+    await service.changePassword(user, newPassword);
+
+    log.info('Senha atualizada');
+
+    return res.status(StatusCodes.OK).json('Senha atualizada');
+  } catch (error) {
+    const errorMsg = 'Erro ao recuperar senha.';
+
+    log.error(errorMsg, 'app/controllers/user.controller.js', error.message);
+
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: `${errorMsg} ${error.message}` });
+  }
+};
+
 module.exports = {
   create,
   getById,
   getAll,
   edit,
   delet,
+  forgetPassword,
+  changePassword,
 };

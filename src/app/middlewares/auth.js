@@ -31,7 +31,7 @@ const verifyToken = async (req, res, next) => {
 
     return next();
   } catch (error) {
-    const errorMsg = 'Erro ao verificar token';
+    const errorMsg = 'Token expirado';
 
     return res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)

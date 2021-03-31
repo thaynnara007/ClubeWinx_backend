@@ -5,8 +5,14 @@ const environment = {
   BASE_URL: process.env.BASE_URL,
   API_PORT: process.env.API_PORT || 3000,
   JWT: {
-    expirationDays: process.env.JWT_EXPIRES_TIME || 7,
+    expirationMinutes: process.env.JWT_EXPIRES_TIME || 20,
     secret: process.env.JWT_SECRET,
+  },
+  EMAIL: {
+    email: process.env.GMAIL_EMAIL,
+    password: process.env.GMAIL_PASSWORD,
+    port: process.env.EMAIL_PORT,
+    smtp: process.env.EMAIL_SMTP_HOST,
   },
 };
 

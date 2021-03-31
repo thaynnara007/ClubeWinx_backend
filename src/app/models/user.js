@@ -38,10 +38,17 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: null,
         allowNull: true,
       },
+      forgetPasswordCode: {
+        type: DataTypes.STRING,
+        defaultValue: null,
+        allowNull: true,
+      },
     },
     {
       defaultScope: {
-        attributes: { exclude: ['password', 'passwordHash'] },
+        attributes: {
+          exclude: ['password', 'passwordHash', 'forgetPasswordCode'],
+        },
       },
     },
   );
@@ -58,12 +65,20 @@ module.exports = (sequelize, DataTypes) => {
     return bcrypt.compare(password, this.passwordHash);
   };
 
-  User.prototype.generateAuthToken = function generateAuthToken(expire = true) {
-    const { secret, expirationDays } = config.JWT;
+  User.prototype.checkForgetPasswordCode = function checkForgetPasswordCode(
+    code,
+  ) {
+    return bcrypt.compare(code, this.forgetPasswordCode);
+  };
 
-    if (expire) {
+  User.prototype.generateAuthToken = function generateAuthToken(
+    forgetPassword = false,
+  ) {
+    const { secret, expirationMinutes } = config.JWT;
+
+    if (forgetPassword) {
       return jwt.sign({ id: this.id }, secret, {
-        expiresIn: `${expirationDays}d`,
+        expiresIn: `${expirationMinutes}m`,
       });
     }
 
