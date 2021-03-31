@@ -9,7 +9,7 @@ const getById = async (userId) => {
 const create = async (userData) => {
   const newUser = await User.create(userData);
 
-  return getById(newUser.id);
+  return getById(newUser.dataValues.id);
 };
 
 const getAll = async (query) => {
