@@ -18,7 +18,82 @@ const doc = {
   produces: ['application/json'],
   tags: [],
   securityDefinitions: {},
-  definitions: {},
+  definitions: {
+    AddUser: {
+      $name: "thaynnara",
+      lastname: "raiany",
+      email: "tatamiuda06@gmail.com",
+      phoneNumber: "987900856",
+      birthday: "06/03/1997",
+      gender: "Feminino",
+      password: "123thay",
+      street: "rua senador alvorada gaudencio",
+      number: 343,
+      district: "meio",
+      complement: "complement",
+      zipCode: "12345-563",
+      city: "grande campo",
+      state: "paraiba"
+    },
+    User: {
+      id: 1,
+      name: "Finn",
+      lastname: "The Human",
+      birthday: "2004-03-30T23:22:54.988Z",
+      gender: "Masculino",
+      phoneNumber: "987900856",
+      email: "finn_the_human@gmail.com",
+      createdAt: "2021-03-30T23:22:54.989Z",
+      updatedAt: "2021-03-30T23:22:54.989Z"
+    },
+    AllUser: [
+      {
+        id: 1,
+        name: "Finn",
+        lastname: "The Human",
+        birthday: "2004-03-30T23:22:54.988Z",
+        gender: "Masculino",
+        phoneNumber: "987900856",
+        email: "finn_the_human@gmail.com",
+        createdAt: "2021-03-30T23:22:54.989Z",
+        updatedAt: "2021-03-30T23:22:54.989Z"
+      }
+    ],
+    AddAddress: {
+        street: "Tree house",
+        number: 123,
+        district: "Candy Kingdom",
+        complement: "uma grande arvore",
+        zipCode: "12345-563",
+        city: "Candy Kingdom",
+        state: "Land of Ooo"
+    },
+    Address: {
+        id: 1,
+        street: "Tree house",
+        number: 123,
+        district: "Candy Kingdom",
+        complement: "uma grande arvore",
+        zipCode: "12345-563",
+        city: "Candy Kingdom",
+        state: "Land of Ooo",
+        createdAt: "2021-03-30T23:22:55.089Z",
+        updatedAt: "2021-03-30T23:22:55.089Z"
+    },
+    AllAddress: [
+      {
+          id: 1,
+          name: "Finn",
+          lastname: "The Human",
+          birthday: "2004-03-30T23:22:54.988Z",
+          gender: "Masculino",
+          phoneNumber: "987900856",
+          email: "finn_the_human@gmail.com",
+          createdAt: "2021-03-30T23:22:54.989Z",
+          updatedAt: "2021-03-30T23:22:54.989Z"
+      }
+  ]
+  },
 };
 
 swaggerAutogen(outputFile, endpointsFiles, doc);
