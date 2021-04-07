@@ -71,9 +71,33 @@ $ docker-compose run api npm run seed
 
 #### Docker
 
+> Listar containers em execução
+```shell
+$ docker ps
+```
+> Listar todos os containers
+```shell
+$ docker ps -a
+```
 > Para descer os containers em execução
 ```shell
 $ docker-compose down
+```
+> Para parar algum container
+```shell
+$ docker stop <nome_container>
+```
+> Para remover algum container
+```shell
+$ docker rm <nome_conatiner>
+```
+> Listar todas as imagens
+```shell
+$ docker images -a
+```
+> Listar todos os volumes
+```shell
+$ docker volume ls
 ```
 > Para executar um serviço expecífico
 ```shell
@@ -86,6 +110,10 @@ $ docker-compose run <nome_do_serviço> <comando>
 > Apagar os  volumes sem uso do docker
 ```shell
 $ docker volume prune -f 
+```
+> Apagar as imagens sem uso do docker
+```shell
+$ docker system prune -a
 ```
 > Forçar a recriação de algum serviço
 ```shell
