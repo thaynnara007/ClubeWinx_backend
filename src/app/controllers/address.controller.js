@@ -5,6 +5,19 @@ const log = require('../services/log.service');
 const { StatusCodes } = httpStatus;
 
 const create = async (req, res) => {
+        // #swagger.tags = ['Address']
+        // #swagger.description = 'Endpoint para criar um usuario.'
+        /* #swagger.parameters['newAddress'] = {
+        in: 'body',
+        description: 'Informações de endereco.',
+        required: true,
+        type: 'object',
+        schema: { $ref: "#/definitions/AddAddress" }
+        } */
+        /* #swagger.responses[201] = { 
+            schema: { $ref: "#/definitions/Address" },
+            description: 'Novo endereço criado.' 
+        } */
     try {
         const { body } = req;
         const { userId } = req.params;
@@ -38,6 +51,12 @@ const create = async (req, res) => {
 };
 
 const getByUserId = async (req, res) => {
+        // #swagger.tags = ['Address']
+        // #swagger.description = 'Endpoint para buscar o endereço de um usuario.'
+        /* #swagger.responses[200] = { 
+            schema: { $ref: "#/definitions/Address" },
+            description: 'Endereço encontrado.' 
+        } */
     try {
         const { userId } = req.params;
 
@@ -65,6 +84,12 @@ const getByUserId = async (req, res) => {
 };
 
 const getAll = async (req, res) => {
+        // #swagger.tags = ['Address']
+        // #swagger.description = 'Endpoint para buscar o endereço de um usuario.'
+        /* #swagger.responses[200] = { 
+            schema: { $ref: "#/definitions/AllAddress" },
+            description: 'Endereços encontrados.' 
+        } */    
     try {
         const { query } = req;
 
@@ -87,6 +112,19 @@ const getAll = async (req, res) => {
 };
 
 const edit = async (req, res) => {
+        // #swagger.tags = ['Address']
+        // #swagger.description = 'Endpoint para modificar o endereço de um usuario.'
+        /* #swagger.parameters['address'] = {
+        in: 'body',
+        description: 'Informações de endereco.',
+        required: true,
+        type: 'object',
+        schema: { $ref: "#/definitions/AddAddress" }
+        } */
+        /* #swagger.responses[200] = { 
+            schema: { $ref: "#/definitions/Address" },
+            description: 'Endereço editado.' 
+        } */
     try {
         const { userId } = req.params;
         const { body } = req;
@@ -130,6 +168,13 @@ const edit = async (req, res) => {
 };
 
 const delet = async (req, res) => {
+        // #swagger.tags = ['Address']
+        // #swagger.description = 'Endpoint para exclui o endereço de um usuario.'
+        /* #swagger.responses[200] = { 
+            schema: "Endereço excluido com sucesso",
+            description: 'Endereço excluido.' 
+        } */    
+
     try {
         const { userId } = req.params;
 
