@@ -27,7 +27,537 @@
         "parameters": [],
         "responses": {}
       }
+    },
+    "/user/": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint para criar um usuário.",
+        "parameters": [
+          {
+            "name": "newUser",
+            "in": "body",
+            "description": "Informações do usuário.",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/AddUser"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "Novo usuário criado."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint para obter todos os usuários.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/AllUser"
+            },
+            "description": "Usuários encontrados."
+          }
+        }
+      }
+    },
+    "/user/{userId}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint para obter um usuário.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "Usuário encontrado."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint para modificar as informaçoes de um usuário.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "in": "body",
+            "description": "Informações do usuário.",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/AddUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            },
+            "description": "Usuário modificado com sucesso."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint para excluir um usuário.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "string",
+              "example": "Usuário excluido com sucesso",
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Usuário excluido."
+          }
+        }
+      }
+    },
+    "/address/user/{userId}": {
+      "post": {
+        "tags": [
+          "Address"
+        ],
+        "description": "Endpoint para criar um usuario.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "newAddress",
+            "in": "body",
+            "description": "Informações de endereco.",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/AddAddress"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Address"
+            },
+            "description": "Novo endereço criado."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Address"
+        ],
+        "description": "Endpoint para modificar o endereço de um usuario.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "address",
+            "in": "body",
+            "description": "Informações de endereco.",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/AddAddress"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Address"
+            },
+            "description": "Endereço ____FUNC____."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Address"
+        ],
+        "description": "Endpoint para exclui o endereço de um usuario.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "string",
+              "example": "Endereço excluido com sucesso",
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Endereço excluido."
+          }
+        }
+      }
+    },
+    "/address/": {
+      "get": {
+        "tags": [
+          "Address"
+        ],
+        "description": "Endpoint para buscar o endereço de um usuario.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/AllAddress"
+            },
+            "description": "Endereços encontrados."
+          }
+        }
+      }
+    },
+    "/address/user/{userId}/": {
+      "get": {
+        "tags": [
+          "Address"
+        ],
+        "description": "Endpoint para buscar o endereço de um usuario.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Address"
+            },
+            "description": "Endereço encontrado."
+          }
+        }
+      }
     }
   },
-  "definitions": {}
+  "definitions": {
+    "AddUser": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "thaynnara"
+        },
+        "lastname": {
+          "type": "string",
+          "example": "raiany"
+        },
+        "email": {
+          "type": "string",
+          "example": "tatamiuda06@gmail.com"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "example": "987900856"
+        },
+        "birthday": {
+          "type": "string",
+          "example": "06/03/1997"
+        },
+        "gender": {
+          "type": "string",
+          "example": "Feminino"
+        },
+        "password": {
+          "type": "string",
+          "example": "123thay"
+        },
+        "street": {
+          "type": "string",
+          "example": "rua senador alvorada gaudencio"
+        },
+        "number": {
+          "type": "number",
+          "example": 343
+        },
+        "district": {
+          "type": "string",
+          "example": "meio"
+        },
+        "complement": {
+          "type": "string",
+          "example": "complement"
+        },
+        "zipCode": {
+          "type": "string",
+          "example": "12345-563"
+        },
+        "city": {
+          "type": "string",
+          "example": "grande campo"
+        },
+        "state": {
+          "type": "string",
+          "example": "paraiba"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Finn"
+        },
+        "lastname": {
+          "type": "string",
+          "example": "The Human"
+        },
+        "birthday": {
+          "type": "string",
+          "example": "2004-03-30T23:22:54.988Z"
+        },
+        "gender": {
+          "type": "string",
+          "example": "Masculino"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "example": "987900856"
+        },
+        "email": {
+          "type": "string",
+          "example": "finn_the_human@gmail.com"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2021-03-30T23:22:54.989Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2021-03-30T23:22:54.989Z"
+        }
+      }
+    },
+    "AllUser": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Finn"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "The Human"
+          },
+          "birthday": {
+            "type": "string",
+            "example": "2004-03-30T23:22:54.988Z"
+          },
+          "gender": {
+            "type": "string",
+            "example": "Masculino"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "987900856"
+          },
+          "email": {
+            "type": "string",
+            "example": "finn_the_human@gmail.com"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2021-03-30T23:22:54.989Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2021-03-30T23:22:54.989Z"
+          }
+        }
+      }
+    },
+    "AddAddress": {
+      "type": "object",
+      "properties": {
+        "street": {
+          "type": "string",
+          "example": "Tree house"
+        },
+        "number": {
+          "type": "number",
+          "example": 123
+        },
+        "district": {
+          "type": "string",
+          "example": "Candy Kingdom"
+        },
+        "complement": {
+          "type": "string",
+          "example": "uma grande arvore"
+        },
+        "zipCode": {
+          "type": "string",
+          "example": "12345-563"
+        },
+        "city": {
+          "type": "string",
+          "example": "Candy Kingdom"
+        },
+        "state": {
+          "type": "string",
+          "example": "Land of Ooo"
+        }
+      }
+    },
+    "Address": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "street": {
+          "type": "string",
+          "example": "Tree house"
+        },
+        "number": {
+          "type": "number",
+          "example": 123
+        },
+        "district": {
+          "type": "string",
+          "example": "Candy Kingdom"
+        },
+        "complement": {
+          "type": "string",
+          "example": "uma grande arvore"
+        },
+        "zipCode": {
+          "type": "string",
+          "example": "12345-563"
+        },
+        "city": {
+          "type": "string",
+          "example": "Candy Kingdom"
+        },
+        "state": {
+          "type": "string",
+          "example": "Land of Ooo"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2021-03-30T23:22:55.089Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2021-03-30T23:22:55.089Z"
+        }
+      }
+    },
+    "AllAddress": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "example": "Finn"
+          },
+          "lastname": {
+            "type": "string",
+            "example": "The Human"
+          },
+          "birthday": {
+            "type": "string",
+            "example": "2004-03-30T23:22:54.988Z"
+          },
+          "gender": {
+            "type": "string",
+            "example": "Masculino"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "987900856"
+          },
+          "email": {
+            "type": "string",
+            "example": "finn_the_human@gmail.com"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2021-03-30T23:22:54.989Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2021-03-30T23:22:54.989Z"
+          }
+        }
+      }
+    }
+  }
 }
