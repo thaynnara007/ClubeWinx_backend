@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userId',
       as: 'user',
     });
+    Profile.hasOne(models.ProfilePicture);
   };
   return Profile;
 };

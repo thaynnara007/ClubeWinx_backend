@@ -8,7 +8,7 @@ const create = async (addressData) => {
 
 const getById = async () => {};
 
-const getAll = async  (query) => {
+const getAll = async (query) => {
   const page = parseInt(query.page, 10);
   const pageSize = parseInt(query.pageSize, 10);
   let offset = null;
