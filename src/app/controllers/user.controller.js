@@ -14,18 +14,18 @@ const addressService = require('../services/address.service');
 const { StatusCodes } = httpStatus;
 
 const create = async (req, res) => {
-        // #swagger.tags = ['User']
-        // #swagger.description = 'Endpoint para criar um usuário.'
-        /* #swagger.parameters['newUser'] = {
+  // #swagger.tags = ['User']
+  // #swagger.description = 'Endpoint para criar um usuário.'
+  /* #swagger.parameters['newUser'] = {
         in: 'body',
         description: 'Informações do usuário.',
         required: true,
         type: 'object',
         schema: { $ref: "#/definitions/AddUser" }
         } */
-        /* #swagger.responses[201] = { 
+  /* #swagger.responses[201] = {
               schema: { $ref: "#/definitions/User" },
-              description: 'Novo usuário criado.' 
+              description: 'Novo usuário criado.'
         } */
   try {
     const { body } = req;
@@ -89,11 +89,11 @@ const create = async (req, res) => {
 };
 
 const getById = async (req, res) => {
-        // #swagger.tags = ['User']
-        // #swagger.description = 'Endpoint para obter um usuário.'
-        /* #swagger.responses[200] = { 
+  // #swagger.tags = ['User']
+  // #swagger.description = 'Endpoint para obter um usuário.'
+  /* #swagger.responses[200] = {
               schema: { $ref: "#/definitions/User" },
-              description: 'Usuário encontrado.' 
+              description: 'Usuário encontrado.'
         } */
   try {
     const { userId } = req.params;
@@ -122,11 +122,11 @@ const getById = async (req, res) => {
 };
 
 const getAll = async (req, res) => {
-        // #swagger.tags = ['User']
-        // #swagger.description = 'Endpoint para obter todos os usuários.'
-        /* #swagger.responses[200] = { 
+  // #swagger.tags = ['User']
+  // #swagger.description = 'Endpoint para obter todos os usuários.'
+  /* #swagger.responses[200] = {
               schema: { $ref: "#/definitions/AllUser" },
-              description: 'Usuários encontrados.' 
+              description: 'Usuários encontrados.'
         } */
   try {
     const { query } = req;
@@ -150,18 +150,18 @@ const getAll = async (req, res) => {
 };
 
 const edit = async (req, res) => {
-        // #swagger.tags = ['User']
-        // #swagger.description = 'Endpoint para modificar as informaçoes de um usuário.'
-        /* #swagger.parameters['user'] = {
+  // #swagger.tags = ['User']
+  // #swagger.description = 'Endpoint para modificar as informaçoes de um usuário.'
+  /* #swagger.parameters['user'] = {
         in: 'body',
         description: 'Informações do usuário.',
         required: true,
         type: 'object',
         schema: { $ref: "#/definitions/AddUser" }
         } */
-        /* #swagger.responses[200] = { 
+  /* #swagger.responses[200] = {
               schema: { $ref: "#/definitions/User" },
-              description: 'Usuário modificado com sucesso.' 
+              description: 'Usuário modificado com sucesso.'
         } */
   try {
     const { userId } = req.params;
@@ -222,12 +222,12 @@ const edit = async (req, res) => {
 };
 
 const delet = async (req, res) => {
-        // #swagger.tags = ['User']
-        // #swagger.description = 'Endpoint para excluir um usuário.'
-        /* #swagger.responses[200] = { 
+  // #swagger.tags = ['User']
+  // #swagger.description = 'Endpoint para excluir um usuário.'
+  /* #swagger.responses[200] = {
             schema: "Usuário excluido com sucesso",
-            description: 'Usuário excluido.' 
-        } */      
+            description: 'Usuário excluido.'
+        } */
   try {
     const { userId } = req.params;
 

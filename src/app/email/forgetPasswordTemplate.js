@@ -454,7 +454,7 @@ const makeEmail = (
           <div class="header" style="Margin: 0 auto;max-width: 600px;min-width: 320px; width: 320px;width: calc(28000% - 167400px);" id="emb-email-header-container">
           <!--[if (mso)|(IE)]><table align="center" class="header" cellpadding="0" cellspacing="0" role="presentation"><tr><td style="width: 600px"><![endif]-->
             <div class="logo emb-logo-margin-box" style="font-size: 26px;line-height: 32px;Margin-top: 6px;Margin-bottom: 20px;color: #41637e;font-family: Avenir,sans-serif;Margin-left: 20px;Margin-right: 20px;" align="center">
-              <div class="logo-center" align="center" id="emb-email-header"><img style="display: block;height: auto;width: 100%;border: 0;max-width: 141px;" src="https://media.discordapp.net/attachments/822057851262337045/826210597431017502/homemate.png" alt="" width="141" /></div>
+              <div class="logo-center" align="center" id="emb-email-header"><img style="display: block;height: auto;width: 100%;border: 0;max-width: 141px;" src="https://firebasestorage.googleapis.com/v0/b/homemate-55271.appspot.com/o/homemate.png_1617848620760?alt=media&token=c348747f-09af-478c-b3da-f9d1b355bb8f" alt="" width="141" /></div>
             </div>
           <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
           </div>
@@ -544,7 +544,7 @@ const makeEmail = (
               <div class="column" style="text-align: left;color: #2b343f;font-size: 17px;line-height: 26px;font-family: Courier New,Courier,monospace;">
               
           <div style="font-size: 12px;font-style: normal;font-weight: normal;line-height: 19px;" align="center">
-            <img class="gnd-corner-image gnd-corner-image-center gnd-corner-image-top" style="border: 0;display: block;height: auto;width: 100%;max-width: 900px;" alt="" width="600" src="https://media.discordapp.net/attachments/822057851262337045/826453416430534656/pagecurl_031-9900000000079e3c.png" />
+            <img class="gnd-corner-image gnd-corner-image-center gnd-corner-image-top" style="border: 0;display: block;height: auto;width: 100%;max-width: 900px;" alt="" width="600" src="https://firebasestorage.googleapis.com/v0/b/homemate-55271.appspot.com/o/pagecurl_031-9900000000079e3c.png_1617885753802?alt=media&token=fb11fc00-a8dd-4015-8f23-d6280b895330" />
           </div>
         
                 <div style="Margin-left: 20px;Margin-right: 20px;Margin-top: 20px;">
