@@ -34,6 +34,12 @@ $ cp .env-example .env
 ```
 > Coloque os valores corretos nas variáveis de ambientes definidas no arquivo .env
 
+> Copie e renomei o arquivo firebase.example.json
+```shell
+$ cp firebase.example.json firebase.json
+```
+> Coloque os valores das credenciais do firebase no arquivo
+
 > Criando as imagens
 ```shell
 $ docker-compose build

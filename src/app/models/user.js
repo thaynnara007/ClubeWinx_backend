@@ -53,7 +53,10 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
 
-  User.associate = () => {};
+  User.associate = (models) => {
+    User.hasOne(models.Address);
+    User.hasOne(models.Profile);
+  };
 
   User.addHook('beforeSave', async (user) => {
     if (user.password) user.passwordHash = await bcrypt.hash(user.password, 5);
