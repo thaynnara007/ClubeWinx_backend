@@ -138,6 +138,7 @@ const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + strin
 const DATE_FORMAT = 'DD/MM/YYYY';
 const FORGET_PASSWORD_CODE_MIN = 1000;
 const FORGET_PASSWORD_CODE_MAX = 10000;
+const FIVE_MB = 5 * 1024 * 1024;
 
 module.exports = {
   getDate,
@@ -149,4 +150,5 @@ module.exports = {
   DATE_FORMAT,
   FORGET_PASSWORD_CODE_MAX,
   FORGET_PASSWORD_CODE_MIN,
+  FIVE_MB,
 };
