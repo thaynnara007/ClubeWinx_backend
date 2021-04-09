@@ -159,5 +159,6 @@ $ npm run test
 
 * [Swagger-autogen](https://www.npmjs.com/package/swagger-autogen)
 * [Sequelize](https://sequelize.org/v5/)
+* Link do projeto no [Dockerhub](https://hub.docker.com/repository/docker/thaynnara007/homemate-api-dev)
 
 **IMPORTANTE**: Nunca altere uma migration anterior a menos que você saiba exatamente o que você está fazendo.

@@ -34,7 +34,7 @@ const categories = [
     updatedAt: new Date(),
   },
   {
-    name: 'Minoria',
+    name: 'Minorias',
     description:
       'Contempla as tags que visam nomear os diferentes grupos considerados como minoria. Exemplo: mulhres, LGBTQ+, povo indígina, etc.',
     createdAt: new Date(),
