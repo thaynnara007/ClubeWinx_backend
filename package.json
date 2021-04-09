@@ -10,6 +10,7 @@
     "migrate:generate": "sequelize migration:generate",
     "migrate:undo": "sequelize db:migrate:undo",
     "seed": "sequelize db:seed:all",
+    "seed:undo": "sequelize db:seed:undo",
     "seed:generate": "sequelize seed:generate",
     "prettier": "prettier --write \"**/*.js\"",
     "lint": "eslint . --fix",
