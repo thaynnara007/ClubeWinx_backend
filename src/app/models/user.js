@@ -56,6 +56,16 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = (models) => {
     User.hasOne(models.Address);
     User.hasOne(models.Profile);
+    User.belongsToMany(models.User, {
+      through: 'ConnectionRequests',
+      as: 'requestedUsers',
+      foreignKey: 'requestedUserId',
+    });
+    User.belongsToMany(models.User, {
+      through: 'ConnectionRequests',
+      as: 'sendedUsers',
+      foreignKey: 'sendedUserId',
+    });
   };
 
   User.addHook('beforeSave', async (user) => {
