@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'categoryId',
       as: 'category',
     });
+    Tag.belongsToMany(models.ProfileTag, {
+      through: 'ProfileTags',
+      as: 'profiles',
+      foreignKey: 'tagId',
+    });
   };
   return Tag;
 };

@@ -14,6 +14,8 @@ module.exports = {
         model: 'Profiles',
         key: 'id',
       },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
     },
     imageName: {
       type: Sequelize.STRING,
