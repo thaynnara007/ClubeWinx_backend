@@ -15,6 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     Category.hasMany(models.Tag, {
       foreignKey: 'categoryId',
       as: 'tags',
+      onUpdate: 'cascade',
+      onDelete: 'cascade',
     });
   };
   return Category;

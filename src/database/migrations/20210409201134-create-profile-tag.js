@@ -1,33 +1,30 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('Profiles', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('ProfileTags', {
     id: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: Sequelize.INTEGER,
     },
-    userId: {
+    profileId: {
       type: Sequelize.INTEGER,
       allowNull: false,
-      unique: true,
       references: {
-        model: 'Users',
+        model: 'Profiles',
         key: 'id',
       },
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
     },
-    socialMedia: {
-      type: Sequelize.STRING,
-      defaultValue: null,
-    },
-    description: {
-      type: Sequelize.TEXT,
-      defaultValue: null,
-    },
-    privateAtConnection: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: true,
+    tagId: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Tags',
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
     },
     createdAt: {
       allowNull: false,
@@ -40,5 +37,5 @@ module.exports = {
       defaultValue: Sequelize.NOW,
     },
   }),
-  down: (queryInterface) => queryInterface.dropTable('Profiles'),
+  down: (queryInterface) => queryInterface.dropTable('ProfileTags'),
 };

@@ -14,6 +14,8 @@ module.exports = {
         model: 'Users',
         key: 'id',
       },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
     },
     street: {
       type: Sequelize.STRING,
