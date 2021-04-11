@@ -71,6 +71,28 @@
         }
       }
     },
+    "/user/forget/password": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/user/{userId}": {
       "get": {
         "tags": [
@@ -151,6 +173,80 @@
             "description": "Usuário excluido."
           }
         }
+      }
+    },
+    "/user/change/password": {
+      "put": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "newPassword": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/auth/verify/code": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {}
       }
     },
     "/address/user/{userId}": {
@@ -282,6 +378,94 @@
               "$ref": "#/definitions/Address"
             },
             "description": "Endereço encontrado."
+          }
+        }
+      }
+    },
+    "/profile/": {
+      "post": {
+        "tags": [
+          "Profile"
+        ],
+        "description": "Endpoint para criar um perfil.",
+        "parameters": [
+          {
+            "name": "newProfile",
+            "in": "body",
+            "description": "Informações do perfil.",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/AddProfile"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Profile"
+            },
+            "description": "Novo perfil criado."
+          }
+        }
+      }
+    },
+    "/profile/{userId}": {
+      "put": {
+        "tags": [
+          "Profile"
+        ],
+        "description": "Endpoint para modificar um perfil.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "profile",
+            "in": "body",
+            "description": "Informações do perfil.",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/AddProfile"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Profile"
+            },
+            "description": "Perfil ____FUNC____."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Profile"
+        ],
+        "description": "Endpoint para exclui o perfil de um usuario.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "string",
+              "example": "Perfil excluido com sucesso",
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Perfil excluido."
           }
         }
       }
@@ -556,6 +740,60 @@
             "type": "string",
             "example": "2021-03-30T23:22:54.989Z"
           }
+        }
+      }
+    },
+    "AddProfile": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "number",
+          "example": 1
+        },
+        "socialMedia": {
+          "type": "string",
+          "example": "https://instagram.com/adventuretime?igshid=1ti2rgx3xdt9n"
+        },
+        "description": {
+          "type": "string",
+          "example": "I am a human boy, who lives in a tree house with my brother, Jake, we have an adventure business together. I am good with people and know how to cook, though jake knows it more"
+        },
+        "privateAtConnection": {
+          "type": "boolean",
+          "example": false
+        }
+      }
+    },
+    "Profile": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "userId": {
+          "type": "number",
+          "example": 1
+        },
+        "socialMedia": {
+          "type": "string",
+          "example": "https://instagram.com/adventuretime?igshid=1ti2rgx3xdt9n"
+        },
+        "description": {
+          "type": "string",
+          "example": "I am a human boy, who lives in a tree house with my brother, Jake, we have an adventure business together. I am good with people and know how to cook, though jake knows it more"
+        },
+        "privateAtConnection": {
+          "type": "boolean",
+          "example": false
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2021-03-30T23:22:54.989Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2021-03-30T23:22:54.989Z"
         }
       }
     }
