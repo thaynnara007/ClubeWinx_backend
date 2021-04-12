@@ -92,22 +92,24 @@ const doc = {
         createdAt: '2021-03-30T23:22:54.989Z',
         updatedAt: '2021-03-30T23:22:54.989Z',
       },
-    ], 
+    ],
     AddProfile: {
-        userId: 1,
-        socialMedia: 'https://instagram.com/adventuretime?igshid=1ti2rgx3xdt9n',
-        description: 'I am a human boy, who lives in a tree house with my brother, Jake, we have an adventure business together. I am good with people and know how to cook, though jake knows it more',
-        privateAtConnection: false,
+      userId: 1,
+      socialMedia: 'https://instagram.com/adventuretime?igshid=1ti2rgx3xdt9n',
+      description:
+        'I am a human boy, who lives in a tree house with my brother, Jake, we have an adventure business together. I am good with people and know how to cook, though jake knows it more',
+      privateAtConnection: false,
     },
     Profile: {
       id: 1,
       userId: 1,
       socialMedia: 'https://instagram.com/adventuretime?igshid=1ti2rgx3xdt9n',
-      description: 'I am a human boy, who lives in a tree house with my brother, Jake, we have an adventure business together. I am good with people and know how to cook, though jake knows it more',
+      description:
+        'I am a human boy, who lives in a tree house with my brother, Jake, we have an adventure business together. I am good with people and know how to cook, though jake knows it more',
       privateAtConnection: false,
       createdAt: '2021-03-30T23:22:54.989Z',
       updatedAt: '2021-03-30T23:22:54.989Z',
-    }
+    },
   },
 };
 
