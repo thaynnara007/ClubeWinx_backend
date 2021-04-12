@@ -55,7 +55,9 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = (models) => {
     User.hasOne(models.Address);
-    User.hasOne(models.Profile);
+    User.hasOne(models.Profile, {
+      foreignKey: 'userId',
+    });
     User.belongsToMany(models.User, {
       through: 'ConnectionRequests',
       as: 'requestedUsers',
