@@ -1,4 +1,6 @@
 /* eslint-disable no-param-reassign, no-unused-vars */
+const moment = require('moment');
+
 const TIME = {
   mili: {
     time: 1,
@@ -126,6 +128,11 @@ function transformUnit(parent, child, multiplier) {
   return multiplier ? factor * multiplier : factor;
 }
 
+const DATE_FORMAT = 'DD/MM/YYYY';
+const FORGET_PASSWORD_CODE_MIN = 1000;
+const FORGET_PASSWORD_CODE_MAX = 10000;
+const FIVE_MB = 5 * 1024 * 1024;
+
 const getRandomNumber = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -135,13 +142,11 @@ const getRandomNumber = (min, max) => {
 
 const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
-const DATE_FORMAT = 'DD/MM/YYYY';
-const FORGET_PASSWORD_CODE_MIN = 1000;
-const FORGET_PASSWORD_CODE_MAX = 10000;
-const FIVE_MB = 5 * 1024 * 1024;
+const formatDate = (date) => moment(date).format(DATE_FORMAT);
 
 module.exports = {
   getDate,
+  formatDate,
   getDateTime,
   check24Hours,
   transformUnit,

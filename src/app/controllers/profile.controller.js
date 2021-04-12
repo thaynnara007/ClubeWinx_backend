@@ -1,8 +1,43 @@
 const httpStatus = require('http-status-codes');
-const profileService = require('../services/profile.service');
 const log = require('../services/log.service');
+const util = require('../services/util.service');
+const profileService = require('../services/profile.service');
+const addressService = require('../services/address.service');
+const profilePictureService = require('../services/profilePicture.service');
 
 const { StatusCodes } = httpStatus;
+
+const mountProfilejson = async (profile, user) => {
+  log.info(`Montando json de retorno do profile do usuário. userId=${user.id}`);
+  log.info(`Buscando endereço do usuário. userId=${user.id}`);
+
+  const address = await addressService.getByUserId(user.id);
+
+  if (!address) throw new Error('Endereço não encontrado');
+
+  log.info(`Buscando foto de perfil. profileId=${profile.id}`);
+  const picture = await profilePictureService.getByProfileId(profile.id);
+
+  const bday = util.formatDate(user.birthday);
+  let result = {};
+
+  if (picture) result = { picture: picture.pictureUrl };
+
+  result = {
+    ...result,
+    name: user.name,
+    lastname: user.lastname,
+    birthday: bday,
+    gender: user.gender,
+    ...profile.dataValues,
+    address: {
+      city: address.city,
+      state: address.state,
+    },
+  };
+
+  return result;
+};
 
 const create = async (req, res) => {
   // #swagger.tags = ['Profile']
@@ -31,8 +66,9 @@ const create = async (req, res) => {
 
     log.info('Criando perfil no banco de dados');
     const newProfile = await profileService.create(profileData);
+    const result = await mountProfilejson(newProfile, user);
 
-    return res.status(StatusCodes.CREATED).json(newProfile);
+    return res.status(StatusCodes.CREATED).json(result);
   } catch (error) {
     const errorMsg = 'Erro ao cadastrar perfil';
 
@@ -114,9 +150,10 @@ const edit = async (req, res) => {
 
     log.info(`Atualizando perfil no banco de dados. userId=${user.id}`);
     const profile = await profileService.edit(user.id, profileData);
+    const result = await mountProfilejson(profile, user);
 
     log.info('Perfil atualizado com sucesso');
-    return res.status(StatusCodes.OK).json(profile);
+    return res.status(StatusCodes.OK).json(result);
   } catch (error) {
     const errorMsg = 'Erro ao atualizar perfil';
 

@@ -22,7 +22,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userId',
       as: 'user',
     });
-    Profile.hasOne(models.ProfilePicture);
+    Profile.hasOne(models.ProfilePicture, {
+      foreignKey: 'profileId',
+      as: 'picture',
+    });
     Profile.belongsToMany(models.ProfileTag, {
       through: 'ProfileTags',
       as: 'tags',
