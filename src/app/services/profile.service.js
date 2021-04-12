@@ -1,42 +1,42 @@
 const { Profile } = require('../models');
 
 const create = async (profileData) => {
-    const profile = await Profile.create(profileData);
+  const profile = await Profile.create(profileData);
 
-    return profile;
+  return profile;
 };
 
 const getById = async (userId) => {
-    const profile = await Profile.findOne({
-        where: {
-            userId,
-        },
-    });
+  const profile = await Profile.findOne({
+    where: {
+      userId,
+    },
+  });
 
-    return profile;
+  return profile;
 };
 
 const edit = async (userId, profileData) => {
-    await Profile.update(profileData, {
-        where: {
-            userId,
-        },
-    });
+  await Profile.update(profileData, {
+    where: {
+      userId,
+    },
+  });
 
-    return getById(userId);
+  return getById(userId);
 };
 
 const delet = async (userId) => {
-    const profile = await getById(userId);
+  const profile = await getById(userId);
 
-    if (!profile) throw new Error('Nenhum endereço encontrado para esse usuário');
+  if (!profile) throw new Error('Nenhum endereço encontrado para esse usuário');
 
-    return profile.destroy();
+  return profile.destroy();
 };
 
 module.exports = {
-    create,
-    getById,
-    edit,
-    delet,
+  create,
+  getById,
+  edit,
+  delet,
 };

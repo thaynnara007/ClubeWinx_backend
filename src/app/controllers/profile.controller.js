@@ -1,20 +1,30 @@
 const httpStatus = require('http-status-codes');
+const log = require('../services/log.service');
 const util = require('../services/util.service');
 const profileService = require('../services/profile.service');
 const addressService = require('../services/address.service');
-const log = require('../services/log.service');
+const profilePictureService = require('../services/profilePicture.service');
 
 const { StatusCodes } = httpStatus;
 
 const mountProfilejson = async (profile, user) => {
   log.info(`Montando json de retorno do profile do usuário. userId=${user.id}`);
   log.info(`Buscando endereço do usuário. userId=${user.id}`);
+
   const address = await addressService.getByUserId(user.id);
 
   if (!address) throw new Error('Endereço não encontrado');
 
+  log.info(`Buscando foto de perfil. profileId=${profile.id}`);
+  const picture = await profilePictureService.getByProfileId(profile.id);
+
   const bday = util.formatDate(user.birthday);
-  const result = {
+  let result = {};
+
+  if (picture) result = { picture: picture.pictureUrl };
+
+  result = {
+    ...result,
     name: user.name,
     lastname: user.lastname,
     birthday: bday,

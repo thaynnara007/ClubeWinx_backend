@@ -6,8 +6,8 @@ const profilePictureController = require('../controllers/profilePicture.controll
 
 const router = express.Router();
 
-router.post('/', auth.verifyToken, controller.create);
 router.get('/me', auth.verifyToken, controller.getProfileByUserId);
+router.post('/', auth.verifyToken, controller.create);
 router.put('/me', auth.verifyToken, controller.edit);
 router.put(
   '/me/picture',
