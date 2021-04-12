@@ -19,12 +19,11 @@ const create = async (req, res) => {
               description: 'Novo perfil criado.'
           } */
     try {
-        const { body } = req;
-        const { userId } = req.params;
-        log.info(`Iniciando criação do perfil. userId=${userId}`);
+        const { body, user } = req;
+        log.info(`Iniciando criação do perfil. userId=${user.id}`);
 
         const profileData = {
-            userId,
+            userId: user.id,
             socialMedia: body.socialMedia,
             description: body.description,
             privateAtConnection: body.privateAtConnection
@@ -45,38 +44,38 @@ const create = async (req, res) => {
     }
 };
 
-// const getProfileByUserId = async (req, res) => {
-//   // #swagger.tags = ['Profile']
-//   // #swagger.description = 'Endpoint para buscar perfil.'
-//   /* #swagger.responses[200] = {
-//             schema: { $ref: "#/definitions/Profile" },
-//             description: 'Perfil encontrado.'
-//         } */
-//   try {
-//     const { userId } = req.params;
+const getProfileByUserId = async (req, res) => {
+  // #swagger.tags = ['Profile']
+  // #swagger.description = 'Endpoint para buscar perfil.'
+  /* #swagger.responses[200] = {
+            schema: { $ref: "#/definitions/Profile" },
+            description: 'Perfil encontrado.'
+        } */
+  try {
+    const { user } = req;
 
-//     log.info(`Iniciando busca pelo perfil. userId=${userId}`);
-//     const profile = await profileService.getById(userId);
+    log.info(`Iniciando busca pelo perfil. userId=${user.id}`);
+    const profile = await profileService.getById(user.id);
 
-//     if (!profile) {
-//       return res
-//         .status(StatusCodes.NOT_FOUND)
-//         .json({ error: 'Nenhum perfil foi encontrado' });
-//     }
+    if (!profile) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Nenhum perfil foi encontrado' });
+    }
 
-//     log.info(`Finalizando busca ao perfil. userId=${userId}`);
+    log.info(`Finalizando busca ao perfil. userId=${user.id}`);
 
-//     return res.status(StatusCodes.OK).json(profile);
-//   } catch (error) {
-//     const errorMsg = 'Erro ao buscar endereço';
+    return res.status(StatusCodes.OK).json(profile);
+  } catch (error) {
+    const errorMsg = 'Erro ao buscar perfil';
 
-//     log.error(errorMsg, 'app/controllers/profile.controller.js', error.message);
+    log.error(errorMsg, 'app/controllers/profile.controller.js', error.message);
 
-//     return res
-//       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-//       .json({ error: `${errorMsg} ${error.message}` });
-//   }
-// };
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: `${errorMsg} ${error.message}` });
+  }
+};
 
 const edit = async (req, res) => {
     // #swagger.tags = ['Profile']
@@ -93,13 +92,12 @@ const edit = async (req, res) => {
               description: 'Perfil editado.'
           } */
     try {
-        const { userId } = req.params;
-        const { body } = req;
+        const { body, user } = req;
 
-        log.info(`Iniciando atualização do perfil. userId=${userId}`);
+        log.info(`Iniciando atualização do perfil. userId=${user.id}`);
         log.info('Verificando se o perfil existe');
 
-        const existedProfile = await profileService.getById(userId);
+        const existedProfile = await profileService.getById(user.id);
 
         if (!existedProfile) {
             return res
@@ -108,14 +106,14 @@ const edit = async (req, res) => {
         }
 
         const profileData = {
-            userId,
+            userId: user.id,
             socialMedia: body.socialMedia,
             description: body.description,
             privateAtConnection: body.privateAtConnection
         };
 
-        log.info(`Atualizando perfil no banco de dados. userId=${userId}`);
-        const profile = await profileService.edit(userId, profileData);
+        log.info(`Atualizando perfil no banco de dados. userId=${user.id}`);
+        const profile = await profileService.edit(user.id, profileData);
 
         log.info('Perfil atualizado com sucesso');
         return res.status(StatusCodes.OK).json(profile);
@@ -139,10 +137,10 @@ const delet = async (req, res) => {
           } */
 
     try {
-        const { userId } = req.params;
+        const { user } = req;
 
-        log.info(`Deletando perfil. userId=${userId}`);
-        await profileService.delet(userId);
+        log.info(`Deletando perfil. userId=${user.id}`);
+        await profileService.delet(user.id);
 
         return res.status(StatusCodes.OK).json('Perfil deletado com sucesso');
     } catch (error) {
@@ -158,7 +156,7 @@ const delet = async (req, res) => {
 
 module.exports = {
     create,
-    //getProfileByUserId,
+    getProfileByUserId,
     edit,
     delet,
 };

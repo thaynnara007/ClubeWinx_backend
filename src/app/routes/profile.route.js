@@ -4,9 +4,9 @@ const controller = require('../controllers/profile.controller');
 
 const router = express.Router();
 
-router.post('/', controller.create);
-//router.get('/:userId', auth.verifyToken, controller.getProfileByUserId);
-router.put('/:userId', auth.verifyToken, controller.edit);
-router.delete('/:userId', auth.verifyToken, controller.delet);
+router.post('/', auth.verifyToken, controller.create);
+router.get('/me', auth.verifyToken, controller.getProfileByUserId);
+router.put('/me', auth.verifyToken, controller.edit);
+router.delete('/me', auth.verifyToken, controller.delet);
 
 module.exports = router;

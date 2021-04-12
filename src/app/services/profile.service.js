@@ -23,11 +23,11 @@ const edit = async (userId, profileData) => {
         },
     });
 
-    return getByUserId(userId);
+    return getById(userId);
 };
 
 const delet = async (userId) => {
-    const profile = await getByUserId(userId);
+    const profile = await getById(userId);
 
     if (!profile) throw new Error('Nenhum endereço encontrado para esse usuário');
 
