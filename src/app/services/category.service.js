@@ -1,28 +1,25 @@
-const { 
-  Category,
-  Tag
-} = require('../models')
+const { Category, Tag } = require('../models');
 
 const create = async (data) => {
-  const category = await Category.create(data)
+  const category = await Category.create(data);
 
-  return category
-}
+  return category;
+};
 
 const getByName = async (name) => {
   const category = await Category.findOne({
     where: {
-      name
-    }
-  })
+      name,
+    },
+  });
 
-  return category
-}
+  return category;
+};
 
 const getById = async (id) => {
   const category = Category.findOne({
     where: {
-      id
+      id,
     },
     include: [
       {
@@ -32,12 +29,12 @@ const getById = async (id) => {
           exclude: ['createdAt', 'updatedAt'],
         },
         order: [['name', 'ASC']],
-      }
-    ]
-  })
+      },
+    ],
+  });
 
-  return category
-}
+  return category;
+};
 
 const getAll = async (query) => {
   const page = parseInt(query.page, 10);
@@ -46,18 +43,20 @@ const getAll = async (query) => {
   let categories = null;
   let options = {
     distinct: true,
-    include: [{
-      model: Tag,
-      as: 'tags',
-      attributes: {
-        exclude: ['createdAt', 'updatedAt'],
+    include: [
+      {
+        model: Tag,
+        as: 'tags',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
       },
-    }],
+    ],
     order: [
       ['name', 'ASC'],
-      [{ model: Tag, as: 'tags' }, 'name', 'ASC']
-    ]  
-  }
+      [{ model: Tag, as: 'tags' }, 'name', 'ASC'],
+    ],
+  };
 
   if (page && pageSize) offset = (page - 1) * pageSize;
 
@@ -72,20 +71,27 @@ const getAll = async (query) => {
 
     categories.pages = Math.ceil(categories.count / pageSize);
   } else {
-    categories = await Category.findAll(options)
+    categories = await Category.findAll(options);
   }
 
   return categories;
-}
+};
 
-const edit = async (data) => {
+const edit = async (categoryId, data) => {
+  console.log(data);
+  await Category.update(data, {
+    where: {
+      id: categoryId,
+    },
+  });
 
-}
+  return getById(categoryId);
+};
 
 module.exports = {
-    create,
-    getByName,
-    getById,
-    getAll,
-    edit
-}
+  create,
+  getByName,
+  getById,
+  getAll,
+  edit,
+};
