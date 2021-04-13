@@ -19,6 +19,8 @@ module.exports = (sequelize, DataTypes) => {
       through: 'ProfileTags',
       as: 'profiles',
       foreignKey: 'tagId',
+      onUpdate: 'cascade',
+      onDelete: 'cascade',
     });
   };
   return Tag;

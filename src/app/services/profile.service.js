@@ -16,6 +16,19 @@ const getById = async (userId) => {
   return profile;
 };
 
+const getByUserId = async (userId) => {
+  const profile = await Profile.findOne({
+    where: {
+      userId,
+    },
+    attributes: {
+      include: ["id", "userId"]
+    }
+  });
+
+  return profile;
+}
+
 const edit = async (userId, profileData) => {
   await Profile.update(profileData, {
     where: {
@@ -39,4 +52,5 @@ module.exports = {
   getById,
   edit,
   delet,
+  getByUserId
 };
