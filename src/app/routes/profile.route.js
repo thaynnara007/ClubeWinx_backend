@@ -10,6 +10,7 @@ const router = express.Router();
 router.get('/me', auth.verifyToken, controller.getProfileByUserId);
 router.post('/', auth.verifyToken, controller.create);
 router.post('/me/add/tags', auth.verifyToken, tagProfileController.addTags)
+router.post('/me/create/tags', auth.verifyToken, tagProfileController.createTags)
 router.delete('/me/remove/tags', auth.verifyToken, tagProfileController.removeTags)
 router.put('/me', auth.verifyToken, controller.edit);
 router.put(

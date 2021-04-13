@@ -40,7 +40,26 @@ const addTags = async (req, res) => {
 
 const createTags = async (req, res) => {
   try {
-    
+    const { user } = req
+    const { tags } = req.body
+
+    log.info(`Inicializando adição das tags criadas pelo usuário ao profile. userId=${user.id}`)
+
+    let profile = await profileService.getById(user.id)
+
+    if(!profile)
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "Perfil não encontrado" })
+
+    log.info(`Relacionando as tags ao perfil. profileId=${profile.id}`)
+    await service.createTags(profile.id, tags)
+
+    profile = await profileService.getById(user.id)
+
+    log.info("Cadastro das tag realizado com sucesso")
+
+    return res.status(StatusCodes.OK).json(profile)
   } catch (error) {
     const errorMsg = 'Erro ao adicionar tags criadas pelo usuário ao perfil';
 

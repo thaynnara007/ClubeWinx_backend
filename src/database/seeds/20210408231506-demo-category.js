@@ -40,6 +40,13 @@ const categories = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
+  {
+    name: 'Sobre você',
+    description:
+      'Contempla as tags que visam te descrever como pessoa',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
 ];
 
 module.exports = {

@@ -31,6 +31,21 @@ const addTags = async (profileId, tagIds) => {
   )
 }
 
+const createTags = async (profileId, tags) => {
+  await Promise.all(
+    tags.map( async (tagInfo) => {
+      let tag = await tagService.getByName(tagInfo.name)
+
+      if (!tag) {
+        log.info(`Criando tag ${tagInfo.name} no banco de dados`)
+        tag = await tagService.create(tagInfo)
+      }
+      await addTag(profileId, tag.id)
+    })
+  )
+}
+
 module.exports = {
-  addTags
+  addTags,
+  createTags
 }
