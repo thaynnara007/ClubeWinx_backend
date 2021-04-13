@@ -78,7 +78,6 @@ const getAll = async (query) => {
 };
 
 const edit = async (categoryId, data) => {
-  console.log(data);
   await Category.update(data, {
     where: {
       id: categoryId,
