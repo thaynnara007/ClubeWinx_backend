@@ -23,7 +23,7 @@ const addTags = async (req, res) => {
     log.info(`Relacionando as tags ao perfil. profileId=${profile.id}`);
     await service.addTags(profile.id, tags);
 
-    profile = await profileService.getById(user.id);
+    profile = await profileService.getById(user.id, false);
 
     log.info('Cadastro das tag realizado com sucesso');
 
@@ -63,7 +63,7 @@ const createTags = async (req, res) => {
     log.info(`Relacionando as tags ao perfil. profileId=${profile.id}`);
     await service.createTags(profile.id, tags);
 
-    profile = await profileService.getById(user.id);
+    profile = await profileService.getById(user.id, false);
 
     log.info('Cadastro das tag realizado com sucesso');
 
@@ -101,7 +101,7 @@ const removeTags = async (req, res) => {
     log.info(`Removendo as tags do perfil. profileId=${profile.id}`);
     await service.removeTags(profile.id, tags);
 
-    profile = await profileService.getById(user.id);
+    profile = await profileService.getById(user.id, false);
 
     log.info('Remoção das tag realizado com sucesso');
 

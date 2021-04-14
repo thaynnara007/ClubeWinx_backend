@@ -49,7 +49,7 @@ const mountProfilejson = async (profile, user, privateInfo = true) => {
   return result;
 };
 
-const getById = async (user, privateInfo) => {
+const getById = async (user, privateInfo = true) => {
   const profile = await Profile.findOne({
     where: {
       userId: user.id,
