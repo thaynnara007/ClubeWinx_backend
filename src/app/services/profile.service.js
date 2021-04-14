@@ -22,12 +22,12 @@ const getByUserId = async (userId) => {
       userId,
     },
     attributes: {
-      include: ["id", "userId"]
-    }
+      include: ['id', 'userId'],
+    },
   });
 
   return profile;
-}
+};
 
 const edit = async (userId, profileData) => {
   await Profile.update(profileData, {
@@ -52,5 +52,5 @@ module.exports = {
   getById,
   edit,
   delet,
-  getByUserId
+  getByUserId,
 };
