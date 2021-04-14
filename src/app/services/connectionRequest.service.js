@@ -35,9 +35,16 @@ const acceptConnection = async (request) => {
   await acceptedConnection.save()
 }
 
+const removeConnection = async (request) => {
+  const connection = request
+  
+  await connection.destroy()
+}
+
 module.exports = {
   create,
   getByUsers,
   getById,
-  acceptConnection
+  acceptConnection,
+  removeConnection
 }

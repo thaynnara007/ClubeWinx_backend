@@ -17,8 +17,8 @@ router.post(
     auth.verifyToken,
     connectionController.acceptConnection
     )
-router.post(
-    '/me/refuse/connection', 
+router.delete(
+    '/me/refuse/connection/:requestId', 
     auth.verifyToken,
     connectionController.refuseConnection
     )

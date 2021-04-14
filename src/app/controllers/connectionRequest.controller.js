@@ -81,7 +81,7 @@ const acceptConnection = async (req, res) => {
 
     log.info(`Requisição de conexão aceita com sucesso`)
 
-    return res.status(StatusCodes.OK).json("Requisição de conexão aceita com sucesso")
+    return res.status(StatusCodes.OK).json("Requisição de conexão aceita")
   } catch (error) {
     const errorMsg = 'Erro ao aceitar uma requisição de conexão';
 
@@ -99,7 +99,35 @@ const acceptConnection = async (req, res) => {
 
 const refuseConnection = async (req, res) => {
   try {
-    
+    const { user } = req
+    const { requestId } = req.params
+
+    log.info(`Inicializando recusa da conexão. userId=${user.id}, requestId=${requestId}`)
+    log.info(`Validando informações`)
+
+    const request = await service.getById(requestId)
+
+    if (!request) 
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "Requisição de conexão não encontrada" })
+
+    if (request.accepted && request.requestedUserId !== user.id && request.sendedUserId !== user.id)
+      return res 
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ error: "Você não pode encerrar a conexões entre outros usuários" })
+
+    if (!request.accepted && request.requestedUserId !== user.id)
+      return res 
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ error: "Você não pode recusar uma conexões por outros usuários" })
+
+    log.info(`Removendo requisição de conexão no banco de dados. requestId=${requestId}`)
+    await service.removeConnection(request)
+
+    log.info(`Requisição de conexão removida com sucesso`)
+
+    return res.status(StatusCodes.OK).json("Requisição de conexão removida")
   } catch (error) {
     const errorMsg = 'Erro ao recusar uma requisição de conexão';
 
