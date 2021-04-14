@@ -17,6 +17,6 @@ router.use('/user', user);
 router.use('/auth', auth);
 router.use('/address', address);
 router.use('/profile', profile);
-router.use('/category', category)
+router.use('/category', category);
 
 module.exports = router;
