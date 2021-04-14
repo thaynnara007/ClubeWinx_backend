@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'profileId',
       as: 'picture',
     });
-    Profile.belongsToMany(models.ProfileTag, {
+    Profile.belongsToMany(models.Tag, {
       through: 'ProfileTags',
       as: 'tags',
       foreignKey: 'profileId',

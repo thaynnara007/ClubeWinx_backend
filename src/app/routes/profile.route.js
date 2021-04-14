@@ -7,7 +7,8 @@ const tagProfileController = require('../controllers/tagProfile.controller');
 
 const router = express.Router();
 
-router.get('/me', auth.verifyToken, controller.getProfileByUserId);
+router.get('/me', auth.verifyToken, controller.getMyProfile);
+router.get('/:userId', auth.verifyToken, controller.getProfileByUserId);
 router.post('/', auth.verifyToken, controller.create);
 router.post('/me/add/tags', auth.verifyToken, tagProfileController.addTags);
 router.post(
