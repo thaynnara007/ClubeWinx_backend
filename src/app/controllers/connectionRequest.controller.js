@@ -32,12 +32,10 @@ const requestConnection = async (req, res) => {
     const connection = await service.getByUsers(user.id, userId);
 
     if (connection) {
-      return res
-        .status(StatusCodes.CONFLICT)
-        .json({
-          error:
-            'Esses usuários já são conectados ou já existe uma requisição de conexão entre ambos',
-        });
+      return res.status(StatusCodes.CONFLICT).json({
+        error:
+          'Esses usuários já são conectados ou já existe uma requisição de conexão entre ambos',
+      });
     }
 
     log.info(
@@ -87,11 +85,9 @@ const acceptConnection = async (req, res) => {
     }
 
     if (request.requestedUserId !== user.id) {
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({
-          error: 'Você não pode aceitar as requisições de outros usuários',
-        });
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error: 'Você não pode aceitar as requisições de outros usuários',
+      });
     }
 
     log.info(
@@ -140,19 +136,15 @@ const refuseConnection = async (req, res) => {
       && request.requestedUserId !== user.id
       && request.sendedUserId !== user.id
     ) {
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({
-          error: 'Você não pode encerrar a conexões entre outros usuários',
-        });
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error: 'Você não pode encerrar a conexões entre outros usuários',
+      });
     }
 
     if (!request.accepted && request.requestedUserId !== user.id) {
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({
-          error: 'Você não pode recusar uma conexões por outros usuários',
-        });
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error: 'Você não pode recusar uma conexões por outros usuários',
+      });
     }
 
     log.info(
