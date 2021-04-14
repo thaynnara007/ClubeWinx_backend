@@ -58,7 +58,30 @@ const requestConnection = async (req, res) => {
 
 const acceptConnection = async (req, res) => {
   try {
-    
+    const { user } = req
+    const { requestId } = req.params
+
+    log.info(`Inicializando a confirmação de conexão. userId=${user.id}, requestId=${requestId}`)
+    log.info(`Validando informações`)
+
+    const request = await service.getById(requestId)
+
+    if (!request) 
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "Requisição de conexão não encontrada" })
+
+    if (request.requestedUserId !== user.id)
+      return res 
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ error: "Você não pode aceitar as requisições de outros usuários" })
+
+    log.info(`Aceitando requisição de conexão no banco de dados. requestId=${requestId}`)
+    await service.acceptConnection(request)
+
+    log.info(`Requisição de conexão aceita com sucesso`)
+
+    return res.status(StatusCodes.OK).json("Requisição de conexão aceita com sucesso")
   } catch (error) {
     const errorMsg = 'Erro ao aceitar uma requisição de conexão';
 
