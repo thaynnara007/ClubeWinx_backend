@@ -14,7 +14,7 @@ const edit = async (req, res) => {
       `Inicializando atualização da foto de perfil do usuário. userId=${user.id}`,
     );
     log.info(`Buscando perfil do usuário logado. userId=${user.id}`);
-    const profile = await profileService.getById(user.id);
+    const profile = await profileService.getByUserId(user.id);
 
     if (!profile) {
       return res

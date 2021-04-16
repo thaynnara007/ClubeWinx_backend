@@ -12,7 +12,7 @@ const addTags = async (req, res) => {
 
     log.info(`Inicializando adição de tags ao profile. userId=${user.id}`);
 
-    let profile = await profileService.getById(user.id);
+    let profile = await profileService.getByUserId(user.id);
 
     if (!profile) {
       return res
@@ -52,7 +52,7 @@ const createTags = async (req, res) => {
       `Inicializando adição das tags criadas pelo usuário ao profile. userId=${user.id}`,
     );
 
-    let profile = await profileService.getById(user.id);
+    let profile = await profileService.getByUserId(user.id);
 
     if (!profile) {
       return res
@@ -90,7 +90,7 @@ const removeTags = async (req, res) => {
 
     log.info(`Inicializando remoção das tags do profile. userId=${user.id}`);
 
-    let profile = await profileService.getById(user.id);
+    let profile = await profileService.getByUserId(user.id);
 
     if (!profile) {
       return res
