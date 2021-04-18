@@ -19,12 +19,11 @@ const create = async (req, res) => {
             description: 'Novo endereço criado.'
         } */
   try {
-    const { body } = req;
-    const { userId } = req.params;
-    log.info(`Iniciando criação de endereço. userId=${userId}`);
+    const { body, user } = req;
+    log.info(`Iniciando criação de endereço. userId=${user.id}`);
 
     const addressData = {
-      userId,
+      userId: user.id,
       street: body.street,
       number: body.number,
       district: body.district,
@@ -57,10 +56,10 @@ const getByUserId = async (req, res) => {
             description: 'Endereço encontrado.'
         } */
   try {
-    const { userId } = req.params;
+    const { user } = req;
 
-    log.info(`Iniciando busca pelo endereço. userId=${userId}`);
-    const adress = await addressService.getByUserId(userId);
+    log.info(`Iniciando busca pelo endereço. userId=${user.id}`);
+    const adress = await addressService.getByUserId(user.id);
 
     if (!adress) {
       return res
@@ -68,7 +67,7 @@ const getByUserId = async (req, res) => {
         .json({ error: 'Nenhum endereço foi encontrado' });
     }
 
-    log.info(`Finalizando busca ao endereço. userId=${userId}`);
+    log.info(`Finalizando busca ao endereço. userId=${user.id}`);
 
     return res.status(StatusCodes.OK).json(adress);
   } catch (error) {
@@ -125,13 +124,12 @@ const edit = async (req, res) => {
             description: 'Endereço editado.'
         } */
   try {
-    const { userId } = req.params;
-    const { body } = req;
+    const { body, user } = req;
 
-    log.info(`Iniciando atualização do endereço do usuário. userId=${userId}`);
+    log.info(`Iniciando atualização do endereço do usuário. userId=${user.id}`);
     log.info('Verificando se o endereço existe');
 
-    const existedAddress = await addressService.getByUserId(userId);
+    const existedAddress = await addressService.getByUserId(user.id);
 
     if (!existedAddress) {
       return res
@@ -149,8 +147,8 @@ const edit = async (req, res) => {
       state: body.state,
     };
 
-    log.info(`Atualizando endereço no banco de dados. userId=${userId}`);
-    const address = await addressService.edit(userId, addressData);
+    log.info(`Atualizando endereço no banco de dados. userId=${user.id}`);
+    const address = await addressService.edit(user.id, addressData);
 
     log.info('Endereço atualizado com sucesso');
     return res.status(StatusCodes.OK).json(address);
@@ -174,10 +172,10 @@ const delet = async (req, res) => {
         } */
 
   try {
-    const { userId } = req.params;
+    const { user } = req;
 
-    log.info(`Deletando endereço. userId=${userId}`);
-    await addressService.delet(userId);
+    log.info(`Deletando endereço. userId=${user.id}`);
+    await addressService.delet(user.id);
 
     return res.status(StatusCodes.OK).json('Endereço deletado com sucesso');
   } catch (error) {
