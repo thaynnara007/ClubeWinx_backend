@@ -93,6 +93,51 @@
         "responses": {}
       }
     },
+    "/user/me/request/connection/{userId}": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/user/me/accept/connection/{requestId}": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/user/me/refuse/connection/{requestId}": {
+      "delete": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/user/{userId}": {
       "get": {
         "tags": [
@@ -175,6 +220,14 @@
         }
       }
     },
+    "/user/me/connection": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
     "/user/change/password": {
       "put": {
         "tags": [],
@@ -249,19 +302,13 @@
         "responses": {}
       }
     },
-    "/address/user/{userId}": {
+    "/address/me": {
       "post": {
         "tags": [
           "Address"
         ],
         "description": "Endpoint para criar um usuario.",
         "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "newAddress",
             "in": "body",
@@ -282,18 +329,27 @@
           }
         }
       },
+      "get": {
+        "tags": [
+          "Address"
+        ],
+        "description": "Endpoint para buscar o endereço de um usuario.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Address"
+            },
+            "description": "Endereço encontrado."
+          }
+        }
+      },
       "put": {
         "tags": [
           "Address"
         ],
         "description": "Endpoint para modificar o endereço de um usuario.",
         "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "address",
             "in": "body",
@@ -319,14 +375,7 @@
           "Address"
         ],
         "description": "Endpoint para exclui o endereço de um usuario.",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "schema": {
@@ -358,12 +407,72 @@
         }
       }
     },
-    "/address/user/{userId}/": {
+    "/profile/me": {
       "get": {
         "tags": [
-          "Address"
+          "Profile"
         ],
-        "description": "Endpoint para buscar o endereço de um usuario.",
+        "description": "Endpoint para buscar perfil.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Profile"
+            },
+            "description": "Perfil encontrado."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Profile"
+        ],
+        "description": "Endpoint para modificar um perfil.",
+        "parameters": [
+          {
+            "name": "profile",
+            "in": "body",
+            "description": "Informações do perfil.",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/AddProfile"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Profile"
+            },
+            "description": "Perfil ____FUNC____."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Profile"
+        ],
+        "description": "Endpoint para exclui o perfil de um usuario.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "string",
+              "example": "Perfil excluido com sucesso",
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Perfil excluido."
+          }
+        }
+      }
+    },
+    "/profile/{userId}": {
+      "get": {
+        "tags": [],
+        "description": "",
         "parameters": [
           {
             "name": "userId",
@@ -372,14 +481,7 @@
             "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "schema": {
-              "$ref": "#/definitions/Address"
-            },
-            "description": "Endereço encontrado."
-          }
-        }
+        "responses": {}
       }
     },
     "/profile/": {
@@ -410,64 +512,133 @@
         }
       }
     },
-    "/profile/{userId}": {
-      "put": {
-        "tags": [
-          "Profile"
-        ],
-        "description": "Endpoint para modificar um perfil.",
+    "/profile/me/add/tags": {
+      "post": {
+        "tags": [],
+        "description": "",
         "parameters": [
           {
-            "name": "userId",
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tags": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/profile/me/create/tags": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tags": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/profile/me/remove/tags": {
+      "put": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tags": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/profile/me/picture": {
+      "put": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/category/": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      },
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/category/{categoryId}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      },
+      "put": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "categoryId",
             "in": "path",
             "required": true,
             "type": "string"
           },
           {
-            "name": "profile",
+            "name": "obj",
             "in": "body",
-            "description": "Informações do perfil.",
-            "required": true,
-            "type": "object",
             "schema": {
-              "$ref": "#/definitions/AddProfile"
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
             }
           }
         ],
-        "responses": {
-          "200": {
-            "schema": {
-              "$ref": "#/definitions/Profile"
-            },
-            "description": "Perfil ____FUNC____."
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Profile"
-        ],
-        "description": "Endpoint para exclui o perfil de um usuario.",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "schema": {
-              "type": "string",
-              "example": "Perfil excluido com sucesso",
-              "xml": {
-                "name": "main"
-              }
-            },
-            "description": "Perfil excluido."
-          }
-        }
+        "responses": {}
       }
     }
   },
