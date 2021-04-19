@@ -12,7 +12,14 @@
     "http",
     "https"
   ],
-  "securityDefinitions": {},
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Enter your bearer token in the format **Bearer &lt;token>**"
+    }
+  },
   "consumes": [
     "application/json"
   ],
@@ -327,7 +334,12 @@
             },
             "description": "Novo endereço criado."
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "get": {
         "tags": [
@@ -342,7 +354,12 @@
             },
             "description": "Endereço encontrado."
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -368,7 +385,12 @@
             },
             "description": "Endereço ____FUNC____."
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -387,7 +409,12 @@
             },
             "description": "Endereço excluido."
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/address/": {
@@ -643,6 +670,19 @@
     }
   },
   "definitions": {
+    "Security": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Bearer": {
+            "type": "array",
+            "example": [],
+            "items": {}
+          }
+        }
+      }
+    },
     "AddUser": {
       "type": "object",
       "properties": {

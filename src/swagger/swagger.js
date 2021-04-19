@@ -17,8 +17,16 @@ const doc = {
   consumes: ['application/json'],
   produces: ['application/json'],
   tags: [],
-  securityDefinitions: {},
+  securityDefinitions: {
+    Bearer: {
+      type: 'apiKey',
+      name: 'Authorization',
+      in: 'header',
+      description: 'Enter your bearer token in the format **Bearer &lt;token>**'
+    }
+  },
   definitions: {
+    Security: [{ 'Bearer': [] }],
     AddUser: {
       $name: 'thaynnara',
       lastname: 'raiany',
