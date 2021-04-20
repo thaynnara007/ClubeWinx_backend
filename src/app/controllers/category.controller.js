@@ -5,6 +5,20 @@ const service = require('../services/category.service');
 const { StatusCodes } = httpStatus;
 
 const create = async (req, res) => {
+  // #swagger.tags = ['Category']
+  // #swagger.description = 'Endpoint para criar uma categoria.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.parameters['newCategory'] = {
+        in: 'body',
+        description: 'Informações de categoria.',
+        required: true,
+        type: 'object',
+        schema: { $ref: "#/definitions/NewCategory" }
+        } */
+  /* #swagger.responses[201] = {
+            schema: { $ref: "#/definitions/Category" },
+            description: 'Nova categoria criada.'
+        } */
   try {
     const { body } = req;
 
@@ -46,6 +60,13 @@ const create = async (req, res) => {
 };
 
 const getById = async (req, res) => {
+  // #swagger.tags = ['Category']
+  // #swagger.description = 'Endpoint para buscar uma categoria.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.responses[201] = {
+            schema: { $ref: "#/definitions/Category" },
+            description: 'Categoria encontrada.'
+        } */
   try {
     const { categoryId } = req.params;
 
@@ -81,6 +102,13 @@ const getById = async (req, res) => {
 };
 
 const getAll = async (req, res) => {
+  // #swagger.tags = ['Category']
+  // #swagger.description = 'Endpoint para criar uma categoria.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.responses[201] = {
+            schema: { $ref: "#/definitions/Categories" },
+            description: 'Nova categoria criada.'
+        } */
   try {
     const { query } = req;
 
@@ -107,6 +135,20 @@ const getAll = async (req, res) => {
 };
 
 const edit = async (req, res) => {
+  // #swagger.tags = ['Category']
+  // #swagger.description = 'Endpoint para modificar uma categoria.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.parameters['newCategory'] = {
+        in: 'body',
+        description: 'Informações de categoria.',
+        required: true,
+        type: 'object',
+        schema: { $ref: "#/definitions/NewCategory" }
+        } */
+  /* #swagger.responses[201] = {
+            schema: { $ref: "#/definitions/Category" },
+            description: 'Categoria modificada.'
+        } */
   try {
     const { categoryId } = req.params;
     const { name } = req.body;

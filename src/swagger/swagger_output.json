@@ -615,22 +615,63 @@
     },
     "/category/": {
       "post": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
-        "responses": {}
+        "tags": [
+          "Category"
+        ],
+        "description": "Endpoint para criar uma categoria.",
+        "parameters": [
+          {
+            "name": "newCategory",
+            "in": "body",
+            "description": "Informações de categoria.",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/NewCategory"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Category"
+            },
+            "description": "Nova categoria criada."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "get": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Category"
+        ],
+        "description": "Endpoint para criar uma categoria.",
         "parameters": [],
-        "responses": {}
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Categories"
+            },
+            "description": "Nova categoria criada."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/category/{categoryId}": {
       "get": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Category"
+        ],
+        "description": "Endpoint para buscar uma categoria.",
         "parameters": [
           {
             "name": "categoryId",
@@ -639,11 +680,25 @@
             "type": "string"
           }
         ],
-        "responses": {}
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Category"
+            },
+            "description": "Categoria encontrada."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "put": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Category"
+        ],
+        "description": "Endpoint para modificar uma categoria.",
         "parameters": [
           {
             "name": "categoryId",
@@ -652,20 +707,29 @@
             "type": "string"
           },
           {
-            "name": "obj",
+            "name": "newCategory",
             "in": "body",
+            "description": "Informações de categoria.",
+            "required": true,
+            "type": "object",
             "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/NewCategory"
             }
           }
         ],
-        "responses": {}
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Category"
+            },
+            "description": "Categoria modificada."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     }
   },
@@ -1005,6 +1069,120 @@
         "updatedAt": {
           "type": "string",
           "example": "2021-03-30T23:22:54.989Z"
+        }
+      }
+    },
+    "NewCategory": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "3 casa"
+        },
+        "description": {
+          "type": "string",
+          "example": "123"
+        }
+      }
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 5
+        },
+        "name": {
+          "type": "string",
+          "example": "Animais"
+        },
+        "description": {
+          "type": "string",
+          "example": "Contempla as tags que visam nomear os animais domésticos"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2021-04-19T19:57:39.417Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2021-04-19T19:57:39.417Z"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 69
+              },
+              "name": {
+                "type": "string",
+                "example": "Cachorro"
+              },
+              "isFixed": {
+                "type": "boolean",
+                "example": true
+              },
+              "categoryId": {
+                "type": "number",
+                "example": 5
+              }
+            }
+          }
+        }
+      }
+    },
+    "Categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 5
+          },
+          "name": {
+            "type": "string",
+            "example": "Animais"
+          },
+          "description": {
+            "type": "string",
+            "example": "Contempla as tags que visam nomear os animais domésticos"
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2021-04-19T19:57:39.417Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2021-04-19T19:57:39.417Z"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 69
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Cachorro"
+                },
+                "isFixed": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "categoryId": {
+                  "type": "number",
+                  "example": 5
+                }
+              }
+            }
+          }
         }
       }
     }
