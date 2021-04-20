@@ -37,8 +37,11 @@ const edit = async (profileId, { fileName, token }) => {
   return getByProfileId(profileId);
 };
 
+const delet = async (picture) => picture.destroy();
+
 module.exports = {
   getByProfileId,
   create,
   edit,
+  delet,
 };

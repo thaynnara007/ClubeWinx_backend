@@ -28,6 +28,7 @@ router.put(
   multer.single('file'),
   profilePictureController.edit,
 );
+router.delete('/me/picture', auth.verifyToken, profilePictureController.delet);
 router.delete('/me', auth.verifyToken, controller.delet);
 
 module.exports = router;
