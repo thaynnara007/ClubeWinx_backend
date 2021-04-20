@@ -58,6 +58,58 @@ const edit = async (req, res) => {
   }
 };
 
+const delet = async (req, res) => {
+  try {
+    const { user } = req;
+
+    log.info(
+      `Inicializando remoção da foto de perfil do usuário. userId=${user.id}`,
+    );
+    log.info(`Buscando perfil do usuário logado. userId=${user.id}`);
+
+    const profile = await profileService.getByUserId(user.id);
+
+    if (!profile) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Perfil não encontrado' });
+    }
+
+    const picture = await profilePictureService.getByProfileId(profile.id);
+
+    if (!picture) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Foto de perfil não encontrada' });
+    }
+
+    const { imageName } = picture;
+
+    log.info(`Deletando imagem do bando da dados. profileId=${profile.id}`);
+    await profilePictureService.delet(picture);
+
+    log.info(`Deletando imagem do firebase. imageName=${imageName}`);
+    await firebaseService.delet(imageName);
+
+    log.info('Remoção realizada com sucesso');
+
+    return res.status(StatusCodes.OK).json('Foto apagada');
+  } catch (error) {
+    const errorMsg = 'Erro deletar foto de perfil';
+
+    log.error(
+      errorMsg,
+      'app/controllers/profilePicture.controller.js',
+      error.message,
+    );
+
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: `${errorMsg} ${error.message}` });
+  }
+};
+
 module.exports = {
   edit,
+  delet,
 };

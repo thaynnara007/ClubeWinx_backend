@@ -31,6 +31,22 @@ const upload = (file) => new Promise((resolve, reject) => {
   blobStream.end(file.buffer);
 });
 
+const delet = (fileName) => {
+  const blob = bucket.file(fileName);
+
+  blob
+    .delete()
+    .then(() => {
+      logService.info('Imagem deletada com sucesso');
+    })
+    .catch((error) => {
+      logService.info('Error ao deletar imagem');
+
+      throw new Error(error);
+    });
+};
+
 module.exports = {
   upload,
+  delet,
 };
