@@ -56,6 +56,11 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = (models) => {
     User.hasOne(models.Address, {
       foreignKey: 'userId',
+      as: 'address',
+    });
+    User.hasOne(models.Poster, {
+      foreignKey: 'userId',
+      as: 'poster',
     });
     User.hasOne(models.Profile, {
       foreignKey: 'userId',
