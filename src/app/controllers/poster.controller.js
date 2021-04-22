@@ -123,7 +123,16 @@ const getById = async (req, res) => {
 
 const getAll = async (req, res) => {
   try {
+    const { query } = req
+
+    log.info(`Iniciando busca pelos anúncios.`)
+    log.info(`Buscando anúncios.`)
+
+    const posters = await service.getAll(query)
     
+    log.info(`Busca finalizada com sucesso`)
+
+    return res.status(StatusCodes.OK).json(posters)
   } catch (error) {
     const errorMsg = 'Erro ao buscar todos os anúncio';
 
