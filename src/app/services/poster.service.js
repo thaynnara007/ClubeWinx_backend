@@ -16,7 +16,18 @@ const create = async (data) => {
   return poster
 }
 
+const getById = async(id) => {
+  const poster = await Poster.findOne({
+    where: {
+      id
+    }
+  })
+
+  return poster
+}
+
 module.exports = {
   getByUserId,
-  create
+  create,
+  getById
 }

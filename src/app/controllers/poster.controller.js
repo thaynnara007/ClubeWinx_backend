@@ -51,7 +51,37 @@ const create = async (req, res) => {
 
 const getMy = async (req, res) => {
   try {
-    
+    const { user } = req
+
+    log.info(`Iniciando busca pelo anúncio do usuário logado. userId=${user.id}`)
+    log.info(`Buscando anúncio. userId=${user.id}`)
+
+    let myPoster = await service.getByUserId(user.id)
+
+    if (!myPoster) {
+
+      log.info(`Buscando perfil. userId=${user.id}`)
+
+      const profile = await profileService.getByUserId(user.id)
+      
+      if (profile) {
+        const { posterId } = profile
+
+        log.info(`Buscando anúncio em que o usuário seja residente. posterId=${posterId}`)
+        const poster = await service.getById(posterId)
+
+        if (poster) myPoster = poster
+      }
+    }
+
+    if (!myPoster)
+      return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({error: `Esse usuário não tem nem é residente em algum anúncio` })
+
+    log.info(`Busca finalizada com sucesso`)
+
+    return res.status(StatusCodes.OK).json(myPoster)
   } catch (error) {
     const errorMsg = 'Erro ao pegar meu anúncio';
 
