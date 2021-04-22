@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       as: 'tags',
       foreignKey: 'profileId',
     });
+    Profile.belongsTo(models.Poster, {
+      foreignKey: 'posterId',
+      as: 'residence',
+    });
   };
   return Profile;
 };
