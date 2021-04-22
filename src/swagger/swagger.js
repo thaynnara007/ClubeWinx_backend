@@ -17,8 +17,16 @@ const doc = {
   consumes: ['application/json'],
   produces: ['application/json'],
   tags: [],
-  securityDefinitions: {},
+  securityDefinitions: {
+    Bearer: {
+      type: 'apiKey',
+      name: 'Authorization',
+      in: 'header',
+      description: 'Enter your bearer token in the format **Bearer &lt;token>**'
+    }
+  },
   definitions: {
+    Security: [{ 'Bearer': [] }],
     AddUser: {
       $name: 'thaynnara',
       lastname: 'raiany',
@@ -110,6 +118,40 @@ const doc = {
       createdAt: '2021-03-30T23:22:54.989Z',
       updatedAt: '2021-03-30T23:22:54.989Z',
     },
+    NewCategory: {
+      name: "3 casa",
+      description: "123"
+    },
+    Category: {
+      id: 5,
+      name: 'Animais',
+      description: 'Contempla as tags que visam nomear os animais domésticos',
+      createdAt: '2021-04-19T19:57:39.417Z',
+      updatedAt: '2021-04-19T19:57:39.417Z',
+      tags: [
+        {
+          id: 69,
+          name: 'Cachorro',
+          isFixed: true,
+          categoryId: 5
+        }
+      ]
+    },
+    Categories: [{
+      id: 5,
+      name: 'Animais',
+      description: 'Contempla as tags que visam nomear os animais domésticos',
+      createdAt: '2021-04-19T19:57:39.417Z',
+      updatedAt: '2021-04-19T19:57:39.417Z',
+      tags: [
+        {
+          id: 69,
+          name: 'Cachorro',
+          isFixed: true,
+          categoryId: 5
+        }
+      ]
+    }]
   },
 };
 
