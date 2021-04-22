@@ -95,7 +95,21 @@ const getMy = async (req, res) => {
 
 const getById = async (req, res) => {
   try {
-    
+    const { posterId } = req.params
+
+    log.info(`Iniciando busca pelo anúncio. posterId=${posterId}`)
+    log.info(`Buscando anúncio. posterId=${posterId}`)
+
+    const poster = await service.getById(posterId)
+
+    if (!poster)
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: `Anúncio não encontrado` })
+
+    log.info(`Busca finalizada com sucesso`)
+
+    return res.status(StatusCodes.OK).json(poster)
   } catch (error) {
     const errorMsg = 'Erro ao buscar um anúncio';
 
