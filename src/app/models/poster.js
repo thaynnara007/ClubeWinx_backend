@@ -20,6 +20,12 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'cascade',
       onDelete: 'cascade',
     });
+    Poster.belongsToMany(models.Tag, {
+      through: 'PosterTags',
+      as: 'tags',
+      foreignKey: 'posterId',
+    });
   };
+
   return Poster;
 };
