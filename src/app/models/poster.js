@@ -15,11 +15,11 @@ module.exports = (sequelize, DataTypes) => {
       as: 'owner',
     });
     Poster.hasMany(models.Profile, {
-      foreignKey: 'profileId',
+      foreignKey: 'posterId',
       as: 'profiles',
       onUpdate: 'cascade',
       onDelete: 'cascade',
-    });
+    }); 
   };
   return Poster;
 };

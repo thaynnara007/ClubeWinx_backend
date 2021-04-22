@@ -3,7 +3,7 @@ const { Poster } = require('../models')
 const getByUserId = async (userId) => {
   const poster = await Poster.findOne({
     where: {
-      ownerId: userId
+      userId: userId
     }
   })
 

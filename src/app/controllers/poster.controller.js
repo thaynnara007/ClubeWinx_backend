@@ -10,7 +10,7 @@ const create = async (req, res) => {
     const { user, body } = req
 
     log.info(`Inicializando fluxo de criação de anúncio. userId=${user.id}`)
-    log.info(`Buscando algum anúncio vinvulado ao usuário.userId=${user.id}`)
+    log.info(`Buscando algum anúncio vinculado ao usuário.userId=${user.id}`)
 
     const existedPoster = await service.getByUserId(user.id)
 
