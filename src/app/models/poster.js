@@ -10,13 +10,13 @@ module.exports = (sequelize, DataTypes) => {
     {},
   );
   Poster.associate = (models) => {
-    Poster.belogsTo(models.User, {
+    Poster.belongsTo(models.User, {
       foreignKey: 'userId',
       as: 'owner',
     });
     Poster.hasMany(models.Profile, {
       foreignKey: 'profileId',
-      as: 'residents',
+      as: 'profiles',
       onUpdate: 'cascade',
       onDelete: 'cascade',
     });
