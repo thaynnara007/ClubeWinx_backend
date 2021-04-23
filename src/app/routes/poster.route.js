@@ -7,6 +7,7 @@ const router = express.Router({ mergeParams: true });
 router.post('/', auth.verifyToken, controller.create);
 
 router.get('/my', auth.verifyToken, controller.getMy);
+router.get('/:posterId/residents', auth.verifyToken, controller.getResidents);
 router.get('/:posterId', auth.verifyToken, controller.getById);
 router.get('/', auth.verifyToken, controller.getAll);
 

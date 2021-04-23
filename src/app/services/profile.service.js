@@ -1,4 +1,6 @@
-const { Profile, Tag } = require('../models');
+const {
+  Profile, ProfilePicture, Tag, User,
+} = require('../models');
 const log = require('./log.service');
 const util = require('./util.service');
 const addressService = require('./address.service');
@@ -6,6 +8,7 @@ const profilePictureService = require('./profilePicture.service');
 
 const mountProfilejson = async (profile, user, privateInfo = true) => {
   log.info(`Montando json de retorno do profile do usuário. userId=${user.id}`);
+
   log.info(`Buscando endereço do usuário. userId=${user.id}`);
 
   const address = await addressService.getByUserId(user.id);
@@ -87,6 +90,49 @@ const getByUserId = async (userId) => {
   return profile;
 };
 
+const getResidents = async (posterId) => {
+  const options = {
+    where: {
+      posterId,
+    },
+    include: [
+      {
+        model: Tag,
+        as: 'tags',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+      {
+        model: User,
+        as: 'user',
+        attributes: {
+          exclude: [
+            'phoneNumber',
+            'email',
+            'passwordHash',
+            'forgetPasswordCode',
+            'createdAt',
+            'updatedAt',
+          ],
+        },
+      },
+      {
+        model: ProfilePicture,
+        as: 'picture',
+        attributes: {
+          exclude: ['imageName', 'token', 'createdAt', 'updatedAt'],
+        },
+      },
+    ],
+    order: [[{ model: Tag, as: 'tags' }, 'name', 'ASC']],
+  };
+
+  const residents = await Profile.findAll(options);
+
+  return residents;
+};
+
 const getByPk = async (id) => Profile.findOne({
   where: {
     id,
@@ -133,6 +179,7 @@ module.exports = {
   edit,
   delet,
   getByUserId,
+  getResidents,
   addPosterId,
   removePosterId,
   getByPk,

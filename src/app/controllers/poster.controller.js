@@ -269,12 +269,10 @@ const addResident = async (req, res) => {
     }
 
     if (poster.userId !== user.id) {
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({
-          error:
-            'Você não tem permissão para adicionar residentes a esse anúncio',
-        });
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error:
+          'Você não tem permissão para adicionar residentes a esse anúncio',
+      });
     }
 
     log.info(`Buscando perfil. profileId=${profileId}`);
@@ -359,12 +357,9 @@ const removeResident = async (req, res) => {
     }
 
     if (poster.userId !== user.id) {
-      return res
-        .status(StatusCodes.UNAUTHORIZED)
-        .json({
-          error:
-            'Você não tem permissão para remover residentes a esse anúncio',
-        });
+      return res.status(StatusCodes.UNAUTHORIZED).json({
+        error: 'Você não tem permissão para remover residentes a esse anúncio',
+      });
     }
 
     log.info(`Buscando perfil. profileId=${profileId}`);
@@ -384,12 +379,9 @@ const removeResident = async (req, res) => {
     }
 
     if (user.id === profile.userId) {
-      return res
-        .status(StatusCodes.CONFLICT)
-        .json({
-          error:
-            'Você não pode se remover como residente de seu próprio anúncio',
-        });
+      return res.status(StatusCodes.CONFLICT).json({
+        error: 'Você não pode se remover como residente de seu próprio anúncio',
+      });
     }
 
     await profileService.removePosterId(profile);
@@ -410,6 +402,30 @@ const removeResident = async (req, res) => {
   }
 };
 
+const getResidents = async (req, res) => {
+  try {
+    const { user } = req;
+    const { posterId } = req.params;
+
+    log.info(`Iniciando busca de residentes do anúncio. userId=${user.id}`);
+    log.info(`Buscando perfils. posterId=${posterId}`);
+
+    const residents = await profileService.getResidents(posterId);
+
+    log.info('Busca pelos residentes finalizada com sucesso');
+
+    return res.status(StatusCodes.OK).json(residents);
+  } catch (error) {
+    const errorMsg = 'Erro ao remover um residente ao anúncio';
+
+    log.error(errorMsg, 'app/controllers/poster.controller.js', error.message);
+
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: `${errorMsg} ${error.message}` });
+  }
+};
+
 module.exports = {
   create,
   getMy,
@@ -419,4 +435,5 @@ module.exports = {
   delet,
   addResident,
   removeResident,
+  getResidents,
 };
