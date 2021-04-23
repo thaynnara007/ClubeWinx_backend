@@ -10,20 +10,20 @@ module.exports = (sequelize, DataTypes) => {
     {},
   );
   Poster.associate = (models) => {
-    Poster.belogsTo(models.User, {
+    Poster.belongsToMany(models.Tag, {
+      through: 'PosterTags',
+      as: 'tags',
+      foreignKey: 'posterId',
+    });
+    Poster.belongsTo(models.User, {
       foreignKey: 'userId',
       as: 'owner',
     });
     Poster.hasMany(models.Profile, {
       foreignKey: 'profileId',
-      as: 'residents',
+      as: 'profiles',
       onUpdate: 'cascade',
       onDelete: 'cascade',
-    });
-    Poster.belongsToMany(models.Tag, {
-      through: 'PosterTags',
-      as: 'tags',
-      foreignKey: 'posterId',
     });
   };
 
