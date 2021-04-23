@@ -1,28 +1,37 @@
 const httpStatus = require('http-status-codes');
 const service = require('../services/poster.service');
 const profileService = require('../services/profile.service');
-const addressService = require('../services/address.service')
+const addressService = require('../services/address.service');
 const log = require('../services/log.service');
 
 const { StatusCodes } = httpStatus;
 
 const makeResult = async (userId, poster) => {
-  log.info(`Buscando endereço do usuário. userId=${userId}`)
+  log.info(`Buscando endereço do usuário. userId=${userId}`);
 
-  const address = await addressService.getByUserId(userId)
+  const address = await addressService.getByUserId(userId);
 
-  if (!address) throw new Error(`Usuário não possui endereço`)
+  if (!address) throw new Error('Usuário não possui endereço');
 
   const result = {
     ...poster.dataValues,
     owner: {
       id: userId,
-      address
-    }
-  }
+      address,
+    },
+  };
 
-  return result
-}
+  return result;
+};
+
+const isSameAddress = (address1, address2) => (
+  address1.street === address2.street
+    && address1.number === address2.number
+    && address1.district === address2.district
+    && address1.zipCode === address2.zipCode
+    && address1.city === address2.city
+    && address1.state === address2.state
+);
 
 const create = async (req, res) => {
   try {
@@ -56,7 +65,12 @@ const create = async (req, res) => {
     log.info(`Criando anúncio no banco de dados.userId=${user.id}`);
     const poster = await service.create(data);
 
-    const result = await makeResult(user.id, poster)
+    log.info(
+      `Adicionando perfil do usuário como residente. profileId=${profile.id}, posterId=${poster.id}`,
+    );
+    await profileService.addPosterId(profile, poster.id);
+
+    const result = await makeResult(user.id, poster);
 
     log.info('Criação finalizada com sucesso');
 
@@ -101,14 +115,12 @@ const getMy = async (req, res) => {
     }
 
     if (!myPoster) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({
-          error: 'Esse usuário não tem nem é residente em algum anúncio',
-        });
+      return res.status(StatusCodes.NOT_FOUND).json({
+        error: 'Esse usuário não tem nem é residente em algum anúncio',
+      });
     }
 
-    const result = await makeResult(user.id, myPoster)
+    const result = await makeResult(user.id, myPoster);
 
     log.info('Busca finalizada com sucesso');
 
@@ -139,7 +151,7 @@ const getById = async (req, res) => {
         .json({ error: 'Anúncio não encontrado' });
     }
 
-    const result = await makeResult(poster.userId, poster)
+    const result = await makeResult(poster.userId, poster);
 
     log.info('Busca finalizada com sucesso');
 
@@ -244,11 +256,74 @@ const delet = async (req, res) => {
 
 const addResident = async (req, res) => {
   try {
-    const { user } = req
-    const { profileId } = req.params;
+    const { user } = req;
+    const { posterId, profileId } = req.params;
 
+    log.info(`Iniciando adição de residente ao anúncio. userId=${user.id}`);
+    log.info(`Buscando perfil. profileId=${profileId}`);
+
+    const profile = await profileService.getByPk(profileId);
+
+    if (!profile) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Perfil não encontrado' });
+    }
+
+    if (profile.posterId) {
+      return res
+        .status(StatusCodes.CONFLICT)
+        .json({ error: 'Esse usuário já é residente em algum anúncio' });
+    }
+
+    log.info(`Buscando anúncio. posterId=${posterId}`);
+    const poster = await service.getById(posterId);
+
+    if (!poster) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Anúncio não encontrado' });
+    }
+
+    log.info(
+      `Buscando endereço. profileId=${profile.userId}, posterId=${poster.id}`,
+    );
+
+    const addressProfile = await addressService.getByUserId(profile.userId);
+    const addressPoster = await addressService.getByUserId(poster.userId);
+
+    if (!addressProfile) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Endereço do usuário não encontrado' });
+    }
+
+    if (!addressPoster) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Endereço do anúncio não encontrado' });
+    }
+
+    log.info(
+      `Comparando endereços, addressPosterId=${addressPoster.id}, addressProfileId=${addressProfile.id}`,
+    );
+
+    if (!isSameAddress(addressPoster, addressProfile)) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json(
+          'Usuários que não moram no mesmo endereço do anúncio não podem ser adicionados como residente do mesmo',
+        );
+    }
+
+    log.info('Adição de residente realizada com sucesso.');
+
+    await profileService.addPosterId(profile, posterId);
+    const updatedPoster = await service.getById(posterId);
+
+    return res.status(StatusCodes.OK).json(updatedPoster);
   } catch (error) {
-    const errorMsg = 'Erro ao editar anúncio';
+    const errorMsg = 'Erro ao adicionar um residente ao anúncio';
 
     log.error(errorMsg, 'app/controllers/poster.controller.js', error.message);
 
@@ -265,5 +340,5 @@ module.exports = {
   getAll,
   edit,
   delet,
-  addResident
+  addResident,
 };

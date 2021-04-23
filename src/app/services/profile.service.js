@@ -87,6 +87,12 @@ const getByUserId = async (userId) => {
   return profile;
 };
 
+const getByPk = async (id) => Profile.findOne({
+  where: {
+    id,
+  },
+});
+
 const edit = async (user, profileData) => {
   await Profile.update(profileData, {
     where: {
@@ -95,6 +101,14 @@ const edit = async (user, profileData) => {
   });
 
   return getById(user, false);
+};
+
+const addPosterId = async (profile, posterId) => {
+  const myProfile = profile;
+
+  myProfile.posterId = posterId;
+
+  return myProfile.save();
 };
 
 const delet = async (userId) => {
@@ -111,4 +125,6 @@ module.exports = {
   edit,
   delet,
   getByUserId,
+  addPosterId,
+  getByPk,
 };
