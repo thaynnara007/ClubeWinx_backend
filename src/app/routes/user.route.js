@@ -1,12 +1,12 @@
 const express = require('express');
 const auth = require('../middlewares/auth');
-const poster = require('./poster.route')
+const poster = require('./poster.route');
 const controller = require('../controllers/user.controller');
 const connectionController = require('../controllers/connectionRequest.controller');
 
 const router = express.Router();
 
-router.use('/poster', poster)
+router.use('/poster', poster);
 
 router.post('/', controller.create);
 router.post('/forget/password', controller.forgetPassword);

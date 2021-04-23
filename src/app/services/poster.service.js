@@ -1,4 +1,4 @@
-const { Poster } = require('../models');
+const { Poster, User, Address } = require('../models');
 
 const getByUserId = async (userId) => {
   const poster = await Poster.findOne({
@@ -6,12 +6,6 @@ const getByUserId = async (userId) => {
       userId,
     },
   });
-
-  return poster;
-};
-
-const create = async (data) => {
-  const poster = await Poster.create(data);
 
   return poster;
 };
@@ -26,16 +20,49 @@ const getById = async (id) => {
   return poster;
 };
 
+const create = async (data) => {
+  const poster = await Poster.create(data);
+
+  return getById(poster.id);
+};
+
 const getAll = async (query) => {
   const page = parseInt(query.page, 10);
   const pageSize = parseInt(query.pageSize, 10);
   let offset = null;
   let posters = null;
+  let options = {
+    include: [
+      {
+        model: User,
+        as: 'owner',
+        attributes: {
+          exclude: [
+            'name',
+            'lastname',
+            'birthday',
+            'email',
+            'phoneNumber',
+            'gender',
+            'passwordHash',
+            'forgetPasswordCode',
+            'createdAt',
+            'updatedAt',
+          ],
+        },
+        include: {
+          model: Address,
+          as: 'address',
+        },
+      },
+    ],
+  };
 
   if (page && pageSize) offset = (page - 1) * pageSize;
 
   if (offset !== null) {
-    const options = {
+    options = {
+      ...options,
       limit: pageSize,
       offset,
       distinct: true,
@@ -44,7 +71,7 @@ const getAll = async (query) => {
 
     posters.pages = Math.ceil(posters.count / pageSize);
   } else {
-    posters = await Poster.findAll();
+    posters = await Poster.findAll(options);
   }
 
   return posters;

@@ -202,7 +202,7 @@ const edit = async (req, res) => {
       complement: body.complement,
       zipCode: body.zipCode,
       city: body.city,
-      state: body.street,
+      state: body.state,
     };
 
     log.info(`Atualizando endereço do usuário. userId=${userId}`);
