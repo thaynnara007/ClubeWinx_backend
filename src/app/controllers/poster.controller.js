@@ -32,6 +32,13 @@ const isSameAddress = (address1, address2) => address1.street === address2.stree
   && address1.state === address2.state;
 
 const create = async (req, res) => {
+  // #swagger.tags = ['Poster']
+  // #swagger.description = 'Endpoint para criar um anuncio.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.responses[200] = {
+            schema: { $ref: "#/definitions/PosterId" },
+            description: 'Anúncio encontrado.'
+        } */
   try {
     const { user, body } = req;
 
@@ -85,6 +92,13 @@ const create = async (req, res) => {
 };
 
 const getMy = async (req, res) => {
+  // #swagger.tags = ['Poster']
+  // #swagger.description = 'Endpoint para buscar o anuncio do usuario logado.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.responses[200] = {
+            schema: { $ref: "#/definitions/Poster" },
+            description: 'Anúncio encontrado.'
+        } */
   try {
     const { user } = req;
 
@@ -96,6 +110,7 @@ const getMy = async (req, res) => {
     let myPoster = await service.getByUserId(user.id);
 
     if (!myPoster) {
+      
       log.info(`Buscando perfil. userId=${user.id}`);
 
       const profile = await profileService.getByUserId(user.id);
@@ -135,6 +150,13 @@ const getMy = async (req, res) => {
 };
 
 const getById = async (req, res) => {
+  // #swagger.tags = ['Poster']
+  // #swagger.description = 'Endpoint para buscar um anuncio pelo seu id.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.responses[200] = {
+            schema: { $ref: "#/definitions/PosterId" },
+            description: 'Anúncio encontrado.'
+        } */
   try {
     const { posterId } = req.params;
 
@@ -166,6 +188,13 @@ const getById = async (req, res) => {
 };
 
 const getAll = async (req, res) => {
+  // #swagger.tags = ['Poster']
+  // #swagger.description = 'Endpoint para buscar todos os anuncios.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.responses[200] = {
+            schema: { $ref: "#/definitions/PosterAll" },
+            description: 'Anuncios encontrado.'
+        } */ 
   try {
     const { query } = req;
 
@@ -189,6 +218,13 @@ const getAll = async (req, res) => {
 };
 
 const edit = async (req, res) => {
+  // #swagger.tags = ['Poster']
+  // #swagger.description = 'Endpoint para modificar o anuncio do usuario logado.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.responses[200] = {
+            schema: { $ref: "#/definitions/PosterId" },
+            description: 'Anuncio encontrado.'
+        } */
   try {
     const { user, body } = req;
 
@@ -221,6 +257,13 @@ const edit = async (req, res) => {
 };
 
 const delet = async (req, res) => {
+  // #swagger.tags = ['Poster']
+  // #swagger.description = 'Endpoint para excluir o anuncio do usuario logal.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.responses[200] = {
+              schema: "Anúncio deletado com sucesso",
+              description: 'Anúncio excluido.'
+          } */
   try {
     const { user } = req;
 

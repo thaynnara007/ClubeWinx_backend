@@ -22,12 +22,11 @@ const doc = {
       type: 'apiKey',
       name: 'Authorization',
       in: 'header',
-      description:
-        'Enter your bearer token in the format **Bearer &lt;token>**',
-    },
+      description: 'Enter your bearer token in the format **Bearer &lt;token>**'
+    }
   },
   definitions: {
-    Security: [{ Bearer: [] }],
+    Security: [{ 'Bearer': [] }],
     AddUser: {
       $name: 'thaynnara',
       lastname: 'raiany',
@@ -120,8 +119,8 @@ const doc = {
       updatedAt: '2021-03-30T23:22:54.989Z',
     },
     NewCategory: {
-      name: '3 casa',
-      description: '123',
+      name: "3 casa",
+      description: "123"
     },
     Category: {
       id: 5,
@@ -134,28 +133,89 @@ const doc = {
           id: 69,
           name: 'Cachorro',
           isFixed: true,
-          categoryId: 5,
-        },
-      ],
+          categoryId: 5
+        }
+      ]
     },
-    Categories: [
+    Categories: [{
+      id: 5,
+      name: 'Animais',
+      description: 'Contempla as tags que visam nomear os animais domésticos',
+      createdAt: '2021-04-19T19:57:39.417Z',
+      updatedAt: '2021-04-19T19:57:39.417Z',
+      tags: [
+        {
+          id: 69,
+          name: 'Cachorro',
+          isFixed: true,
+          categoryId: 5
+        }
+      ]
+    }],
+    Poster: {
+      id: 1,
+      expens: 286.89,
+      description: 'Its a tree house, with 3 floors, a video game, a dog, the taz came from our tresure, that i and jake picks up, so you may have no worries',
+      residents: 3,
+      vacancies: 1,
+      createdAt: '2021-04-23T00:15:50.642Z',
+      updatedAt: '2021-04-23T00:15:50.642Z',
+      userId: 1,
+      tags: [
+        {
+          id: 10,
+          name: 'Diabético',
+          isFixed: true,
+          categoryId: 4,
+          PosterTags: {
+            createdAt: '2021-04-23T00:32:46.022Z',
+            updatedAt: '2021-04-23T00:32:46.022Z',
+            posterId: 1,
+            tagId: 25
+          }
+        },
+      ]
+    },
+    PosterId: {
+      id: 1,
+      expens: 286.89,
+      description: 'Its a tree house, with 3 floors, a video game, a dog, the taz came from our tresure, that i and jake picks up, so you may have no worries',
+      residents: 3,
+      vacancies: 1,
+      createdAt: '2021-04-23T00:15:50.642Z',
+      updatedAt: '2021-04-23T00:15:50.642Z',
+      userId: 1
+    },
+    PosterAll: [
       {
-        id: 5,
-        name: 'Animais',
-        description: 'Contempla as tags que visam nomear os animais domésticos',
-        createdAt: '2021-04-19T19:57:39.417Z',
-        updatedAt: '2021-04-19T19:57:39.417Z',
+        id: 2,
+        expens: 246.89,
+        description: 'Its a cave shaped like home. There are some bats at it, but hey, you would have you personal piece of the ocean',
+        residents: 1,
+        vacancies: 1,
+        createdAt: '2021-04-23T00:15:50.642Z',
+        updatedAt: '2021-04-23T00:15:50.642Z',
+        userId: 3,
         tags: [
           {
-            id: 69,
-            name: 'Cachorro',
+            id: 11,
+            name: 'Hipertenso',
             isFixed: true,
-            categoryId: 5,
+            categoryId: 4,
+            PosterTags: {
+              createdAt: '2021-04-23T00:32:46.022Z',
+              updatedAt: '2021-04-23T00:32:46.022Z',
+              posterId: 1,
+              tagId: 25
+            }
           },
-        ],
+        ]
       },
     ],
-  },
+    AddTags:  {
+      "tags": [1,2,3]
+    }
+  }
 };
 
 swaggerAutogen(outputFile, endpointsFiles, doc);

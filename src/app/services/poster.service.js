@@ -1,20 +1,19 @@
-const { Poster, User, Address } = require('../models');
+const { Poster, User, Address, Tag } = require('../models');
 
 const getByUserId = async (userId) => {
   const poster = await Poster.findOne({
     where: {
       userId,
-    },
-  });
-
-  return poster;
-};
-
-const getById = async (id) => {
-  const poster = await Poster.findOne({
-    where: {
-      id,
-    },
+    }, include: [
+      {
+        model: Tag,
+        as: 'tags',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+    ],
+    order: [[{ model: Tag, as: 'tags' }, 'name', 'ASC']],
   });
 
   return poster;
@@ -23,7 +22,26 @@ const getById = async (id) => {
 const create = async (data) => {
   const poster = await Poster.create(data);
 
-  return getById(poster.id);
+  return poster;
+};
+
+const getById = async (id) => {
+  const poster = await Poster.findOne({
+    where: {
+      id,
+    }, include: [
+      {
+        model: Tag,
+        as: 'tags',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+    ],
+    order: [[{ model: Tag, as: 'tags' }, 'name', 'ASC']],
+  });
+
+  return poster;
 };
 
 const getAll = async (query) => {
@@ -55,7 +73,18 @@ const getAll = async (query) => {
           as: 'address',
         },
       },
+      {
+        model: Tag,
+        as: 'tags',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
     ],
+    // order: [
+    //   ['name', 'ASC'],
+    //   [{ model: Tag, as: 'tags' }, 'name', 'ASC'],
+    // ],
   };
 
   if (page && pageSize) offset = (page - 1) * pageSize;
