@@ -1,10 +1,19 @@
-const { Poster } = require('../models');
+const { Poster, Tag} = require('../models');
 
 const getByUserId = async (userId) => {
   const poster = await Poster.findOne({
     where: {
       userId,
-    },
+    }, include: [
+      {
+        model: Tag,
+        as: 'tags',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+    ],
+    order: [[{ model: Tag, as: 'tags' }, 'name', 'ASC']],
   });
 
   return poster;

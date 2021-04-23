@@ -52,6 +52,13 @@ const create = async (req, res) => {
 };
 
 const getMy = async (req, res) => {
+  // #swagger.tags = ['Poster']
+  // #swagger.description = 'Endpoint para buscar anuncio.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.responses[200] = {
+            schema: { $ref: "#/definitions/Profile" },
+            description: 'Anuncio encontrado.'
+        } */
   try {
     const { user } = req;
 
@@ -63,6 +70,7 @@ const getMy = async (req, res) => {
     let myPoster = await service.getByUserId(user.id);
 
     if (!myPoster) {
+      
       log.info(`Buscando perfil. userId=${user.id}`);
 
       const profile = await profileService.getByUserId(user.id);

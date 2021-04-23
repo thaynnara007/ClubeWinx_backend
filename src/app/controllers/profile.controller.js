@@ -49,6 +49,7 @@ const create = async (req, res) => {
 const getMyProfile = async (req, res) => {
   // #swagger.tags = ['Profile']
   // #swagger.description = 'Endpoint para buscar perfil.'
+  // #swagger.security = [{ 'Bearer': [] }]
   /* #swagger.responses[200] = {
             schema: { $ref: "#/definitions/Profile" },
             description: 'Perfil encontrado.'
