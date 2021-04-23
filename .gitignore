@@ -120,7 +120,4 @@ temp/
 # Ignore all local history of files
 .history
 
-# firebase
-firebase.json
-
 # End of https://www.gitignore.io/api/node,visualstudiocode
