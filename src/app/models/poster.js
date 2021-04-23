@@ -18,8 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'posterId',
       as: 'profiles',
       onUpdate: 'cascade',
-      onDelete: 'cascade',
-    }); 
+    });
   };
   return Poster;
 };

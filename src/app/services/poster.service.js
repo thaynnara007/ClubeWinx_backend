@@ -1,30 +1,30 @@
-const { Poster } = require('../models')
+const { Poster } = require('../models');
 
 const getByUserId = async (userId) => {
   const poster = await Poster.findOne({
     where: {
-      userId: userId
-    }
-  })
+      userId,
+    },
+  });
 
-  return poster
-}
+  return poster;
+};
 
 const create = async (data) => {
-  const poster = await Poster.create(data)
+  const poster = await Poster.create(data);
 
-  return poster
-}
+  return poster;
+};
 
-const getById = async(id) => {
+const getById = async (id) => {
   const poster = await Poster.findOne({
     where: {
-      id
-    }
-  })
+      id,
+    },
+  });
 
-  return poster
-}
+  return poster;
+};
 
 const getAll = async (query) => {
   const page = parseInt(query.page, 10);
@@ -48,11 +48,25 @@ const getAll = async (query) => {
   }
 
   return posters;
-}
+};
+
+const edit = async (id, data) => {
+  await Poster.update(data, {
+    where: {
+      id,
+    },
+  });
+
+  return getById(id);
+};
+
+const delet = async (poster) => poster.destroy();
 
 module.exports = {
   getByUserId,
   create,
   getById,
-  getAll
-}
+  getAll,
+  edit,
+  delet,
+};

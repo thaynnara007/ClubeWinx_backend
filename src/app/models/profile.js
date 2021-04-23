@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       through: 'ProfileTags',
       as: 'tags',
       foreignKey: 'profileId',
+      onDelete: 'CASCADE',
     });
     Profile.belongsTo(models.Poster, {
       foreignKey: 'posterId',

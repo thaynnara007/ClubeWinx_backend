@@ -13,7 +13,6 @@ module.exports = {
         model: 'Categories',
         key: 'id',
       },
-      onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
     },
     name: {

@@ -1,43 +1,45 @@
 const httpStatus = require('http-status-codes');
 const service = require('../services/poster.service');
-const profileService = require('../services/profile.service')
+const profileService = require('../services/profile.service');
 const log = require('../services/log.service');
 
 const { StatusCodes } = httpStatus;
 
 const create = async (req, res) => {
   try {
-    const { user, body } = req
+    const { user, body } = req;
 
-    log.info(`Inicializando fluxo de criação de anúncio. userId=${user.id}`)
-    log.info(`Buscando algum anúncio vinculado ao usuário.userId=${user.id}`)
+    log.info(`Inicializando fluxo de criação de anúncio. userId=${user.id}`);
+    log.info(`Buscando algum anúncio vinculado ao usuário.userId=${user.id}`);
 
-    const existedPoster = await service.getByUserId(user.id)
+    const existedPoster = await service.getByUserId(user.id);
 
-    if(existedPoster)
+    if (existedPoster) {
       return res
         .status(StatusCodes.CONFLICT)
-        .json({ error: `Usuário não pode ter mais de um anúncio` })
+        .json({ error: 'Usuário não pode ter mais de um anúncio' });
+    }
 
-    log.info(`Buscando perfil do usuário. userId=${user.id}`)
-    const profile = await profileService.getByUserId(user.id)
+    log.info(`Buscando perfil do usuário. userId=${user.id}`);
+    const profile = await profileService.getByUserId(user.id);
 
-    if (profile.posterId) 
+    if (profile.posterId) {
       return res
         .status(StatusCodes.CONFLICT)
-        .json({ error: `Usuário ja é residente em algum anúncio` })
+        .json({ error: 'Usuário ja é residente em algum anúncio' });
+    }
 
     const data = {
       userId: user.id,
-      ...body
-    }
+      ...body,
+    };
 
-    log.info(`Criando anúncio no banco de dados.userId=${user.id}`)
-    const poster = await service.create(data)
-    
-    log.info(`Criação finalizada com sucesso`)
+    log.info(`Criando anúncio no banco de dados.userId=${user.id}`);
+    const poster = await service.create(data);
 
-    return res.status(StatusCodes.CREATED).json(poster)
+    log.info('Criação finalizada com sucesso');
+
+    return res.status(StatusCodes.CREATED).json(poster);
   } catch (error) {
     const errorMsg = 'Erro ao cadastrar anúncio';
 
@@ -47,41 +49,47 @@ const create = async (req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: `${errorMsg} ${error.message}` });
   }
-}
+};
 
 const getMy = async (req, res) => {
   try {
-    const { user } = req
+    const { user } = req;
 
-    log.info(`Iniciando busca pelo anúncio do usuário logado. userId=${user.id}`)
-    log.info(`Buscando anúncio. userId=${user.id}`)
+    log.info(
+      `Iniciando busca pelo anúncio do usuário logado. userId=${user.id}`,
+    );
+    log.info(`Buscando anúncio. userId=${user.id}`);
 
-    let myPoster = await service.getByUserId(user.id)
+    let myPoster = await service.getByUserId(user.id);
 
     if (!myPoster) {
+      log.info(`Buscando perfil. userId=${user.id}`);
 
-      log.info(`Buscando perfil. userId=${user.id}`)
+      const profile = await profileService.getByUserId(user.id);
 
-      const profile = await profileService.getByUserId(user.id)
-      
       if (profile) {
-        const { posterId } = profile
+        const { posterId } = profile;
 
-        log.info(`Buscando anúncio em que o usuário seja residente. posterId=${posterId}`)
-        const poster = await service.getById(posterId)
+        log.info(
+          `Buscando anúncio em que o usuário seja residente. posterId=${posterId}`,
+        );
+        const poster = await service.getById(posterId);
 
-        if (poster) myPoster = poster
+        if (poster) myPoster = poster;
       }
     }
 
-    if (!myPoster)
+    if (!myPoster) {
       return res
-      .status(StatusCodes.NOT_FOUND)
-      .json({error: `Esse usuário não tem nem é residente em algum anúncio` })
+        .status(StatusCodes.NOT_FOUND)
+        .json({
+          error: 'Esse usuário não tem nem é residente em algum anúncio',
+        });
+    }
 
-    log.info(`Busca finalizada com sucesso`)
+    log.info('Busca finalizada com sucesso');
 
-    return res.status(StatusCodes.OK).json(myPoster)
+    return res.status(StatusCodes.OK).json(myPoster);
   } catch (error) {
     const errorMsg = 'Erro ao pegar meu anúncio';
 
@@ -91,25 +99,26 @@ const getMy = async (req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: `${errorMsg} ${error.message}` });
   }
-}
+};
 
 const getById = async (req, res) => {
   try {
-    const { posterId } = req.params
+    const { posterId } = req.params;
 
-    log.info(`Iniciando busca pelo anúncio. posterId=${posterId}`)
-    log.info(`Buscando anúncio. posterId=${posterId}`)
+    log.info(`Iniciando busca pelo anúncio. posterId=${posterId}`);
+    log.info(`Buscando anúncio. posterId=${posterId}`);
 
-    const poster = await service.getById(posterId)
+    const poster = await service.getById(posterId);
 
-    if (!poster)
+    if (!poster) {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .json({ error: `Anúncio não encontrado` })
+        .json({ error: 'Anúncio não encontrado' });
+    }
 
-    log.info(`Busca finalizada com sucesso`)
+    log.info('Busca finalizada com sucesso');
 
-    return res.status(StatusCodes.OK).json(poster)
+    return res.status(StatusCodes.OK).json(poster);
   } catch (error) {
     const errorMsg = 'Erro ao buscar um anúncio';
 
@@ -119,20 +128,20 @@ const getById = async (req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: `${errorMsg} ${error.message}` });
   }
-}
+};
 
 const getAll = async (req, res) => {
   try {
-    const { query } = req
+    const { query } = req;
 
-    log.info(`Iniciando busca pelos anúncios.`)
-    log.info(`Buscando anúncios.`)
+    log.info('Iniciando busca pelos anúncios.');
+    log.info('Buscando anúncios.');
 
-    const posters = await service.getAll(query)
-    
-    log.info(`Busca finalizada com sucesso`)
+    const posters = await service.getAll(query);
 
-    return res.status(StatusCodes.OK).json(posters)
+    log.info('Busca finalizada com sucesso');
+
+    return res.status(StatusCodes.OK).json(posters);
   } catch (error) {
     const errorMsg = 'Erro ao buscar todos os anúncio';
 
@@ -142,11 +151,29 @@ const getAll = async (req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: `${errorMsg} ${error.message}` });
   }
-}
+};
 
 const edit = async (req, res) => {
   try {
-    
+    const { user, body } = req;
+
+    log.info(`Iniciando atualização do anúncios. userId=${user.id}`);
+    log.info(`Buscando anúncio. userId=${user.id}`);
+
+    const poster = await service.getByUserId(user.id);
+
+    if (!poster) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Esse usuário não possui nenhum anúncio' });
+    }
+
+    log.info(`Atualizando anúncio. posterId=${poster.id}`);
+    const updatedPoster = await service.edit(poster.id, body);
+
+    log.info('Atualização finalizada com sucesso');
+
+    return res.status(StatusCodes.OK).json(updatedPoster);
   } catch (error) {
     const errorMsg = 'Erro ao editar anúncio';
 
@@ -156,11 +183,29 @@ const edit = async (req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: `${errorMsg} ${error.message}` });
   }
-}
+};
 
 const delet = async (req, res) => {
   try {
-    
+    const { user } = req;
+
+    log.info(`Iniciando remoção do anúncios. userId=${user.id}`);
+    log.info(`Buscando anúncio. userId=${user.id}`);
+
+    const poster = await service.getByUserId(user.id);
+
+    if (!poster) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Esse usuário não possui nenhum anúncio' });
+    }
+
+    log.info(`Removendo anúncio. posterId=${poster.id}`);
+    await service.delet(poster);
+
+    log.info('Remoção finalizada com sucesso');
+
+    return res.status(StatusCodes.OK).json('Anúncio deletado com sucesso');
   } catch (error) {
     const errorMsg = 'Erro ao deletar anúncio';
 
@@ -170,7 +215,7 @@ const delet = async (req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: `${errorMsg} ${error.message}` });
   }
-}
+};
 
 module.exports = {
   create,
@@ -178,5 +223,5 @@ module.exports = {
   getById,
   getAll,
   edit,
-  delet
-}
+  delet,
+};
