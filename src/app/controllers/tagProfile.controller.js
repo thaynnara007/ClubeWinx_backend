@@ -6,13 +6,23 @@ const profileService = require('../services/profile.service');
 const { StatusCodes } = httpStatus;
 
 const addTags = async (req, res) => {
+  // #swagger.tags = ['TagProfile']
+  // #swagger.description = 'Endpoint para adicionar tags a um perfil.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.parameters['newTags'] = {
+          in: 'body',
+          description: 'ID das tags.',
+          required: true,
+          type: 'object',
+          schema: { $ref: "#/definitions/AddTags" }
+          } */
   try {
     const { user } = req;
     const { tags } = req.body;
 
     log.info(`Inicializando adição de tags ao profile. userId=${user.id}`);
 
-    let profile = await profileService.getByUserId(user.id);
+    let profile = await profileService.getByUserId(user);
 
     if (!profile) {
       return res
@@ -23,7 +33,7 @@ const addTags = async (req, res) => {
     log.info(`Relacionando as tags ao perfil. profileId=${profile.id}`);
     await service.addTags(profile.id, tags);
 
-    profile = await profileService.getById(user, false);
+    profile = await profileService.getById(user.id, false);
 
     log.info('Cadastro das tag realizado com sucesso');
 
@@ -52,7 +62,7 @@ const createTags = async (req, res) => {
       `Inicializando adição das tags criadas pelo usuário ao profile. userId=${user.id}`,
     );
 
-    let profile = await profileService.getByUserId(user.id);
+    let profile = await profileService.getByUserId(user);
 
     if (!profile) {
       return res
@@ -84,6 +94,16 @@ const createTags = async (req, res) => {
 };
 
 const removeTags = async (req, res) => {
+  // #swagger.tags = ['TagProfile']
+  // #swagger.description = 'Endpoint para excluir tags de um perfil.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.parameters['newTags'] = {
+          in: 'body',
+          description: 'ID das tags.',
+          required: true,
+          type: 'object',
+          schema: { $ref: "#/definitions/AddTags" }
+          } */
   try {
     const { user } = req;
     const { tags } = req.body;
@@ -101,7 +121,7 @@ const removeTags = async (req, res) => {
     log.info(`Removendo as tags do perfil. profileId=${profile.id}`);
     await service.removeTags(profile.id, tags);
 
-    profile = await profileService.getById(user.id, false);
+    profile = await profileService.getById(user, false);
 
     log.info('Remoção das tag realizado com sucesso');
 
