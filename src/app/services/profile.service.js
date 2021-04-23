@@ -111,6 +111,14 @@ const addPosterId = async (profile, posterId) => {
   return myProfile.save();
 };
 
+const removePosterId = async (profile) => {
+  const targetProfile = profile;
+
+  targetProfile.posterId = null;
+
+  return targetProfile.save();
+};
+
 const delet = async (userId) => {
   const profile = await getByUserId(userId);
 
@@ -126,5 +134,6 @@ module.exports = {
   delet,
   getByUserId,
   addPosterId,
+  removePosterId,
   getByPk,
 };

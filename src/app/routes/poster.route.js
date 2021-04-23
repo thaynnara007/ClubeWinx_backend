@@ -16,6 +16,11 @@ router.put(
   auth.verifyToken,
   controller.addResident,
 );
+router.put(
+  '/:posterId/remove/resident/:profileId',
+  auth.verifyToken,
+  controller.removeResident,
+);
 
 router.delete('/my', auth.verifyToken, controller.delet);
 

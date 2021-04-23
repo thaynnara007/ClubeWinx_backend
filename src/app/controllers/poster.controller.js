@@ -24,14 +24,12 @@ const makeResult = async (userId, poster) => {
   return result;
 };
 
-const isSameAddress = (address1, address2) => (
-  address1.street === address2.street
-    && address1.number === address2.number
-    && address1.district === address2.district
-    && address1.zipCode === address2.zipCode
-    && address1.city === address2.city
-    && address1.state === address2.state
-);
+const isSameAddress = (address1, address2) => address1.street === address2.street
+  && address1.number === address2.number
+  && address1.district === address2.district
+  && address1.zipCode === address2.zipCode
+  && address1.city === address2.city
+  && address1.state === address2.state;
 
 const create = async (req, res) => {
   try {
@@ -260,6 +258,25 @@ const addResident = async (req, res) => {
     const { posterId, profileId } = req.params;
 
     log.info(`Iniciando adição de residente ao anúncio. userId=${user.id}`);
+    log.info(`Buscando anúncio. posterId=${posterId}`);
+
+    const poster = await service.getById(posterId);
+
+    if (!poster) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Anúncio não encontrado' });
+    }
+
+    if (poster.userId !== user.id) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({
+          error:
+            'Você não tem permissão para adicionar residentes a esse anúncio',
+        });
+    }
+
     log.info(`Buscando perfil. profileId=${profileId}`);
 
     const profile = await profileService.getByPk(profileId);
@@ -274,15 +291,6 @@ const addResident = async (req, res) => {
       return res
         .status(StatusCodes.CONFLICT)
         .json({ error: 'Esse usuário já é residente em algum anúncio' });
-    }
-
-    log.info(`Buscando anúncio. posterId=${posterId}`);
-    const poster = await service.getById(posterId);
-
-    if (!poster) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ error: 'Anúncio não encontrado' });
     }
 
     log.info(
@@ -316,14 +324,83 @@ const addResident = async (req, res) => {
         );
     }
 
-    log.info('Adição de residente realizada com sucesso.');
-
     await profileService.addPosterId(profile, posterId);
     const updatedPoster = await service.getById(posterId);
+    const result = await makeResult(user.id, updatedPoster);
 
-    return res.status(StatusCodes.OK).json(updatedPoster);
+    log.info('Adição de residente realizada com sucesso.');
+
+    return res.status(StatusCodes.OK).json(result);
   } catch (error) {
     const errorMsg = 'Erro ao adicionar um residente ao anúncio';
+
+    log.error(errorMsg, 'app/controllers/poster.controller.js', error.message);
+
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: `${errorMsg} ${error.message}` });
+  }
+};
+
+const removeResident = async (req, res) => {
+  try {
+    const { user } = req;
+    const { posterId, profileId } = req.params;
+
+    log.info(`Iniciando remoção de residente ao anúncio. userId=${user.id}`);
+    log.info(`Buscando anúncio. posterId=${posterId}`);
+
+    const poster = await service.getById(posterId);
+
+    if (!poster) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Anúncio não encontrado' });
+    }
+
+    if (poster.userId !== user.id) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({
+          error:
+            'Você não tem permissão para remover residentes a esse anúncio',
+        });
+    }
+
+    log.info(`Buscando perfil. profileId=${profileId}`);
+
+    const profile = await profileService.getByPk(profileId);
+
+    if (!profile) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Perfil não encontrado' });
+    }
+
+    if (`${profile.posterId}` !== posterId) {
+      return res
+        .status(StatusCodes.CONFLICT)
+        .json({ error: 'Esse usuário não é residente deste anúncio' });
+    }
+
+    if (user.id === profile.userId) {
+      return res
+        .status(StatusCodes.CONFLICT)
+        .json({
+          error:
+            'Você não pode se remover como residente de seu próprio anúncio',
+        });
+    }
+
+    await profileService.removePosterId(profile);
+    const updatedPoster = await service.getById(posterId);
+    const result = await makeResult(user.id, updatedPoster);
+
+    log.info('Remoção de residente realizada com sucesso.');
+
+    return res.status(StatusCodes.OK).json(result);
+  } catch (error) {
+    const errorMsg = 'Erro ao remover um residente ao anúncio';
 
     log.error(errorMsg, 'app/controllers/poster.controller.js', error.message);
 
@@ -341,4 +418,5 @@ module.exports = {
   edit,
   delet,
   addResident,
+  removeResident,
 };
