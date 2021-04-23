@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'categoryId',
       as: 'tags',
       onUpdate: 'cascade',
-      onDelete: 'cascade',
     });
   };
   return Category;
