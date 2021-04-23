@@ -6,6 +6,16 @@ const profileService = require('../services/profile.service');
 const { StatusCodes } = httpStatus;
 
 const addTags = async (req, res) => {
+  // #swagger.tags = ['TagProfile']
+  // #swagger.description = 'Endpoint para adicionar tags a um perfil.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.parameters['newTags'] = {
+          in: 'body',
+          description: 'ID das tags.',
+          required: true,
+          type: 'object',
+          schema: { $ref: "#/definitions/AddTags" }
+          } */
   try {
     const { user } = req;
     const { tags } = req.body;
@@ -84,6 +94,16 @@ const createTags = async (req, res) => {
 };
 
 const removeTags = async (req, res) => {
+  // #swagger.tags = ['TagProfile']
+  // #swagger.description = 'Endpoint para excluir tags de um perfil.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.parameters['newTags'] = {
+          in: 'body',
+          description: 'ID das tags.',
+          required: true,
+          type: 'object',
+          schema: { $ref: "#/definitions/AddTags" }
+          } */
   try {
     const { user } = req;
     const { tags } = req.body;

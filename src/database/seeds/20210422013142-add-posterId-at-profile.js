@@ -13,10 +13,6 @@ const profiles = [
     profileId: 2,
     posterId: 1,
   },
-  {
-    profileId: 4,
-    posterId: 2,
-  },
 ];
 
 module.exports = {

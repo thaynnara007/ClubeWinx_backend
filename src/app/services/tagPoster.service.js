@@ -33,18 +33,18 @@ const addTags = async (posterId, tagIds) => {
 
 
 const deleteTag = async (posterId, tagId) => {
-  const PosterTag = await PosterTag.findOne({
+  const posterTag = await PosterTag.findOne({
     where: {
       posterId,
       tagId,
     },
   });
 
-  if (!PosterTag) {
+  if (!posterTag) {
     log.info(
       `A tag de id ${tagId} não esta associada ao poster de id ${posterId}`,
     );
-  } else PosterTag.destroy();
+  } else posterTag.destroy();
 };
 
 const removeTags = async (posterId, tagIds) => {

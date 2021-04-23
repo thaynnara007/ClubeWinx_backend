@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Tag.belongsToMany(models.Poster, {
       through: 'PosterTags',
-      as: 'poster',
+      as: 'posters',
       foreignKey: 'tagId',
       onUpdate: 'cascade',
       onDelete: 'cascade',

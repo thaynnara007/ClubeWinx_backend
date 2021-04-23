@@ -6,6 +6,20 @@ const posterService = require('../services/poster.service');
 const { StatusCodes } = httpStatus;
 
 const addTags = async (req, res) => {
+  // #swagger.tags = ['TagPoster']
+  // #swagger.description = 'Endpoint para adicionar tags a um poster.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.parameters['newTags'] = {
+          in: 'body',
+          description: 'ID das tags.',
+          required: true,
+          type: 'object',
+          schema: { $ref: "#/definitions/AddTags" }
+          } */
+  /* #swagger.responses[201] = {
+              schema: { $ref: "#/definitions/Poster" },
+              description: 'Novo perfil criado.'
+          } */
   try {
     const { user } = req;
     const { tags } = req.body;
@@ -44,6 +58,20 @@ const addTags = async (req, res) => {
 };
 
 const removeTags = async (req, res) => {
+  // #swagger.tags = ['TagPoster']
+  // #swagger.description = 'Endpoint para remover tags a um poster.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.parameters['newTags'] = {
+          in: 'body',
+          description: 'ID das tags.',
+          required: true,
+          type: 'object',
+          schema: { $ref: "#/definitions/AddTags" }
+          } */
+  /* #swagger.responses[201] = {
+              schema: { $ref: "#/definitions/Poster" },
+              description: 'Novo perfil criado.'
+          } */
   try {
     const { user } = req;
     const { tags } = req.body;

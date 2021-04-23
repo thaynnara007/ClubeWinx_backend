@@ -151,8 +151,71 @@ const doc = {
           categoryId: 5
         }
       ]
-    }]
-  },
+    }],
+    Poster: {
+      id: 1,
+      expens: 286.89,
+      description: 'Its a tree house, with 3 floors, a video game, a dog, the taz came from our tresure, that i and jake picks up, so you may have no worries',
+      residents: 3,
+      vacancies: 1,
+      createdAt: '2021-04-23T00:15:50.642Z',
+      updatedAt: '2021-04-23T00:15:50.642Z',
+      userId: 1,
+      tags: [
+        {
+          id: 10,
+          name: 'Diabético',
+          isFixed: true,
+          categoryId: 4,
+          PosterTags: {
+            createdAt: '2021-04-23T00:32:46.022Z',
+            updatedAt: '2021-04-23T00:32:46.022Z',
+            posterId: 1,
+            tagId: 25
+          }
+        },
+      ]
+    },
+    PosterId: {
+      id: 1,
+      expens: 286.89,
+      description: 'Its a tree house, with 3 floors, a video game, a dog, the taz came from our tresure, that i and jake picks up, so you may have no worries',
+      residents: 3,
+      vacancies: 1,
+      createdAt: '2021-04-23T00:15:50.642Z',
+      updatedAt: '2021-04-23T00:15:50.642Z',
+      userId: 1
+    },
+    PosterAll: [
+      {
+        id: 2,
+        expens: 246.89,
+        description: 'Its a cave shaped like home. There are some bats at it, but hey, you would have you personal piece of the ocean',
+        residents: 1,
+        vacancies: 1,
+        createdAt: '2021-04-23T00:15:50.642Z',
+        updatedAt: '2021-04-23T00:15:50.642Z',
+        userId: 3,
+        tags: [
+          {
+            id: 11,
+            name: 'Hipertenso',
+            isFixed: true,
+            categoryId: 4,
+            PosterTags: {
+              createdAt: '2021-04-23T00:32:46.022Z',
+              updatedAt: '2021-04-23T00:32:46.022Z',
+              posterId: 1,
+              tagId: 25
+            }
+          },
+        ]
+      },
+    ],
+    AddTags:  {
+      "tags": [1,2,3]
+    }
+  }
 };
 
 swaggerAutogen(outputFile, endpointsFiles, doc);

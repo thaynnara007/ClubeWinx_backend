@@ -257,6 +257,266 @@
         "responses": {}
       }
     },
+    "/user/poster/": {
+      "post": {
+        "tags": [
+          "Poster"
+        ],
+        "description": "Endpoint para criar um anuncio.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/PosterId"
+            },
+            "description": "Anúncio encontrado."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Poster"
+        ],
+        "description": "Endpoint para buscar todos os anuncios.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/PosterAll"
+            },
+            "description": "Anuncios encontrado."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/user/poster/my": {
+      "get": {
+        "tags": [
+          "Poster"
+        ],
+        "description": "Endpoint para buscar o anuncio do usuario logado.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Poster"
+            },
+            "description": "Anúncio encontrado."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Poster"
+        ],
+        "description": "Endpoint para modificar o anuncio do usuario logado.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/PosterId"
+            },
+            "description": "Anuncio encontrado."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Poster"
+        ],
+        "description": "Endpoint para excluir o anuncio do usuario logal.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "string",
+              "example": "Anúncio ____FUNC____ com sucesso",
+              "xml": {
+                "name": "main"
+              }
+            },
+            "description": "Anúncio excluido."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/user/poster/{posterId}/residents": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "posterId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/user/poster/{posterId}": {
+      "get": {
+        "tags": [
+          "Poster"
+        ],
+        "description": "Endpoint para buscar um anuncio pelo seu id.",
+        "parameters": [
+          {
+            "name": "posterId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/PosterId"
+            },
+            "description": "Anúncio encontrado."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/user/poster/{posterId}/add/resident/{profileId}": {
+      "put": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "posterId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "profileId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/user/poster/{posterId}/remove/resident/{profileId}": {
+      "put": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "posterId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "profileId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/user/poster/me/add/tags": {
+      "post": {
+        "tags": [
+          "TagPoster"
+        ],
+        "description": "Endpoint para adicionar tags a um poster.",
+        "parameters": [
+          {
+            "name": "newTags",
+            "in": "body",
+            "description": "ID das tags.",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/AddTags"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Poster"
+            },
+            "description": "Novo perfil criado."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/user/poster/me/remove/tags": {
+      "put": {
+        "tags": [
+          "TagPoster"
+        ],
+        "description": "Endpoint para remover tags a um poster.",
+        "parameters": [
+          {
+            "name": "newTags",
+            "in": "body",
+            "description": "ID das tags.",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "$ref": "#/definitions/AddTags"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/Poster"
+            },
+            "description": "Novo perfil criado."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/auth/login": {
       "post": {
         "tags": [],
@@ -448,7 +708,12 @@
             },
             "description": "Perfil encontrado."
           }
-        }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -541,24 +806,28 @@
     },
     "/profile/me/add/tags": {
       "post": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "TagProfile"
+        ],
+        "description": "Endpoint para adicionar tags a um perfil.",
         "parameters": [
           {
-            "name": "obj",
+            "name": "newTags",
             "in": "body",
+            "description": "ID das tags.",
+            "required": true,
+            "type": "object",
             "schema": {
-              "type": "object",
-              "properties": {
-                "tags": {
-                  "type": "string",
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/AddTags"
             }
           }
         ],
-        "responses": {}
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/profile/me/create/tags": {
@@ -585,28 +854,38 @@
     },
     "/profile/me/remove/tags": {
       "put": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "TagProfile"
+        ],
+        "description": "Endpoint para excluir tags de um perfil.",
         "parameters": [
           {
-            "name": "obj",
+            "name": "newTags",
             "in": "body",
+            "description": "ID das tags.",
+            "required": true,
+            "type": "object",
             "schema": {
-              "type": "object",
-              "properties": {
-                "tags": {
-                  "type": "string",
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/AddTags"
             }
           }
         ],
-        "responses": {}
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/profile/me/picture": {
       "put": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      },
+      "delete": {
         "tags": [],
         "description": "",
         "parameters": [],
@@ -1182,6 +1461,226 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "Poster": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "expens": {
+          "type": "number",
+          "example": 286.89
+        },
+        "description": {
+          "type": "string",
+          "example": "Its a tree house, with 3 floors, a video game, a dog, the taz came from our tresure, that i and jake picks up, so you may have no worries"
+        },
+        "residents": {
+          "type": "number",
+          "example": 3
+        },
+        "vacancies": {
+          "type": "number",
+          "example": 1
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2021-04-23T00:15:50.642Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2021-04-23T00:15:50.642Z"
+        },
+        "userId": {
+          "type": "number",
+          "example": 1
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 10
+              },
+              "name": {
+                "type": "string",
+                "example": "Diabético"
+              },
+              "isFixed": {
+                "type": "boolean",
+                "example": true
+              },
+              "categoryId": {
+                "type": "number",
+                "example": 4
+              },
+              "PosterTags": {
+                "type": "object",
+                "properties": {
+                  "createdAt": {
+                    "type": "string",
+                    "example": "2021-04-23T00:32:46.022Z"
+                  },
+                  "updatedAt": {
+                    "type": "string",
+                    "example": "2021-04-23T00:32:46.022Z"
+                  },
+                  "posterId": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "tagId": {
+                    "type": "number",
+                    "example": 25
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "PosterId": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "expens": {
+          "type": "number",
+          "example": 286.89
+        },
+        "description": {
+          "type": "string",
+          "example": "Its a tree house, with 3 floors, a video game, a dog, the taz came from our tresure, that i and jake picks up, so you may have no worries"
+        },
+        "residents": {
+          "type": "number",
+          "example": 3
+        },
+        "vacancies": {
+          "type": "number",
+          "example": 1
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2021-04-23T00:15:50.642Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2021-04-23T00:15:50.642Z"
+        },
+        "userId": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "PosterAll": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 2
+          },
+          "expens": {
+            "type": "number",
+            "example": 246.89
+          },
+          "description": {
+            "type": "string",
+            "example": "Its a cave shaped like home. There are some bats at it, but hey, you would have you personal piece of the ocean"
+          },
+          "residents": {
+            "type": "number",
+            "example": 1
+          },
+          "vacancies": {
+            "type": "number",
+            "example": 1
+          },
+          "createdAt": {
+            "type": "string",
+            "example": "2021-04-23T00:15:50.642Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "example": "2021-04-23T00:15:50.642Z"
+          },
+          "userId": {
+            "type": "number",
+            "example": 3
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 11
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Hipertenso"
+                },
+                "isFixed": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "categoryId": {
+                  "type": "number",
+                  "example": 4
+                },
+                "PosterTags": {
+                  "type": "object",
+                  "properties": {
+                    "createdAt": {
+                      "type": "string",
+                      "example": "2021-04-23T00:32:46.022Z"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "example": "2021-04-23T00:32:46.022Z"
+                    },
+                    "posterId": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "tagId": {
+                      "type": "number",
+                      "example": 25
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "AddTags": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "example": [
+            1,
+            2,
+            3
+          ],
+          "items": {
+            "type": "number"
           }
         }
       }
