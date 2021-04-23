@@ -1,9 +1,28 @@
 const httpStatus = require('http-status-codes');
 const service = require('../services/poster.service');
 const profileService = require('../services/profile.service');
+const addressService = require('../services/address.service')
 const log = require('../services/log.service');
 
 const { StatusCodes } = httpStatus;
+
+const makeResult = async (userId, poster) => {
+  log.info(`Buscando endereço do usuário. userId=${userId}`)
+
+  const address = await addressService.getByUserId(userId)
+
+  if (!address) throw new Error(`Usuário não possui endereço`)
+
+  const result = {
+    ...poster.dataValues,
+    owner: {
+      id: userId,
+      address
+    }
+  }
+
+  return result
+}
 
 const create = async (req, res) => {
   try {
@@ -37,9 +56,11 @@ const create = async (req, res) => {
     log.info(`Criando anúncio no banco de dados.userId=${user.id}`);
     const poster = await service.create(data);
 
+    const result = await makeResult(user.id, poster)
+
     log.info('Criação finalizada com sucesso');
 
-    return res.status(StatusCodes.CREATED).json(poster);
+    return res.status(StatusCodes.CREATED).json(result);
   } catch (error) {
     const errorMsg = 'Erro ao cadastrar anúncio';
 
@@ -87,9 +108,11 @@ const getMy = async (req, res) => {
         });
     }
 
+    const result = await makeResult(user.id, myPoster)
+
     log.info('Busca finalizada com sucesso');
 
-    return res.status(StatusCodes.OK).json(myPoster);
+    return res.status(StatusCodes.OK).json(result);
   } catch (error) {
     const errorMsg = 'Erro ao pegar meu anúncio';
 
@@ -116,9 +139,11 @@ const getById = async (req, res) => {
         .json({ error: 'Anúncio não encontrado' });
     }
 
+    const result = await makeResult(poster.userId, poster)
+
     log.info('Busca finalizada com sucesso');
 
-    return res.status(StatusCodes.OK).json(poster);
+    return res.status(StatusCodes.OK).json(result);
   } catch (error) {
     const errorMsg = 'Erro ao buscar um anúncio';
 
@@ -217,6 +242,22 @@ const delet = async (req, res) => {
   }
 };
 
+const addResident = async (req, res) => {
+  try {
+    const { user } = req
+    const { profileId } = req.params;
+
+  } catch (error) {
+    const errorMsg = 'Erro ao editar anúncio';
+
+    log.error(errorMsg, 'app/controllers/poster.controller.js', error.message);
+
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: `${errorMsg} ${error.message}` });
+  }
+};
+
 module.exports = {
   create,
   getMy,
@@ -224,4 +265,5 @@ module.exports = {
   getAll,
   edit,
   delet,
+  addResident
 };

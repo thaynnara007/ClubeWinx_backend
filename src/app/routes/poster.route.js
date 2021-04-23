@@ -9,6 +9,7 @@ router.get('/my', auth.verifyToken, controller.getMy);
 router.get('/:posterId', auth.verifyToken, controller.getById);
 router.get('/', auth.verifyToken, controller.getAll);
 router.put('/my', auth.verifyToken, controller.edit);
+router.put('/add/resident/:profileId', auth.verifyToken, controller.addResident)
 router.delete('/my', auth.verifyToken, controller.delet);
 
 module.exports = router;

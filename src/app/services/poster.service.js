@@ -1,4 +1,8 @@
-const { Poster } = require('../models');
+const { 
+  Poster,
+  User,
+  Address 
+} = require('../models');
 
 const getByUserId = async (userId) => {
   const poster = await Poster.findOne({
@@ -31,11 +35,26 @@ const getAll = async (query) => {
   const pageSize = parseInt(query.pageSize, 10);
   let offset = null;
   let posters = null;
+  let options = {
+    include: [
+      { model: User,
+        as: 'owner',
+        attributes: {
+          exclude: ['name', 'lastname', 'birthday', 'email', 'phoneNumber', 'gender', 'passwordHash', 'forgetPasswordCode', 'createdAt', 'updatedAt'],
+        },
+        include: {
+          model: Address,
+          as: 'address'
+        }
+      }
+    ]
+  }
 
   if (page && pageSize) offset = (page - 1) * pageSize;
 
   if (offset !== null) {
-    const options = {
+    options = {
+      ...options,
       limit: pageSize,
       offset,
       distinct: true,
@@ -44,7 +63,7 @@ const getAll = async (query) => {
 
     posters.pages = Math.ceil(posters.count / pageSize);
   } else {
-    posters = await Poster.findAll();
+    posters = await Poster.findAll(options);
   }
 
   return posters;
