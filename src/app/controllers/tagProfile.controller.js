@@ -23,7 +23,7 @@ const addTags = async (req, res) => {
     log.info(`Relacionando as tags ao perfil. profileId=${profile.id}`);
     await service.addTags(profile.id, tags);
 
-    profile = await profileService.getById(user.id, false);
+    profile = await profileService.getById(user, false);
 
     log.info('Cadastro das tag realizado com sucesso');
 
