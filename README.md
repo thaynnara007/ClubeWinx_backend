@@ -34,6 +34,12 @@ $ cp .env-example .env
 ```
 > Coloque os valores corretos nas variáveis de ambientes definidas no arquivo .env
 
+> Copie e renomei o arquivo firebase.example.json
+```shell
+$ cp firebase.example.json firebase.json
+```
+> Coloque os valores das credenciais do firebase no arquivo
+
 > Criando as imagens
 ```shell
 $ docker-compose build
@@ -71,9 +77,33 @@ $ docker-compose run api npm run seed
 
 #### Docker
 
+> Listar containers em execução
+```shell
+$ docker ps
+```
+> Listar todos os containers
+```shell
+$ docker ps -a
+```
 > Para descer os containers em execução
 ```shell
 $ docker-compose down
+```
+> Para parar algum container
+```shell
+$ docker stop <nome_container>
+```
+> Para remover algum container
+```shell
+$ docker rm <nome_conatiner>
+```
+> Listar todas as imagens
+```shell
+$ docker images -a
+```
+> Listar todos os volumes
+```shell
+$ docker volume ls
 ```
 > Para executar um serviço expecífico
 ```shell
@@ -86,6 +116,10 @@ $ docker-compose run <nome_do_serviço> <comando>
 > Apagar os  volumes sem uso do docker
 ```shell
 $ docker volume prune -f 
+```
+> Apagar as imagens sem uso do docker
+```shell
+$ docker system prune -a
 ```
 > Forçar a recriação de algum serviço
 ```shell
@@ -125,5 +159,6 @@ $ npm run test
 
 * [Swagger-autogen](https://www.npmjs.com/package/swagger-autogen)
 * [Sequelize](https://sequelize.org/v5/)
+* Link do projeto no [Dockerhub](https://hub.docker.com/repository/docker/thaynnara007/homemate-api-dev)
 
 **IMPORTANTE**: Nunca altere uma migration anterior a menos que você saiba exatamente o que você está fazendo.
