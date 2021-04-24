@@ -29,6 +29,14 @@ services:
       DB_NAME: Homemate
       DB_USERNAME: postgres
       DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRES_TIME: 20
+      GMAIL_EMAIL: ${GMAIL_EMAIL}
+      GMAIL_PASSWORD: ${GMAIL_PASSWORD}
+      EMAIL_PORT: 587
+      EMAIL_SMTP_HOST: smtp.example.com
+      FIREBASE_CREDENTIALS: /app/firebase.json
+      FIREBASE_STORAGE_BUCKET: ${FIREBASE_STORAGE_BUCKET}
     command: ./wait-for.sh db:5432 -- npm run start
 
   db:
