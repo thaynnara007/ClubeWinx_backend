@@ -36,7 +36,5 @@ module.exports = {
       }
     });
   },
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('PosterTags');
-  }
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('PosterTags'),
 };

@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         as: 'profiles',
         onUpdate: 'cascade',
       });
+      Poster.hasOne(models.PosterPicture, {
+        foreignKey: 'posterId',
+        as: 'picture',
+      });
     };
   
     return Poster;
