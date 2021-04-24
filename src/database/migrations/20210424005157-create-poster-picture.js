@@ -13,9 +13,10 @@ module.exports = {
           model: 'Posters',
           key: 'id',
         },
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
-      imageName: {
+      image_name: {
         type: Sequelize.STRING,
         unique: true,
       },

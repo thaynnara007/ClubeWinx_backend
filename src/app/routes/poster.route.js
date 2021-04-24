@@ -1,7 +1,10 @@
 const express = require('express');
+const multer = require('../../multer');
 const auth = require('../middlewares/auth');
 const controller = require('../controllers/poster.controller');
 const tagPosterController = require('../controllers/tagPoster.controller');
+const posterPictureController = require('../controllers/posterPicture.controller');
+
 
 const router = express.Router({ mergeParams: true });
 
@@ -26,8 +29,21 @@ router.put(
 
 router.delete('/my', auth.verifyToken, controller.delet);
 
-
 router.post('/me/add/tags', auth.verifyToken, tagPosterController.addTags);
 router.put('/me/remove/tags', auth.verifyToken, tagPosterController.removeTags,);
+
+router.post(
+  '/me/picture',
+  auth.verifyToken,
+  multer.single('file'),
+  posterPictureController.create,
+);
+// router.put(
+//   '/me/picture:pictureId',
+//   auth.verifyToken,
+//   multer.single('file'),
+//   posterPictureController.edit,
+// );
+router.delete('/me/picture', auth.verifyToken, posterPictureController.delet);
 
 module.exports = router;

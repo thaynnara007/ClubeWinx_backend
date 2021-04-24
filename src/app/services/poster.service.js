@@ -1,15 +1,27 @@
-const { Poster, User, Address, Tag } = require('../models');
+const { Poster, User, Address, Tag, PosterPicture } = require('../models');
 
 const getByUserId = async (userId) => {
   const poster = await Poster.findOne({
     where: {
       userId,
-    }, include: [
+    }, 
+    include: [
       {
         model: Tag,
         as: 'tags',
         attributes: {
           exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+      {
+        model: PosterPicture,
+        as: 'posterPictures',
+        attributes: {
+          exclude: [
+            'createdAt',
+            'updatedAt',
+            'posterId'
+          ],
         },
       },
     ],
@@ -29,12 +41,24 @@ const getById = async (id) => {
   const poster = await Poster.findOne({
     where: {
       id,
-    }, include: [
+    },
+    include: [
       {
         model: Tag,
         as: 'tags',
         attributes: {
           exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+      {
+        model: PosterPicture,
+        as: 'posterPictures',
+        attributes: {
+          exclude: [
+            'createdAt',
+            'updatedAt',
+            'posterId'
+          ],
         },
       },
     ],
@@ -78,6 +102,17 @@ const getAll = async (query) => {
         as: 'tags',
         attributes: {
           exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+      {
+        model: PosterPicture,
+        as: 'posterPictures',
+        attributes: {
+          exclude: [
+            'createdAt',
+            'updatedAt',
+            'posterId'
+          ],
         },
       },
     ],

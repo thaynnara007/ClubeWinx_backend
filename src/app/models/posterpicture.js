@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   const PosterPicture = sequelize.define(
     'PosterPicture', 
     {
-      imageName: {
+      image_name: {
         type: DataTypes.STRING,
         unique: true,
       },
@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
           return `https://firebasestorage.googleapis.com/v0/b/${
             FIREBASE.storageBucket
           }/o/${this.getDataValue(
-            'imageName',
+            'image_name',
           )}?alt=media&token=${this.getDataValue('token')}`;
         },
       },
@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     PosterPicture.belongsTo(models.Poster, {
       foreignKey: 'posterId',
       as: 'poster',
+      onDelete: 'CASCADE',
     });
   };
   return PosterPicture;
