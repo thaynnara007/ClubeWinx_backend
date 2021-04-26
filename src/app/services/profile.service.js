@@ -121,7 +121,7 @@ const getResidents = async (posterId) => {
         model: ProfilePicture,
         as: 'picture',
         attributes: {
-          exclude: ['imageName', 'token', 'createdAt', 'updatedAt'],
+          exclude: ['createdAt', 'updatedAt'],
         },
       },
     ],
