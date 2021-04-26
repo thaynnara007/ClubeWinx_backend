@@ -517,6 +517,36 @@
         ]
       }
     },
+    "/user/poster/me/picture": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/user/poster/me/picture/{*pictureId}": {
+      "delete": {
+        "tags": [
+          "PosterPicture"
+        ],
+        "description": "Endpoint para excluir a imagem de um anuncio.",
+        "parameters": [
+          {
+            "name": "*pictureId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {},
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
     "/auth/login": {
       "post": {
         "tags": [],

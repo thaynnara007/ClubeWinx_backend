@@ -32,18 +32,7 @@ router.delete('/my', auth.verifyToken, controller.delet);
 router.post('/me/add/tags', auth.verifyToken, tagPosterController.addTags);
 router.put('/me/remove/tags', auth.verifyToken, tagPosterController.removeTags,);
 
-router.post(
-  '/me/picture',
-  auth.verifyToken,
-  multer.single('file'),
-  posterPictureController.create,
-);
-// router.put(
-//   '/me/picture:pictureId',
-//   auth.verifyToken,
-//   multer.single('file'),
-//   posterPictureController.edit,
-// );
-router.delete('/me/picture', auth.verifyToken, posterPictureController.delet);
+router.post('/me/picture', auth.verifyToken, multer.single('file'), posterPictureController.create);
+router.delete('/me/picture/:pictureId', auth.verifyToken, posterPictureController.delet);
 
 module.exports = router;
