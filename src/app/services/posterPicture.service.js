@@ -1,6 +1,4 @@
 const { PosterPicture } = require('../models');
-const firebaseService = require('../services/firebase.service');
-const log = require('./log.service');
 
 const getByPosterId = async (posterId) => {
   const picture = await PosterPicture.findAndCountAll({
