@@ -27,7 +27,7 @@ const create = async (req, res) => {
     log.info(`Teste. userId=${existedPictures.count < 4}`);
 
     let picture = null;
-    if ( !existedPictures && existedPictures.count > 4) {
+    if ( !existedPictures || existedPictures.count > 4) {
       return res
       .status(StatusCodes.NOT_FOUND)
       .json({ error: 'Imagem não encontrado ou limite maximo atingido' });
