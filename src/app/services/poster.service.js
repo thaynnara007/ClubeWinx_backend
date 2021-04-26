@@ -20,7 +20,6 @@ const getByUserId = async (userId) => {
           exclude: [
             'createdAt',
             'updatedAt',
-            'posterId'
           ],
         },
       },
@@ -37,10 +36,10 @@ const create = async (data) => {
   return poster;
 };
 
-const getById = async (id) => {
+const getById = async (posterId) => {
   const poster = await Poster.findOne({
     where: {
-      id,
+      id: posterId,
     },
     include: [
       {
@@ -57,7 +56,6 @@ const getById = async (id) => {
           exclude: [
             'createdAt',
             'updatedAt',
-            'posterId'
           ],
         },
       },
@@ -111,7 +109,6 @@ const getAll = async (query) => {
           exclude: [
             'createdAt',
             'updatedAt',
-            'posterId'
           ],
         },
       },
