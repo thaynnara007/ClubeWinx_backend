@@ -24,8 +24,7 @@ const create = async (req, res) => {
 
     const existedPictures = await posterPictureService.getByPosterId(poster.id);
 
-    log.info(`Teste. userId=${existedPictures.count < 4}`);
-
+    log.info(`Total de fotos do anuncio =${existedPictures.count}`);
     let picture = null;
     if ( !existedPictures || existedPictures.count > 4) {
       return res
