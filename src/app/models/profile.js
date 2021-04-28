@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     Profile.hasOne(models.ProfilePicture, {
       foreignKey: 'profileId',
       as: 'picture',
+      onDelete: 'CASCADE',
     });
     Profile.belongsToMany(models.Tag, {
       through: 'ProfileTags',

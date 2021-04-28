@@ -56,6 +56,12 @@ const create = async (req, res) => {
     log.info(`Buscando perfil do usuário. userId=${user.id}`);
     const profile = await profileService.getByUserId(user.id);
 
+    if (!profile) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Perfil do usuário não encontrado.' });
+    }
+
     if (profile.posterId) {
       return res
         .status(StatusCodes.CONFLICT)
