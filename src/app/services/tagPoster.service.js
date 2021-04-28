@@ -31,6 +31,7 @@ const addTags = async (posterId, tagIds) => {
   );
 };
 
+
 const deleteTag = async (posterId, tagId) => {
   const posterTag = await PosterTag.findOne({
     where: {
