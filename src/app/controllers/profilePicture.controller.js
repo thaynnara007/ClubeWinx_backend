@@ -26,7 +26,7 @@ const edit = async (req, res) => {
       profile.id,
     );
 
-    log.info('Fazendo upload da imagem');
+    log.info(`Fazendo upload da imagem. file=${file}`);
     const uploadPicture = await firebaseService.upload(file);
 
     let picture = null;

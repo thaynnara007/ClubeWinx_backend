@@ -13,7 +13,7 @@ const getByProfileId = async (profileId) => {
 const create = async (profileId, { fileName, token }) => {
   const data = {
     profileId,
-    image_name: fileName,
+    imageName: fileName,
     token,
   };
 
@@ -24,7 +24,7 @@ const create = async (profileId, { fileName, token }) => {
 
 const edit = async (profileId, { fileName, token }) => {
   const data = {
-    image_name: fileName,
+    imageName: fileName,
     token,
   };
 

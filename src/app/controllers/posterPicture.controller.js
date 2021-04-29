@@ -26,16 +26,15 @@ const create = async (req, res) => {
 
     log.info(`Total de fotos do anuncio =${existedPictures.count}`);
     let picture = null;
-    if ( !existedPictures || existedPictures.count > 4) {
+    if (!existedPictures || existedPictures.count > 4) {
       return res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ error: 'Imagem não encontrado ou limite maximo atingido' });
-    } else {
-      log.info('Fazendo upload da imagem');
-      const uploadPicture = await firebaseService.upload(file);
-      log.info('criando imagem no banco de dados');
-      picture = await posterPictureService.create(poster.id, uploadPicture);
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Imagem não encontrado ou limite maximo atingido' });
     }
+    log.info('Fazendo upload da imagem');
+    const uploadPicture = await firebaseService.upload(file);
+    log.info('criando imagem no banco de dados');
+    picture = await posterPictureService.create(poster.id, uploadPicture);
 
     const result = {
       picture: picture.pictureUrl,
@@ -77,16 +76,20 @@ const delet = async (req, res) => {
         .json({ error: 'anuncio não encontrado' });
     }
 
-    const existedPictures = await posterPictureService.getByPictureId(pictureId);
-    
+    const existedPictures = await posterPictureService.getByPictureId(
+      pictureId,
+    );
+
     if (!existedPictures) {
       log.info(
-        `A foto de id ${id} não esta associada ao anuncio de id ${poster.id}`,
+        `A foto de id ${pictureId} não esta associada ao anuncio de id ${poster.id}`,
       );
     }
 
-    if(existedPictures.posterId === poster.id) {
-      log.info(`Deletando imagem do firebase. image_name=${existedPictures.image_name}`);
+    if (existedPictures.posterId === poster.id) {
+      log.info(
+        `Deletando imagem do firebase. image_name=${existedPictures.image_name}`,
+      );
       await firebaseService.delet(existedPictures);
 
       log.info(`Deletando imagem do bando da dados. posterId=${poster.id}`);
