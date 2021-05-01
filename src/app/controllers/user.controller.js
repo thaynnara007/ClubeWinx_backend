@@ -10,6 +10,7 @@ const log = require('../services/log.service');
 const service = require('../services/user.service');
 const emailService = require('../services/email.service');
 const addressService = require('../services/address.service');
+const profileService = require('../services/profile.service');
 
 const { StatusCodes } = httpStatus;
 
@@ -70,6 +71,14 @@ const create = async (req, res) => {
 
     log.info('Criando endereço e associando o mesmo ao usuário');
     await addressService.create(addressData);
+
+    const profileData = {
+      userId: newUser.id,
+    };
+
+    log.info('Criando perfil no banco de dados');
+    await profileService.create(profileData, newUser);
+
 
     log.info(`Usário ${email} cadastrado com sucesso`);
     log.info(`Enviando email de boas-vindas. userEmail=${newUser.email}`);
