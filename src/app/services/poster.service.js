@@ -69,6 +69,8 @@ const getById = async (posterId) => {
 const getAll = async (query) => {
   const page = parseInt(query.page, 10);
   const pageSize = parseInt(query.pageSize, 10);
+  const tags = query.tags;
+
   let offset = null;
   let posters = null;
   let options = {
@@ -128,15 +130,32 @@ const getAll = async (query) => {
       offset,
       distinct: true,
     };
-    posters = await Poster.findAndCountAll(options);
+    posters = await Poster.findAndCountAll(options)
+    ;
 
-    posters.pages = Math.ceil(posters.count / pageSize);
+    var postersFiltered = posters.rows.filter(poster => filtertags(poster,tags));
+
+    postersFiltered.pages = Math.ceil(posters.count / pageSize);
   } else {
-    posters = await Poster.findAll(options);
+    postersFiltered = await Poster.findAll(options);
   }
 
-  return posters;
+  return postersFiltered;
 };
+
+function filtertags(poster,tags){
+  tagsPoster = poster.tags;
+  for (let index = 0; index < tagsPoster.length; index++) {
+    const tagPoster = tagsPoster[index];
+    for (let index = 0; index < tags.length; index++) {
+      const tag =  tags[index];
+      if (tagPoster.id.toString() === tag) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
 
 const edit = async (id, data) => {
   await Poster.update(data, {
