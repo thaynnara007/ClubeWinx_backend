@@ -119,6 +119,33 @@ const doc = {
       createdAt: '2021-03-30T23:22:54.989Z',
       updatedAt: '2021-03-30T23:22:54.989Z',
     },
+    OtherProfile: {
+      connection: {
+          id: 3,
+          accepted: true,
+          requestedUserId: 1,
+          sendedUserId: 3
+      },
+      email: 'finn_the_human@gmail.com',
+      picture: 'https://firebasestorage.googleapis.com/v0/b/homemate-55271.appspot.com/o/finn.jpg?alt=media&token=10621565-fb77-43cd-9f0b-844c06903a2c',
+      name: 'Finn',
+      lastname: 'The Human',
+      gender: 'Masculino',
+      id: 1,
+      socialMedia: 'https://instagram.com/adventuretime?igshid=1ti2rgx3xdt9n',
+      description: 'I am a human boy, who lives in a tree house with my brother, Jake, we have an adventure business together. I am good with people and know how to cook, though jake knows it more',
+      privateAtConnection: false,
+      posterId: 1,
+      userId: 1,
+      tags: [
+          {
+              id: 12,
+              name: 'UFCG',
+              isFixed: true,
+              categoryId: 3,
+          }
+      ]
+    },
     NewCategory: {
       name: '3 casa',
       description: '123',
@@ -221,7 +248,38 @@ const doc = {
     AddTags: {
       tags: [1, 2, 3],
     },
+NewTags: {
+      name: 'Marceline',
+      gender: 'Feminino',
+      id: 5,
+      privateAtConnection: true,
+      userId: 3,
+      tags: [
+        {
+          id: 69,
+          name: 'Cachorro',
+          categoryId: 5,
+        },
+        {
+          id: 18,
+          name: 'Ciência da Computação',
+          categoryId: 4,
+        },
+        {
+          id: 12,
+          name: 'UFCG',
+          categoryId: 3,
+        }
+      ]
+    },
+    CreateTags: {
+      tags: [
+          { name: 'Otaku', 'categoryId': 4},
+          { name: 'Nerd', 'categoryId': 4},
+          { name: 'UFCG', 'categoryId': 4}
+      ]
   },
+  }
 };
 
 swaggerAutogen(outputFile, endpointsFiles, doc);
