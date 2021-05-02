@@ -81,6 +81,13 @@ const getMyProfile = async (req, res) => {
 };
 
 const getProfileByUserId = async (req, res) => {
+  // #swagger.tags = ['Profile']
+  // #swagger.description = 'Endpoint para user buscar perfil de outro usuario.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.responses[200] = {
+            schema: { $ref: "#/definitions/OtherProfile" },
+            description: 'Perfil encontrado.'
+        } */
   try {
     const { userId } = req.params;
 
