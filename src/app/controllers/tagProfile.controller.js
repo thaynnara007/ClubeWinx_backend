@@ -54,6 +54,20 @@ const addTags = async (req, res) => {
 };
 
 const createTags = async (req, res) => {
+  // #swagger.tags = ['TagProfile']
+  // #swagger.description = 'Endpoint para adicionar uma nova tag a um perfil.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.parameters['newTags'] = {
+          in: 'body',
+          description: 'Informações das tags.',
+          required: true,
+          type: 'object',
+          schema: { $ref: "#/definitions/CreateTags" }
+          } */
+  /* #swagger.responses[201] = {
+          schema: { $ref: "#/definitions/NewTags" },
+          description: 'Nova tag adicionada ao perfil.'
+          } */
   try {
     const { user } = req;
     const { tags } = req.body;
