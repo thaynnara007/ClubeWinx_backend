@@ -58,7 +58,7 @@ const getMyProfile = async (req, res) => {
     const { user } = req;
 
     log.info(`Iniciando busca pelo perfil. userId=${user.id}`);
-    const profile = await profileService.getById(user, false);
+    const profile = await profileService.getById(user);
 
     if (!profile) {
       return res
@@ -113,7 +113,7 @@ const getProfileByUserId = async (req, res) => {
     if (!profile.privateAtConnection) privateInfo = false;
     else if (connection && connection.accepted) privateInfo = false;
 
-    let result = await profileService.getById(user, privateInfo);
+    let result = await profileService.getById(user);
 
     if (!profile) {
       return res
