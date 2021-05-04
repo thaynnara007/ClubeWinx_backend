@@ -1,4 +1,5 @@
 const { Poster, User, Address, Tag, PosterPicture } = require('../models');
+const { Op } = require('sequelize');
 
 const getByUserId = async (userId) => {
   const poster = await Poster.findOne({
@@ -69,7 +70,7 @@ const getById = async (posterId) => {
 const getAll = async (query) => {
   const page = parseInt(query.page, 10);
   const pageSize = parseInt(query.pageSize, 10);
-  const tags = query.tags;
+  const tags = query.tags.map( tag => parseInt(tag,10) );
 
   let offset = null;
   let posters = null;
@@ -100,6 +101,11 @@ const getAll = async (query) => {
       {
         model: Tag,
         as: 'tags',
+        where: {
+          id: {
+            [Op.in]: tags,
+          }
+        },
         attributes: {
           exclude: ['createdAt', 'updatedAt'],
         },
@@ -133,29 +139,13 @@ const getAll = async (query) => {
     posters = await Poster.findAndCountAll(options)
     ;
 
-    var postersFiltered = posters.rows.filter(poster => filtertags(poster,tags));
-
-    postersFiltered.pages = Math.ceil(posters.count / pageSize);
+    posters.pages = Math.ceil(posters.count / pageSize);
   } else {
-    postersFiltered = await Poster.findAll(options);
+    posters = await Poster.findAll(options);
   }
 
-  return postersFiltered;
+  return posters;
 };
-
-function filtertags(poster,tags){
-  tagsPoster = poster.tags;
-  for (let index = 0; index < tagsPoster.length; index++) {
-    const tagPoster = tagsPoster[index];
-    for (let index = 0; index < tags.length; index++) {
-      const tag =  tags[index];
-      if (tagPoster.id.toString() === tag) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
 
 const edit = async (id, data) => {
   await Poster.update(data, {
