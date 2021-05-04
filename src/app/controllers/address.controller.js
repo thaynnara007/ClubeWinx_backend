@@ -6,7 +6,7 @@ const { StatusCodes } = httpStatus;
 
 const create = async (req, res) => {
   // #swagger.tags = ['Address']
-  // #swagger.description = 'Endpoint para criar um usuario.'
+  // #swagger.description = 'Endpoint para criar um endereço de um usuario.'
   // #swagger.security = [{ 'Bearer': [] }]
   /* #swagger.parameters['newAddress'] = {
         in: 'body',
@@ -85,7 +85,7 @@ const getByUserId = async (req, res) => {
 
 const getAll = async (req, res) => {
   // #swagger.tags = ['Address']
-  // #swagger.description = 'Endpoint para buscar o endereço de um usuario.'
+  // #swagger.description = 'Endpoint para retornar todos os endereços.'
   /* #swagger.responses[200] = {
             schema: { $ref: "#/definitions/AllAddress" },
             description: 'Endereços encontrados.'
@@ -168,7 +168,7 @@ const edit = async (req, res) => {
 
 const delet = async (req, res) => {
   // #swagger.tags = ['Address']
-  // #swagger.description = 'Endpoint para exclui o endereço de um usuario.'
+  // #swagger.description = 'Endpoint para excluir o endereço de um usuario.'
   // #swagger.security = [{ 'Bearer': [] }]
   /* #swagger.responses[200] = {
             schema: "Endereço excluido com sucesso",

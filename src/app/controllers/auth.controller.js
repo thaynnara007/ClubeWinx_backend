@@ -5,6 +5,19 @@ const service = require('../services/auth.service');
 const { StatusCodes } = httpStatus;
 
 const login = async (req, res) => {
+  // #swagger.tags = ['Auth']
+  // #swagger.description = 'Endpoint para logar um usuario na aplicação.'
+  /* #swagger.parameters['login'] = {
+        in: 'body',
+        description: 'Dados para o login.',
+        required: true,
+        type: 'object',
+        schema: { $ref: "#/definitions/Credentials" }
+        } */
+  /* #swagger.responses[201] = {
+            schema: { $ref: "#/definitions/UserLogin" },
+            description: 'User logado com sucesso.'
+        } */
   try {
     const { email, password } = req.body;
 
@@ -33,6 +46,19 @@ const login = async (req, res) => {
 };
 
 const verifyCode = async (req, res) => {
+  // #swagger.tags = ['Auth']
+  // #swagger.description = 'Endpoint para verificar codigo da operação 'recuperação de senha'.'
+  /* #swagger.parameters['login'] = {
+        in: 'body',
+        description: 'Dados para verificação do codigo.',
+        required: true,
+        type: 'object',
+        schema: { $ref: "#/definitions/Validation" }
+        } */
+  /* #swagger.responses[201] = {
+            schema: { $ref: "#/definitions/ValidationOK" },
+            description: 'Sucesso na validação do codigo.'
+        } */
   try {
     const { code, email } = req.body;
 

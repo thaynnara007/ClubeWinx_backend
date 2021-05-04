@@ -100,6 +100,7 @@ const create = async (req, res) => {
 const getById = async (req, res) => {
   // #swagger.tags = ['User']
   // #swagger.description = 'Endpoint para obter um usuário.'
+  // #swagger.security = [{ 'Bearer': [] }]
   /* #swagger.responses[200] = {
               schema: { $ref: "#/definitions/User" },
               description: 'Usuário encontrado.'
@@ -161,6 +162,7 @@ const getAll = async (req, res) => {
 const edit = async (req, res) => {
   // #swagger.tags = ['User']
   // #swagger.description = 'Endpoint para modificar as informaçoes de um usuário.'
+  // #swagger.security = [{ 'Bearer': [] }]
   /* #swagger.parameters['user'] = {
         in: 'body',
         description: 'Informações do usuário.',
@@ -233,6 +235,7 @@ const edit = async (req, res) => {
 const delet = async (req, res) => {
   // #swagger.tags = ['User']
   // #swagger.description = 'Endpoint para excluir um usuário.'
+  // #swagger.security = [{ 'Bearer': [] }]
   /* #swagger.responses[200] = {
             schema: "Usuário excluido com sucesso",
             description: 'Usuário excluido.'
@@ -261,6 +264,18 @@ const delet = async (req, res) => {
 };
 
 const forgetPassword = async (req, res) => {
+  // #swagger.tags = ['User']
+  // #swagger.description = 'Endpoint para recuperar a senha de um usuário.'
+  /* #swagger.parameters['user'] = {
+        in: 'body',
+        description: 'Informações de user.',
+        required: true,
+        type: 'object',
+        schema: { $ref: "#/definitions/UserEmail" }
+        } */
+  /* #swagger.responses[200] = {
+              description: 'Email enviado com sucesso.'
+        } */
   try {
     const { email } = req.body;
 
@@ -299,6 +314,19 @@ const forgetPassword = async (req, res) => {
 };
 
 const changePassword = async (req, res) => {
+  // #swagger.tags = ['User']
+  // #swagger.description = 'Endpoint para modificar a senha de um usuário.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.parameters['user'] = {
+        in: 'body',
+        description: 'Nova senha.',
+        required: true,
+        type: 'object',
+        schema: { $ref: "#/definitions/NewPassword" }
+        } */
+  /* #swagger.responses[200] = {
+              description: 'Senha modificada com sucesso.'
+        } */
   try {
     const { user } = req;
     const { newPassword } = req.body;
