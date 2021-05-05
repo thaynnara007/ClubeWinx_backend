@@ -44,10 +44,27 @@ const getTagsSimilarityPercent = (count, totalAmountTags) => {
   return result
 }
 
-const getAddressSimilarityPercent = (addresses) => {
+const getAddressSimilarityPercent = (addresses, searchedCity, searchedState) => {
   const result = addresses.reduce( (accumulator, address) => {
     const { city, state } = address
+    const profileId = address.user.profile.id
+
+    let percent = 0
+    const sameCity = city.toLowerCase() === searchedCity.toLowerCase()
+    const sameState = state.toLowerCase() === searchedState.toLowerCase()
+
+    if (sameCity) 
+      percent += util.CITY_RELEVANCE
+    if (sameState)
+      percent += util.STATE_RELEVANCE
+
+    return { 
+      ...accumulator, 
+      [profileId]: { city, state, similarity: percent } 
+    } 
   }, {})
+
+  return result
 }
 
 const getTagsSimilarity = async (tagsIds, profileId, amountTags) => {
@@ -62,7 +79,9 @@ const getAddressSimilarity = async (address) => {
   const { userId, city, state } = address
 
   const addresses = await addressService.getProfilesWithAddress(city, state, userId)
+  const addressSimilarity = getAddressSimilarityPercent(addresses, city, state)
 
+  return addressSimilarity
 }
 
 module.exports = {

@@ -166,11 +166,17 @@ const getRecomendation = async (req, res) => {
     log.info(`Buscando endereço do usuário. userId=${user.id}`)
     const address = await addressService.getByUserId(user.id)
 
+    if (!address) {
+      return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ error: `Endereço do usuário não encontrado` })
+    }
+
     log.info(`Buscando a similaridade com o perfil de outros usuários a partir do endereço. userId=${user.id}`)
-    const result = await recomendationService.getAddressSimilarity(address)
+    const addressesSimilarity = await recomendationService.getAddressSimilarity(address)
 
 
-    return res.status(StatusCodes.OK).json(result)
+    return res.status(StatusCodes.OK).json(addressesSimilarity)
   } catch (error) {
     const errorMsg = 'Erro ao buscar perfils recomendados';
 
