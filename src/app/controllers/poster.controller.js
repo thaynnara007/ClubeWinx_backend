@@ -116,7 +116,6 @@ const getMy = async (req, res) => {
     let myPoster = await service.getByUserId(user.id);
 
     if (!myPoster) {
-      
       log.info(`Buscando perfil. userId=${user.id}`);
 
       const profile = await profileService.getByUserId(user.id);
@@ -200,7 +199,7 @@ const getAll = async (req, res) => {
   /* #swagger.responses[200] = {
             schema: { $ref: "#/definitions/PosterAll" },
             description: 'Anuncios encontrado.'
-        } */ 
+        } */
   try {
     const { query } = req;
 

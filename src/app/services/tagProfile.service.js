@@ -1,6 +1,7 @@
 const { ProfileTag } = require('../models');
 const tagService = require('./tag.service');
 const log = require('./log.service');
+const { Op } = require('sequelize');
 
 const addTag = async (profileId, tagId) => {
   const data = {
@@ -68,8 +69,24 @@ const removeTags = async (profileId, tagIds) => {
   );
 };
 
+const getProfilesByTags = async (tagsIds, profileId) => {
+  const profiles = await ProfileTag.findAll({
+    where: {
+      tagId: {
+        [Op.or]: tagsIds
+      },
+      profileId: {
+        [Op.not] : profileId
+      }
+    }
+  })
+
+  return profiles
+}
+
 module.exports = {
   addTags,
   createTags,
   removeTags,
+  getProfilesByTags
 };

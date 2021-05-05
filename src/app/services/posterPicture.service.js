@@ -17,7 +17,7 @@ const getByPictureId = async (pictureId) => {
     },
   });
   return picture;
-}
+};
 
 const create = async (posterId, { fileName, token }) => {
   const data = {
@@ -47,9 +47,8 @@ const edit = async (posterId, { fileName, token }) => {
 };
 
 const delet = async (picture) => {
-    await picture.destroy();
+  await picture.destroy();
 };
-
 
 module.exports = {
   getByPosterId,

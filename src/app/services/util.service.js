@@ -132,6 +132,9 @@ const DATE_FORMAT = 'DD/MM/YYYY';
 const FORGET_PASSWORD_CODE_MIN = 1000;
 const FORGET_PASSWORD_CODE_MAX = 10000;
 const FIVE_MB = 5 * 1024 * 1024;
+const RECOMENDATION_TRUNCATE = 5;
+const CITY_RELEVANCE = 0.7
+const STATE_RELEVANCE = 0.3
 
 const getRandomNumber = (min, max) => {
   min = Math.ceil(min);
@@ -156,4 +159,5 @@ module.exports = {
   FORGET_PASSWORD_CODE_MAX,
   FORGET_PASSWORD_CODE_MIN,
   FIVE_MB,
+  RECOMENDATION_TRUNCATE
 };

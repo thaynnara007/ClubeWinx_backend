@@ -2,7 +2,7 @@ const { FIREBASE } = require('../../config/environment');
 
 module.exports = (sequelize, DataTypes) => {
   const PosterPicture = sequelize.define(
-    'PosterPicture', 
+    'PosterPicture',
     {
       image_name: {
         type: DataTypes.STRING,
@@ -21,7 +21,9 @@ module.exports = (sequelize, DataTypes) => {
           )}?alt=media&token=${this.getDataValue('token')}`;
         },
       },
-  }, {});
+    },
+    {},
+  );
   PosterPicture.associate = (models) => {
     PosterPicture.belongsTo(models.Poster, {
       foreignKey: 'posterId',

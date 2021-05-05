@@ -79,7 +79,6 @@ const create = async (req, res) => {
     log.info('Criando perfil no banco de dados');
     await profileService.create(profileData, newUser);
 
-
     log.info(`Usário ${email} cadastrado com sucesso`);
     log.info(`Enviando email de boas-vindas. userEmail=${newUser.email}`);
 

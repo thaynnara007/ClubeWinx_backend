@@ -1,6 +1,6 @@
 module.exports = (sequelize) => {
   const PosterTag = sequelize.define('PosterTag', {}, {});
-  
+
   PosterTag.associate = (models) => {
     PosterTag.belongsTo(models.Poster, {
       foreignKey: 'posterId',
