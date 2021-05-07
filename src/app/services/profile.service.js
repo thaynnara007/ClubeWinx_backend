@@ -1,10 +1,15 @@
 const {
-  Profile, ProfilePicture, Tag, User,
+  Profile, 
+  ProfilePicture, 
+  Tag,
+  User,
+  Address
 } = require('../models');
 const log = require('./log.service');
 const util = require('./util.service');
 const addressService = require('./address.service');
 const profilePictureService = require('./profilePicture.service');
+const { Op } = require('sequelize');
 
 const mountProfilejson = async (profile, user, privateInfo = true) => {
   log.info(`Montando json de retorno do profile do usuário. userId=${user.id}`);
@@ -139,6 +144,68 @@ const getByPk = async (id) => Profile.findOne({
   },
 });
 
+const getSpecificProfiles = async (profilesIds) => {
+  const options = {
+    where: {
+      id: {
+        [Op.or]: profilesIds 
+      }
+    },
+    include: [
+      {
+        model: Tag,
+        as: 'tags',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+      {
+        model: User,
+        as: 'user',
+        attributes: {
+          exclude: [
+            'phoneNumber',
+            'email',
+            'passwordHash',
+            'forgetPasswordCode',
+            'createdAt',
+            'updatedAt',
+          ],
+        },
+        include: [
+          {
+            model: Address,
+            as: 'address',
+            attributes: {
+              exclude: [
+                'street',
+                'number',
+                'district',
+                'complement',
+                'zipCode',
+                'createdAt',
+                'updatedAt',
+              ],
+            },
+          }
+        ]
+      },
+      {
+        model: ProfilePicture,
+        as: 'picture',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+    ],
+    order: [[{ model: Tag, as: 'tags' }, 'name', 'ASC']],
+  };
+
+  const profiles = await Profile.findAll(options)
+
+  return profiles
+}
+
 const edit = async (user, profileData) => {
   await Profile.update(profileData, {
     where: {
@@ -183,4 +250,5 @@ module.exports = {
   addPosterId,
   removePosterId,
   getByPk,
+  getSpecificProfiles
 };

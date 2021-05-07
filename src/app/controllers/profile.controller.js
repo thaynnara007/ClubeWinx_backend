@@ -175,8 +175,20 @@ const getRecomendation = async (req, res) => {
     log.info(`Buscando a similaridade com o perfil de outros usuários a partir do endereço. userId=${user.id}`)
     const addressesSimilarity = await recomendationService.getAddressSimilarity(address)
 
+    log.info(`Buscando a similaridade com o perfil de outros usuários a partir das categorias. userId=${user.id}`)
+    const categoriesSimilarity = await recomendationService.getCategorySimilarity(profile.tags, profile.id)
 
-    return res.status(StatusCodes.OK).json(addressesSimilarity)
+    log.info(`Calculando perfils mais similares`)
+    const profilesSimilarities = recomendationService.getProfileSimilarity(
+      tagsSimilarity,
+      addressesSimilarity,
+      categoriesSimilarity
+    )
+
+    const recomendation = await recomendationService.recomendationProfile(profilesSimilarities)
+
+
+    return res.status(StatusCodes.OK).json(recomendation)
   } catch (error) {
     const errorMsg = 'Erro ao buscar perfils recomendados';
 
