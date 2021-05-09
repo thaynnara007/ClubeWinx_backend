@@ -90,7 +90,7 @@ const delet = async (req, res) => {
       log.info(
         `Deletando imagem do firebase. image_name=${existedPictures.image_name}`,
       );
-      await firebaseService.delet(existedPictures);
+      await firebaseService.delet(existedPictures.image_name);
 
       log.info(`Deletando imagem do bando da dados. posterId=${poster.id}`);
       await posterPictureService.delet(existedPictures);

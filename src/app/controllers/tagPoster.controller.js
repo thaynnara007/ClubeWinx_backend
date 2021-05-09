@@ -118,7 +118,7 @@ const createTags = async (req, res) => {
       `Inicializando adição das tags criadas pelo usuário ao Poster. userId=${user.id}`,
     );
 
-    let poster = await posterService.getByUserId(user.id);
+    const poster = await posterService.getByUserId(user.id);
 
     if (!poster) {
       return res
@@ -129,7 +129,7 @@ const createTags = async (req, res) => {
     log.info(`Relacionando as tags ao poster. posterId=${poster.id}`);
     await service.createTags(poster.id, tags);
 
-    posterUpdate = await posterService.getById(user.id, false);
+    const posterUpdate = await posterService.getById(user.id, false);
 
     log.info('Cadastro das tag realizado com sucesso');
 

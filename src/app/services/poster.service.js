@@ -1,19 +1,30 @@
-
 const { Op } = require('sequelize');
-const { Poster, User, Address, Tag, PosterPicture, Profile } = require('../models');
-
+const {
+  Poster,
+  User,
+  Address,
+  Tag,
+  PosterPicture,
+  Profile,
+} = require('../models');
 
 const getByUserId = async (userId) => {
   const poster = await Poster.findOne({
     where: {
       userId,
-    }, 
+    },
     include: [
       {
         model: Profile,
         as: 'profiles',
         attributes: {
-          exclude: ['userId','posterId','privateAtConnection','createdAt', 'updatedAt'],
+          exclude: [
+            'userId',
+            'posterId',
+            'privateAtConnection',
+            'createdAt',
+            'updatedAt',
+          ],
         },
       },
       {
@@ -27,10 +38,7 @@ const getByUserId = async (userId) => {
         model: PosterPicture,
         as: 'posterPictures',
         attributes: {
-          exclude: [
-            'createdAt',
-            'updatedAt',
-          ],
+          exclude: ['createdAt', 'updatedAt'],
         },
       },
     ],
@@ -56,7 +64,13 @@ const getById = async (posterId) => {
         model: Profile,
         as: 'profiles',
         attributes: {
-          exclude: ['userId','posterId','privateAtConnection','createdAt', 'updatedAt'],
+          exclude: [
+            'userId',
+            'posterId',
+            'privateAtConnection',
+            'createdAt',
+            'updatedAt',
+          ],
         },
       },
       {
@@ -70,10 +84,7 @@ const getById = async (posterId) => {
         model: PosterPicture,
         as: 'posterPictures',
         attributes: {
-          exclude: [
-            'createdAt',
-            'updatedAt',
-          ],
+          exclude: ['createdAt', 'updatedAt'],
         },
       },
     ],
@@ -86,7 +97,9 @@ const getById = async (posterId) => {
 const getAll = async (query) => {
   const page = parseInt(query.page, 10);
   const pageSize = parseInt(query.pageSize, 10);
-  const tags = query.tags !== null && query.tags !== undefined ? query.tags.map( tag => parseInt(tag,10) ) : null;
+  const tags = query.tags !== null && query.tags !== undefined
+    ? query.tags.map((tag) => parseInt(tag, 10))
+    : null;
 
   let offset = null;
   let posters = null;
@@ -94,7 +107,7 @@ const getAll = async (query) => {
   if (page && pageSize) offset = (page - 1) * pageSize;
 
   if (offset !== null && tags !== null) {
-    let optionsFilter = {
+    const optionsFilter = {
       include: [
         {
           model: User,
@@ -120,7 +133,7 @@ const getAll = async (query) => {
           where: {
             id: {
               [Op.in]: tags,
-            }
+            },
           },
           attributes: {
             exclude: ['createdAt', 'updatedAt'],
@@ -129,15 +142,15 @@ const getAll = async (query) => {
       ],
     };
 
-    posterFiltered = await Poster.findAll(optionsFilter);
-    
-    let posterIds = posterFiltered.map(poster => poster.dataValues.id);
+    const posterFiltered = await Poster.findAll(optionsFilter);
+
+    const posterIds = posterFiltered.map((poster) => poster.dataValues.id);
 
     let options = {
       where: {
         id: {
           [Op.or]: posterIds,
-        }
+        },
       },
       include: [
         {
@@ -162,13 +175,19 @@ const getAll = async (query) => {
             as: 'address',
           },
         },
-      {
-        model: Profile,
-        as: 'profiles',
-        attributes: {
-          exclude: ['userId','posterId','privateAtConnection','createdAt', 'updatedAt'],
+        {
+          model: Profile,
+          as: 'profiles',
+          attributes: {
+            exclude: [
+              'userId',
+              'posterId',
+              'privateAtConnection',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
         },
-      },
         {
           model: Tag,
           as: 'tags',
@@ -180,10 +199,7 @@ const getAll = async (query) => {
           model: PosterPicture,
           as: 'posterPictures',
           attributes: {
-            exclude: [
-              'createdAt',
-              'updatedAt',
-            ],
+            exclude: ['createdAt', 'updatedAt'],
           },
         },
       ],
@@ -195,62 +211,64 @@ const getAll = async (query) => {
       offset,
       distinct: true,
     };
-    
+
     posters = await Poster.findAndCountAll(options);
 
     posters.pages = Math.ceil(posters.count / pageSize);
-
   } else if (offset !== null && tags === null) {
     let options = {
-        include: [
-          {
-            model: User,
-            as: 'owner',
-            attributes: {
-              exclude: [
-                'name',
-                'lastname',
-                'birthday',
-                'email',
-                'phoneNumber',
-                'gender',
-                'passwordHash',
-                'forgetPasswordCode',
-                'createdAt',
-                'updatedAt',
-              ],
-            },
-            include: {
-              model: Address,
-              as: 'address',
-            },
+      include: [
+        {
+          model: User,
+          as: 'owner',
+          attributes: {
+            exclude: [
+              'name',
+              'lastname',
+              'birthday',
+              'email',
+              'phoneNumber',
+              'gender',
+              'passwordHash',
+              'forgetPasswordCode',
+              'createdAt',
+              'updatedAt',
+            ],
           },
+          include: {
+            model: Address,
+            as: 'address',
+          },
+        },
         {
           model: Profile,
           as: 'profiles',
           attributes: {
-            exclude: ['userId','posterId','privateAtConnection','createdAt', 'updatedAt'],
+            exclude: [
+              'userId',
+              'posterId',
+              'privateAtConnection',
+              'createdAt',
+              'updatedAt',
+            ],
           },
         },
-          {
-            model: Tag,
-            as: 'tags',
-            attributes: {
-              exclude: ['createdAt', 'updatedAt'],
-            },
+        {
+          model: Tag,
+          as: 'tags',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
           },
-          {
-            model: PosterPicture,
-            as: 'posterPictures',
-            attributes: {
-              exclude: [
-                'createdAt',
-                'updatedAt',
-              ],
-            },
+        },
+        {
+          model: PosterPicture,
+          as: 'posterPictures',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
           },
-        ],
-      };
+        },
+      ],
+    };
     options = {
       ...options,
       limit: pageSize,
@@ -261,7 +279,7 @@ const getAll = async (query) => {
 
     posters.pages = Math.ceil(posters.count / pageSize);
   } else if (offset === null && tags !== null) {
-    let optionsFilter = {
+    const optionsFilter = {
       include: [
         {
           model: User,
@@ -287,7 +305,7 @@ const getAll = async (query) => {
           where: {
             id: {
               [Op.in]: tags,
-            }
+            },
           },
           attributes: {
             exclude: ['createdAt', 'updatedAt'],
@@ -296,15 +314,15 @@ const getAll = async (query) => {
       ],
     };
 
-    posterFiltered = await Poster.findAll(optionsFilter);
-    
-    let posterIds = posterFiltered.map(poster => poster.dataValues.id);
+    const posterFiltered = await Poster.findAll(optionsFilter);
 
-    let options = {
+    const posterIds = posterFiltered.map((poster) => poster.dataValues.id);
+
+    const options = {
       where: {
         id: {
           [Op.or]: posterIds,
-        }
+        },
       },
       include: [
         {
@@ -329,13 +347,19 @@ const getAll = async (query) => {
             as: 'address',
           },
         },
-      {
-        model: Profile,
-        as: 'profiles',
-        attributes: {
-          exclude: ['userId','posterId','privateAtConnection','createdAt', 'updatedAt'],
+        {
+          model: Profile,
+          as: 'profiles',
+          attributes: {
+            exclude: [
+              'userId',
+              'posterId',
+              'privateAtConnection',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
         },
-      },
         {
           model: Tag,
           as: 'tags',
@@ -347,18 +371,15 @@ const getAll = async (query) => {
           model: PosterPicture,
           as: 'posterPictures',
           attributes: {
-            exclude: [
-              'createdAt',
-              'updatedAt',
-            ],
+            exclude: ['createdAt', 'updatedAt'],
           },
         },
       ],
     };
-    
+
     posters = await Poster.findAll(options);
   } else {
-    let options = {
+    const options = {
       include: [
         {
           model: User,
@@ -382,13 +403,19 @@ const getAll = async (query) => {
             as: 'address',
           },
         },
-      {
-        model: Profile,
-        as: 'profiles',
-        attributes: {
-          exclude: ['userId','posterId','privateAtConnection','createdAt', 'updatedAt'],
+        {
+          model: Profile,
+          as: 'profiles',
+          attributes: {
+            exclude: [
+              'userId',
+              'posterId',
+              'privateAtConnection',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
         },
-      },
         {
           model: Tag,
           as: 'tags',
@@ -400,10 +427,7 @@ const getAll = async (query) => {
           model: PosterPicture,
           as: 'posterPictures',
           attributes: {
-            exclude: [
-              'createdAt',
-              'updatedAt',
-            ],
+            exclude: ['createdAt', 'updatedAt'],
           },
         },
       ],

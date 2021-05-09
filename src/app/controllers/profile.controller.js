@@ -80,35 +80,35 @@ const getMyProfile = async (req, res) => {
   }
 };
 
-const getAllProfile = async (req,res) => {
+const getAllProfile = async (req, res) => {
   // #swagger.tags = ['Profile']
   // #swagger.description = 'Endpoint para buscar todos os perfis.'
   // #swagger.security = [{ 'Bearer': [] }]
   /* #swagger.responses[200] = {
             schema: { $ref: "#/definitions/PosterAll" },
             description: 'Anuncios encontrado.'
-        } */ 
-        try {
-          const { query } = req;
-      
-          log.info('Iniciando busca pelos Perfis.');
-          log.info('Buscando Perfis.');
-      
-          const posters = await profileService.getAll(query);
-      
-          log.info('Busca finalizada com sucesso');
-      
-          return res.status(StatusCodes.OK).json(posters);
-        } catch (error) {
-          const errorMsg = 'Erro ao buscar todos os anúncio';
-      
-          log.error(errorMsg, 'app/controllers/poster.controller.js', error.message);
-      
-          return res
-            .status(StatusCodes.INTERNAL_SERVER_ERROR)
-            .json({ error: `${errorMsg} ${error.message}` });
-        }
-}
+        } */
+  try {
+    const { query } = req;
+
+    log.info('Iniciando busca pelos Perfis.');
+    log.info('Buscando Perfis.');
+
+    const posters = await profileService.getAll(query);
+
+    log.info('Busca finalizada com sucesso');
+
+    return res.status(StatusCodes.OK).json(posters);
+  } catch (error) {
+    const errorMsg = 'Erro ao buscar todos os anúncio';
+
+    log.error(errorMsg, 'app/controllers/poster.controller.js', error.message);
+
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: `${errorMsg} ${error.message}` });
+  }
+};
 
 const getProfileByUserId = async (req, res) => {
   // #swagger.tags = ['Profile']
@@ -137,11 +137,6 @@ const getProfileByUserId = async (req, res) => {
       userId,
     );
     const profile = await profileService.getByUserId(userId);
-
-    let privateInfo = true;
-
-    if (!profile.privateAtConnection) privateInfo = false;
-    else if (connection && connection.accepted) privateInfo = false;
 
     let result = await profileService.getById(user);
 

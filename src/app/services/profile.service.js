@@ -1,7 +1,7 @@
+const { Op } = require('sequelize');
 const {
   Profile, ProfilePicture, Tag, User,
 } = require('../models');
-const { Op } = require('sequelize');
 const log = require('./log.service');
 const util = require('./util.service');
 const addressService = require('./address.service');
@@ -144,10 +144,10 @@ const edit = async (user, profileData) => {
   return getById(user, false);
 };
 
-const addProfileId = async (profile, ProfileId) => {
+const addPosterId = async (profile, posterId) => {
   const myProfile = profile;
 
-  myProfile.ProfileId = ProfileId;
+  myProfile.posterId = posterId;
 
   return myProfile.save();
 };
@@ -171,7 +171,9 @@ const delet = async (userId) => {
 const getAll = async (query) => {
   const page = parseInt(query.page, 10);
   const pageSize = parseInt(query.pageSize, 10);
-  const tags = query.tags !== null && query.tags !== undefined ? query.tags.map( tag => parseInt(tag,10) ) : null;
+  const tags = query.tags !== null && query.tags !== undefined
+    ? query.tags.map((tag) => parseInt(tag, 10))
+    : null;
 
   let offset = null;
   let profilesFiltered = null;
@@ -179,7 +181,7 @@ const getAll = async (query) => {
   if (page && pageSize) offset = (page - 1) * pageSize;
 
   if (offset !== null && tags !== null) {
-    let optionsFilter = {
+    const optionsFilter = {
       include: [
         {
           model: Tag,
@@ -187,7 +189,7 @@ const getAll = async (query) => {
           where: {
             id: {
               [Op.in]: tags,
-            }
+            },
           },
           attributes: {
             exclude: ['createdAt', 'updatedAt'],
@@ -196,15 +198,15 @@ const getAll = async (query) => {
       ],
     };
 
-    profiles = await Profile.findAll(optionsFilter);
-    
-    let profilesIds = profiles.map(profile => profile.dataValues.id);
+    const profiles = await Profile.findAll(optionsFilter);
+
+    const profilesIds = profiles.map((profile) => profile.dataValues.id);
 
     let options = {
       where: {
         id: {
           [Op.or]: profilesIds,
-        }
+        },
       },
       include: [
         {
@@ -223,11 +225,10 @@ const getAll = async (query) => {
       offset,
       distinct: true,
     };
-    
+
     profilesFiltered = await Profile.findAndCountAll(options);
 
     profilesFiltered.pages = Math.ceil(profilesFiltered.count / pageSize);
-
   } else if (offset !== null && tags === null) {
     let options = {
       include: [
@@ -251,7 +252,7 @@ const getAll = async (query) => {
 
     profilesFiltered.pages = Math.ceil(profilesFiltered.count / pageSize);
   } else if (offset === null && tags !== null) {
-    let optionsFilter = {
+    const optionsFilter = {
       include: [
         {
           model: Tag,
@@ -259,7 +260,7 @@ const getAll = async (query) => {
           where: {
             id: {
               [Op.in]: tags,
-            }
+            },
           },
           attributes: {
             exclude: ['createdAt', 'updatedAt'],
@@ -268,15 +269,15 @@ const getAll = async (query) => {
       ],
     };
 
-    profiles = await Profile.findAll(optionsFilter);
-    
-    let profileIds = profiles.map(Profile => Profile.dataValues.id);
+    const profiles = await Profile.findAll(optionsFilter);
 
-    let options = {
+    const profileIds = profiles.map((profile) => profile.dataValues.id);
+
+    const options = {
       where: {
         id: {
           [Op.or]: profileIds,
-        }
+        },
       },
       include: [
         {
@@ -288,10 +289,10 @@ const getAll = async (query) => {
         },
       ],
     };
-    
+
     profilesFiltered = await Profile.findAll(options);
   } else {
-    let options = {
+    const options = {
       include: [
         {
           model: Tag,
@@ -315,8 +316,8 @@ module.exports = {
   delet,
   getByUserId,
   getResidents,
-  addProfileId,
+  addPosterId,
   removeProfileId,
   getByPk,
-  getAll
+  getAll,
 };
