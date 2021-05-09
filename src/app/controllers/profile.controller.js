@@ -58,7 +58,7 @@ const getMyProfile = async (req, res) => {
     const { user } = req;
 
     log.info(`Iniciando busca pelo perfil. userId=${user.id}`);
-    const profile = await profileService.getById(user, false);
+    const profile = await profileService.getById(user);
 
     if (!profile) {
       return res
@@ -111,6 +111,13 @@ const getAllProfile = async (req,res) => {
 }
 
 const getProfileByUserId = async (req, res) => {
+  // #swagger.tags = ['Profile']
+  // #swagger.description = 'Endpoint para user buscar perfil de outro usuario.'
+  // #swagger.security = [{ 'Bearer': [] }]
+  /* #swagger.responses[200] = {
+            schema: { $ref: "#/definitions/OtherProfile" },
+            description: 'Perfil encontrado.'
+        } */
   try {
     const { userId } = req.params;
 
@@ -136,7 +143,7 @@ const getProfileByUserId = async (req, res) => {
     if (!profile.privateAtConnection) privateInfo = false;
     else if (connection && connection.accepted) privateInfo = false;
 
-    let result = await profileService.getById(user, privateInfo);
+    let result = await profileService.getById(user);
 
     if (!profile) {
       return res

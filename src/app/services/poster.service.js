@@ -1,5 +1,7 @@
-const { Poster, User, Address, Tag, PosterPicture } = require('../models');
+
 const { Op } = require('sequelize');
+const { Poster, User, Address, Tag, PosterPicture, Profile } = require('../models');
+
 
 const getByUserId = async (userId) => {
   const poster = await Poster.findOne({
@@ -7,6 +9,13 @@ const getByUserId = async (userId) => {
       userId,
     }, 
     include: [
+      {
+        model: Profile,
+        as: 'profiles',
+        attributes: {
+          exclude: ['userId','posterId','privateAtConnection','createdAt', 'updatedAt'],
+        },
+      },
       {
         model: Tag,
         as: 'tags',
@@ -43,6 +52,13 @@ const getById = async (posterId) => {
       id: posterId,
     },
     include: [
+      {
+        model: Profile,
+        as: 'profiles',
+        attributes: {
+          exclude: ['userId','posterId','privateAtConnection','createdAt', 'updatedAt'],
+        },
+      },
       {
         model: Tag,
         as: 'tags',
@@ -146,6 +162,13 @@ const getAll = async (query) => {
             as: 'address',
           },
         },
+      {
+        model: Profile,
+        as: 'profiles',
+        attributes: {
+          exclude: ['userId','posterId','privateAtConnection','createdAt', 'updatedAt'],
+        },
+      },
         {
           model: Tag,
           as: 'tags',
@@ -179,48 +202,55 @@ const getAll = async (query) => {
 
   } else if (offset !== null && tags === null) {
     let options = {
-      include: [
-        {
-          model: User,
-          as: 'owner',
-          attributes: {
-            exclude: [
-              'name',
-              'lastname',
-              'birthday',
-              'email',
-              'phoneNumber',
-              'gender',
-              'passwordHash',
-              'forgetPasswordCode',
-              'createdAt',
-              'updatedAt',
-            ],
+        include: [
+          {
+            model: User,
+            as: 'owner',
+            attributes: {
+              exclude: [
+                'name',
+                'lastname',
+                'birthday',
+                'email',
+                'phoneNumber',
+                'gender',
+                'passwordHash',
+                'forgetPasswordCode',
+                'createdAt',
+                'updatedAt',
+              ],
+            },
+            include: {
+              model: Address,
+              as: 'address',
+            },
           },
-          include: {
-            model: Address,
-            as: 'address',
+        {
+          model: Profile,
+          as: 'profiles',
+          attributes: {
+            exclude: ['userId','posterId','privateAtConnection','createdAt', 'updatedAt'],
           },
         },
-        {
-          model: Tag,
-          as: 'tags',
-          attributes: {
-            exclude: ['createdAt', 'updatedAt'],
+          {
+            model: Tag,
+            as: 'tags',
+            attributes: {
+              exclude: ['createdAt', 'updatedAt'],
+            },
           },
-        },
-        {
-          model: PosterPicture,
-          as: 'posterPictures',
-          attributes: {
-            exclude: [
-              'createdAt',
-              'updatedAt',
-            ],
+          {
+            model: PosterPicture,
+            as: 'posterPictures',
+            attributes: {
+              exclude: [
+                'createdAt',
+                'updatedAt',
+              ],
+            },
           },
-        },
-      ],
-    };
+        ],
+      };
     options = {
       ...options,
       limit: pageSize,
@@ -299,6 +329,13 @@ const getAll = async (query) => {
             as: 'address',
           },
         },
+      {
+        model: Profile,
+        as: 'profiles',
+        attributes: {
+          exclude: ['userId','posterId','privateAtConnection','createdAt', 'updatedAt'],
+        },
+      },
         {
           model: Tag,
           as: 'tags',
@@ -340,12 +377,33 @@ const getAll = async (query) => {
               'updatedAt',
             ],
           },
+          include: {
+            model: Address,
+            as: 'address',
+          },
         },
+      {
+        model: Profile,
+        as: 'profiles',
+        attributes: {
+          exclude: ['userId','posterId','privateAtConnection','createdAt', 'updatedAt'],
+        },
+      },
         {
           model: Tag,
           as: 'tags',
           attributes: {
             exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+        {
+          model: PosterPicture,
+          as: 'posterPictures',
+          attributes: {
+            exclude: [
+              'createdAt',
+              'updatedAt',
+            ],
           },
         },
       ],

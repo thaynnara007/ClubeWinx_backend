@@ -7,7 +7,7 @@ const util = require('./util.service');
 const addressService = require('./address.service');
 const profilePictureService = require('./profilePicture.service');
 
-const mountProfilejson = async (profile, user, privateInfo = true) => {
+const mountProfilejson = async (profile, user) => {
   log.info(`Montando json de retorno do profile do usuário. userId=${user.id}`);
 
   log.info(`Buscando endereço do usuário. userId=${user.id}`);
@@ -22,14 +22,6 @@ const mountProfilejson = async (profile, user, privateInfo = true) => {
   const bday = util.formatDate(user.birthday);
   let result = {};
 
-  if (!privateInfo) {
-    result = {
-      ...result,
-      phoneNumber: user.phoneNumber,
-      email: user.email,
-    };
-  }
-
   if (picture) {
     result = {
       ...result,
@@ -41,6 +33,8 @@ const mountProfilejson = async (profile, user, privateInfo = true) => {
     ...result,
     name: user.name,
     lastname: user.lastname,
+    phoneNumber: user.phoneNumber,
+    email: user.email,
     birthday: bday,
     gender: user.gender,
     ...profile.dataValues,
@@ -53,7 +47,7 @@ const mountProfilejson = async (profile, user, privateInfo = true) => {
   return result;
 };
 
-const getById = async (user, privateInfo = true) => {
+const getById = async (user) => {
   const profile = await Profile.findOne({
     where: {
       userId: user.id,
@@ -70,7 +64,7 @@ const getById = async (user, privateInfo = true) => {
     order: [[{ model: Tag, as: 'tags' }, 'name', 'ASC']],
   });
 
-  const result = await mountProfilejson(profile, user, privateInfo);
+  const result = await mountProfilejson(profile, user);
 
   return result;
 };
