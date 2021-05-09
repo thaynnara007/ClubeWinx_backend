@@ -47,6 +47,20 @@ const deleteTag = async (posterId, tagId) => {
   } else posterTag.destroy();
 };
 
+const createTags = async (posterId, tags) => {
+  await Promise.all(
+    tags.map(async (tagInfo) => {
+      let tag = await tagService.getByName(tagInfo.name);
+
+      if (!tag) {
+        log.info(`Criando tag ${tagInfo.name} no banco de dados`);
+        tag = await tagService.create(tagInfo);
+      }
+      await addTag(posterId, tag.id);
+    }),
+  );
+};
+
 const removeTags = async (posterId, tagIds) => {
   await Promise.all(
     tagIds.map(async (tagId) => {
@@ -58,4 +72,5 @@ const removeTags = async (posterId, tagIds) => {
 module.exports = {
   addTags,
   removeTags,
+  createTags,
 };

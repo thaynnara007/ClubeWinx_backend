@@ -547,6 +547,28 @@
         ]
       }
     },
+    "/user/poster/me/create/tags": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tags": {
+                  "type": "string",
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
     "/auth/login": {
       "post": {
         "tags": [],
@@ -729,7 +751,7 @@
         "tags": [
           "Profile"
         ],
-        "description": "Endpoint para buscar perfil.",
+        "description": "Endpoint para buscar todos os perfis.",
         "parameters": [],
         "responses": {
           "200": {
@@ -791,22 +813,27 @@
         }
       }
     },
-    "/profile/{userId}": {
-      "get": {
-        "tags": [],
-        "description": "",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {}
-      }
-    },
     "/profile/": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "description": "Endpoint para buscar todos os perfis.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/PosterAll"
+            },
+            "description": "Anuncios encontrado."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      },
       "post": {
         "tags": [
           "Profile"
@@ -832,6 +859,35 @@
             "description": "Novo perfil criado."
           }
         }
+      }
+    },
+    "/profile/{userId}": {
+      "get": {
+        "tags": [
+          "Profile"
+        ],
+        "description": "Endpoint para user buscar perfil de outro usuario.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/OtherProfile"
+            },
+            "description": "Perfil encontrado."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/profile/me/add/tags": {
@@ -862,24 +918,35 @@
     },
     "/profile/me/create/tags": {
       "post": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "TagProfile"
+        ],
+        "description": "Endpoint para adicionar uma nova tag a um perfil.",
         "parameters": [
           {
-            "name": "obj",
+            "name": "newTags",
             "in": "body",
+            "description": "Informações das tags.",
+            "required": true,
+            "type": "object",
             "schema": {
-              "type": "object",
-              "properties": {
-                "tags": {
-                  "type": "string",
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/CreateTags"
             }
           }
         ],
-        "responses": {}
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/NewTags"
+            },
+            "description": "Nova tag adicionada ao perfil."
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
       }
     },
     "/profile/me/remove/tags": {
@@ -1381,6 +1448,100 @@
         }
       }
     },
+    "OtherProfile": {
+      "type": "object",
+      "properties": {
+        "connection": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "example": 3
+            },
+            "accepted": {
+              "type": "boolean",
+              "example": true
+            },
+            "requestedUserId": {
+              "type": "number",
+              "example": 1
+            },
+            "sendedUserId": {
+              "type": "number",
+              "example": 3
+            }
+          }
+        },
+        "email": {
+          "type": "string",
+          "example": "finn_the_human@gmail.com"
+        },
+        "picture": {
+          "type": "string",
+          "example": "https://firebasestorage.googleapis.com/v0/b/homemate-55271.appspot.com/o/finn.jpg?alt=media&token=10621565-fb77-43cd-9f0b-844c06903a2c"
+        },
+        "name": {
+          "type": "string",
+          "example": "Finn"
+        },
+        "lastname": {
+          "type": "string",
+          "example": "The Human"
+        },
+        "gender": {
+          "type": "string",
+          "example": "Masculino"
+        },
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "socialMedia": {
+          "type": "string",
+          "example": "https://instagram.com/adventuretime?igshid=1ti2rgx3xdt9n"
+        },
+        "description": {
+          "type": "string",
+          "example": "I am a human boy, who lives in a tree house with my brother, Jake, we have an adventure business together. I am good with people and know how to cook, though jake knows it more"
+        },
+        "privateAtConnection": {
+          "type": "boolean",
+          "example": false
+        },
+        "posterId": {
+          "type": "number",
+          "example": 1
+        },
+        "userId": {
+          "type": "number",
+          "example": 1
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 12
+              },
+              "name": {
+                "type": "string",
+                "example": "UFCG"
+              },
+              "isFixed": {
+                "type": "boolean",
+                "example": true
+              },
+              "categoryId": {
+                "type": "number",
+                "example": 3
+              }
+            }
+          }
+        }
+      }
+    },
     "NewCategory": {
       "type": "object",
       "properties": {
@@ -1711,6 +1872,72 @@
           ],
           "items": {
             "type": "number"
+          }
+        }
+      }
+    },
+    "NewTags": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Marceline"
+        },
+        "gender": {
+          "type": "string",
+          "example": "Feminino"
+        },
+        "id": {
+          "type": "number",
+          "example": 5
+        },
+        "privateAtConnection": {
+          "type": "boolean",
+          "example": true
+        },
+        "userId": {
+          "type": "number",
+          "example": 3
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number",
+                "example": 12
+              },
+              "name": {
+                "type": "string",
+                "example": "UFCG"
+              },
+              "categoryId": {
+                "type": "number",
+                "example": 3
+              }
+            }
+          }
+        }
+      }
+    },
+    "CreateTags": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "UFCG"
+              },
+              "categoryId": {
+                "type": "number",
+                "example": 4
+              }
+            }
           }
         }
       }

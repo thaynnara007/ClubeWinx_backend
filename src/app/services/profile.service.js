@@ -1,6 +1,7 @@
 const {
   Profile, ProfilePicture, Tag, User,
 } = require('../models');
+const { Op } = require('sequelize');
 const log = require('./log.service');
 const util = require('./util.service');
 const addressService = require('./address.service');
@@ -84,10 +85,10 @@ const getByUserId = async (userId) => {
   return profile;
 };
 
-const getResidents = async (posterId) => {
+const getResidents = async (ProfileId) => {
   const options = {
     where: {
-      posterId,
+      ProfileId,
     },
     include: [
       {
@@ -143,18 +144,18 @@ const edit = async (user, profileData) => {
   return getById(user, false);
 };
 
-const addPosterId = async (profile, posterId) => {
+const addProfileId = async (profile, ProfileId) => {
   const myProfile = profile;
 
-  myProfile.posterId = posterId;
+  myProfile.ProfileId = ProfileId;
 
   return myProfile.save();
 };
 
-const removePosterId = async (profile) => {
+const removeProfileId = async (profile) => {
   const targetProfile = profile;
 
-  targetProfile.posterId = null;
+  targetProfile.ProfileId = null;
 
   return targetProfile.save();
 };
@@ -167,6 +168,146 @@ const delet = async (userId) => {
   return profile.destroy();
 };
 
+const getAll = async (query) => {
+  const page = parseInt(query.page, 10);
+  const pageSize = parseInt(query.pageSize, 10);
+  const tags = query.tags !== null && query.tags !== undefined ? query.tags.map( tag => parseInt(tag,10) ) : null;
+
+  let offset = null;
+  let profilesFiltered = null;
+
+  if (page && pageSize) offset = (page - 1) * pageSize;
+
+  if (offset !== null && tags !== null) {
+    let optionsFilter = {
+      include: [
+        {
+          model: Tag,
+          as: 'tags',
+          where: {
+            id: {
+              [Op.in]: tags,
+            }
+          },
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+
+    profiles = await Profile.findAll(optionsFilter);
+    
+    let profilesIds = profiles.map(profile => profile.dataValues.id);
+
+    let options = {
+      where: {
+        id: {
+          [Op.or]: profilesIds,
+        }
+      },
+      include: [
+        {
+          model: Tag,
+          as: 'tags',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+
+    options = {
+      ...options,
+      limit: pageSize,
+      offset,
+      distinct: true,
+    };
+    
+    profilesFiltered = await Profile.findAndCountAll(options);
+
+    profilesFiltered.pages = Math.ceil(profilesFiltered.count / pageSize);
+
+  } else if (offset !== null && tags === null) {
+    let options = {
+      include: [
+        {
+          model: Tag,
+          as: 'tags',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+
+    options = {
+      ...options,
+      limit: pageSize,
+      offset,
+      distinct: true,
+    };
+    profilesFiltered = await Profile.findAndCountAll(options);
+
+    profilesFiltered.pages = Math.ceil(profilesFiltered.count / pageSize);
+  } else if (offset === null && tags !== null) {
+    let optionsFilter = {
+      include: [
+        {
+          model: Tag,
+          as: 'tags',
+          where: {
+            id: {
+              [Op.in]: tags,
+            }
+          },
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+
+    profiles = await Profile.findAll(optionsFilter);
+    
+    let profileIds = profiles.map(Profile => Profile.dataValues.id);
+
+    let options = {
+      where: {
+        id: {
+          [Op.or]: profileIds,
+        }
+      },
+      include: [
+        {
+          model: Tag,
+          as: 'tags',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+    
+    profilesFiltered = await Profile.findAll(options);
+  } else {
+    let options = {
+      include: [
+        {
+          model: Tag,
+          as: 'tags',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+    profilesFiltered = await Profile.findAll(options);
+  }
+
+  return profilesFiltered;
+};
+
 module.exports = {
   create,
   getById,
@@ -174,7 +315,8 @@ module.exports = {
   delet,
   getByUserId,
   getResidents,
-  addPosterId,
-  removePosterId,
+  addProfileId,
+  removeProfileId,
   getByPk,
+  getAll
 };

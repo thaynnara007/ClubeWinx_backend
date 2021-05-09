@@ -109,7 +109,48 @@ const removeTags = async (req, res) => {
   }
 };
 
+const createTags = async (req, res) => {
+  try {
+    const { user } = req;
+    const { tags } = req.body;
+
+    log.info(
+      `Inicializando adição das tags criadas pelo usuário ao Poster. userId=${user.id}`,
+    );
+
+    let poster = await posterService.getByUserId(user.id);
+
+    if (!poster) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: 'Perfil não encontrado' });
+    }
+
+    log.info(`Relacionando as tags ao poster. posterId=${poster.id}`);
+    await service.createTags(poster.id, tags);
+
+    posterUpdate = await posterService.getById(user.id, false);
+
+    log.info('Cadastro das tag realizado com sucesso');
+
+    return res.status(StatusCodes.OK).json(posterUpdate);
+  } catch (error) {
+    const errorMsg = 'Erro ao adicionar tags criadas pelo usuário ao perfil';
+
+    log.error(
+      errorMsg,
+      'app/controllers/tagProfile.controller.js',
+      error.message,
+    );
+
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: `${errorMsg} ${error.message}` });
+  }
+};
+
 module.exports = {
   addTags,
   removeTags,
+  createTags,
 };

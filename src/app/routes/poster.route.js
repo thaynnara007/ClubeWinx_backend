@@ -35,4 +35,10 @@ router.put('/me/remove/tags/', auth.verifyToken, tagPosterController.removeTags,
 router.post('/me/picture', auth.verifyToken, multer.single('file'), posterPictureController.create);
 router.delete('/me/picture/:pictureId', auth.verifyToken, posterPictureController.delet);
 
+router.post(
+  '/me/create/tags',
+  auth.verifyToken,
+  tagPosterController.createTags,
+);
+
 module.exports = router;
