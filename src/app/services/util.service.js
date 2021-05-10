@@ -151,6 +151,8 @@ const capitalizeFirstLetter = (string) =>
 
 const formatDate = (date) => moment(date).format(DATE_FORMAT);
 
+const normalizeQuery = (query) => query.replace(/\+/g, ' ')
+
 module.exports = {
   getDate,
   formatDate,
@@ -159,6 +161,7 @@ module.exports = {
   transformUnit,
   getRandomNumber,
   capitalizeFirstLetter,
+  normalizeQuery,
   DATE_FORMAT,
   FORGET_PASSWORD_CODE_MAX,
   FORGET_PASSWORD_CODE_MIN,
