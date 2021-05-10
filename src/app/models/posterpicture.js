@@ -17,12 +17,12 @@ module.exports = (sequelize, DataTypes) => {
           return `https://firebasestorage.googleapis.com/v0/b/${
             FIREBASE.storageBucket
           }/o/${this.getDataValue(
-            'image_name',
+            'image_name'
           )}?alt=media&token=${this.getDataValue('token')}`;
         },
       },
     },
-    {},
+    {}
   );
   PosterPicture.associate = (models) => {
     PosterPicture.belongsTo(models.Poster, {

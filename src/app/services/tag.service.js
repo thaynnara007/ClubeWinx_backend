@@ -11,8 +11,8 @@ const getByName = async (name) => {
   const tag = await Tag.findOne({
     where: {
       name: {
-        [Op.iLike]: name
-      }
+        [Op.iLike]: name,
+      },
     },
   });
 

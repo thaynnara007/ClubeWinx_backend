@@ -1,5 +1,11 @@
+const { Op } = require('sequelize');
 const {
-  Poster, User, Address, Tag, PosterPicture,
+  Poster,
+  User,
+  Address,
+  Tag,
+  PosterPicture,
+  Profile,
 } = require('../models');
 
 const getByUserId = async (userId) => {
@@ -8,6 +14,19 @@ const getByUserId = async (userId) => {
       userId,
     },
     include: [
+      {
+        model: Profile,
+        as: 'profiles',
+        attributes: {
+          exclude: [
+            'userId',
+            'posterId',
+            'privateAtConnection',
+            'createdAt',
+            'updatedAt',
+          ],
+        },
+      },
       {
         model: Tag,
         as: 'tags',
@@ -42,6 +61,19 @@ const getById = async (posterId) => {
     },
     include: [
       {
+        model: Profile,
+        as: 'profiles',
+        attributes: {
+          exclude: [
+            'userId',
+            'posterId',
+            'privateAtConnection',
+            'createdAt',
+            'updatedAt',
+          ],
+        },
+      },
+      {
         model: Tag,
         as: 'tags',
         attributes: {
@@ -65,56 +97,179 @@ const getById = async (posterId) => {
 const getAll = async (query) => {
   const page = parseInt(query.page, 10);
   const pageSize = parseInt(query.pageSize, 10);
+  const tags =
+    query.tags !== null && query.tags !== undefined
+      ? query.tags.map((tag) => parseInt(tag, 10))
+      : null;
+
   let offset = null;
   let posters = null;
-  let options = {
-    include: [
-      {
-        model: User,
-        as: 'owner',
-        attributes: {
-          exclude: [
-            'name',
-            'lastname',
-            'birthday',
-            'email',
-            'phoneNumber',
-            'gender',
-            'passwordHash',
-            'forgetPasswordCode',
-            'createdAt',
-            'updatedAt',
-          ],
-        },
-        include: {
-          model: Address,
-          as: 'address',
-        },
-      },
-      {
-        model: Tag,
-        as: 'tags',
-        attributes: {
-          exclude: ['createdAt', 'updatedAt'],
-        },
-      },
-      {
-        model: PosterPicture,
-        as: 'posterPictures',
-        attributes: {
-          exclude: ['createdAt', 'updatedAt'],
-        },
-      },
-    ],
-    // order: [
-    //   ['name', 'ASC'],
-    //   [{ model: Tag, as: 'tags' }, 'name', 'ASC'],
-    // ],
-  };
 
   if (page && pageSize) offset = (page - 1) * pageSize;
 
-  if (offset !== null) {
+  if (offset !== null && tags !== null) {
+    const optionsFilter = {
+      include: [
+        {
+          model: User,
+          as: 'owner',
+          attributes: {
+            exclude: [
+              'name',
+              'lastname',
+              'birthday',
+              'email',
+              'phoneNumber',
+              'gender',
+              'passwordHash',
+              'forgetPasswordCode',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+        },
+        {
+          model: Tag,
+          as: 'tags',
+          where: {
+            id: {
+              [Op.in]: tags,
+            },
+          },
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+
+    const posterFiltered = await Poster.findAll(optionsFilter);
+
+    const posterIds = posterFiltered.map((poster) => poster.dataValues.id);
+
+    let options = {
+      where: {
+        id: {
+          [Op.or]: posterIds,
+        },
+      },
+      include: [
+        {
+          model: User,
+          as: 'owner',
+          attributes: {
+            exclude: [
+              'name',
+              'lastname',
+              'birthday',
+              'email',
+              'phoneNumber',
+              'gender',
+              'passwordHash',
+              'forgetPasswordCode',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+          include: {
+            model: Address,
+            as: 'address',
+          },
+        },
+        {
+          model: Profile,
+          as: 'profiles',
+          attributes: {
+            exclude: [
+              'userId',
+              'posterId',
+              'privateAtConnection',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+        },
+        {
+          model: Tag,
+          as: 'tags',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+        {
+          model: PosterPicture,
+          as: 'posterPictures',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+
+    options = {
+      ...options,
+      limit: pageSize,
+      offset,
+      distinct: true,
+    };
+
+    posters = await Poster.findAndCountAll(options);
+
+    posters.pages = Math.ceil(posters.count / pageSize);
+  } else if (offset !== null && tags === null) {
+    let options = {
+      include: [
+        {
+          model: User,
+          as: 'owner',
+          attributes: {
+            exclude: [
+              'name',
+              'lastname',
+              'birthday',
+              'email',
+              'phoneNumber',
+              'gender',
+              'passwordHash',
+              'forgetPasswordCode',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+          include: {
+            model: Address,
+            as: 'address',
+          },
+        },
+        {
+          model: Profile,
+          as: 'profiles',
+          attributes: {
+            exclude: [
+              'userId',
+              'posterId',
+              'privateAtConnection',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+        },
+        {
+          model: Tag,
+          as: 'tags',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+        {
+          model: PosterPicture,
+          as: 'posterPictures',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
     options = {
       ...options,
       limit: pageSize,
@@ -124,7 +279,160 @@ const getAll = async (query) => {
     posters = await Poster.findAndCountAll(options);
 
     posters.pages = Math.ceil(posters.count / pageSize);
+  } else if (offset === null && tags !== null) {
+    const optionsFilter = {
+      include: [
+        {
+          model: User,
+          as: 'owner',
+          attributes: {
+            exclude: [
+              'name',
+              'lastname',
+              'birthday',
+              'email',
+              'phoneNumber',
+              'gender',
+              'passwordHash',
+              'forgetPasswordCode',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+        },
+        {
+          model: Tag,
+          as: 'tags',
+          where: {
+            id: {
+              [Op.in]: tags,
+            },
+          },
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+
+    const posterFiltered = await Poster.findAll(optionsFilter);
+
+    const posterIds = posterFiltered.map((poster) => poster.dataValues.id);
+
+    const options = {
+      where: {
+        id: {
+          [Op.or]: posterIds,
+        },
+      },
+      include: [
+        {
+          model: User,
+          as: 'owner',
+          attributes: {
+            exclude: [
+              'name',
+              'lastname',
+              'birthday',
+              'email',
+              'phoneNumber',
+              'gender',
+              'passwordHash',
+              'forgetPasswordCode',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+          include: {
+            model: Address,
+            as: 'address',
+          },
+        },
+        {
+          model: Profile,
+          as: 'profiles',
+          attributes: {
+            exclude: [
+              'userId',
+              'posterId',
+              'privateAtConnection',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+        },
+        {
+          model: Tag,
+          as: 'tags',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+        {
+          model: PosterPicture,
+          as: 'posterPictures',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+
+    posters = await Poster.findAll(options);
   } else {
+    const options = {
+      include: [
+        {
+          model: User,
+          as: 'owner',
+          attributes: {
+            exclude: [
+              'name',
+              'lastname',
+              'birthday',
+              'email',
+              'phoneNumber',
+              'gender',
+              'passwordHash',
+              'forgetPasswordCode',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+          include: {
+            model: Address,
+            as: 'address',
+          },
+        },
+        {
+          model: Profile,
+          as: 'profiles',
+          attributes: {
+            exclude: [
+              'userId',
+              'posterId',
+              'privateAtConnection',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+        },
+        {
+          model: Tag,
+          as: 'tags',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+        {
+          model: PosterPicture,
+          as: 'posterPictures',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
     posters = await Poster.findAll(options);
   }
 

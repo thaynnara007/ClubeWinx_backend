@@ -1,17 +1,11 @@
-const {
-  Profile, 
-  ProfilePicture, 
-  Tag,
-  User,
-  Address
-} = require('../models');
+const { Op } = require('sequelize');
+const { Profile, ProfilePicture, Tag, User, Address } = require('../models');
 const log = require('./log.service');
 const util = require('./util.service');
 const addressService = require('./address.service');
 const profilePictureService = require('./profilePicture.service');
-const { Op } = require('sequelize');
 
-const mountProfilejson = async (profile, user, privateInfo = true) => {
+const mountProfilejson = async (profile, user) => {
   log.info(`Montando json de retorno do profile do usuário. userId=${user.id}`);
 
   log.info(`Buscando endereço do usuário. userId=${user.id}`);
@@ -26,14 +20,6 @@ const mountProfilejson = async (profile, user, privateInfo = true) => {
   const bday = util.formatDate(user.birthday);
   let result = {};
 
-  if (!privateInfo) {
-    result = {
-      ...result,
-      phoneNumber: user.phoneNumber,
-      email: user.email,
-    };
-  }
-
   if (picture) {
     result = {
       ...result,
@@ -45,6 +31,8 @@ const mountProfilejson = async (profile, user, privateInfo = true) => {
     ...result,
     name: user.name,
     lastname: user.lastname,
+    phoneNumber: user.phoneNumber,
+    email: user.email,
     birthday: bday,
     gender: user.gender,
     ...profile.dataValues,
@@ -57,7 +45,7 @@ const mountProfilejson = async (profile, user, privateInfo = true) => {
   return result;
 };
 
-const getById = async (user, privateInfo = true) => {
+const getById = async (user) => {
   const profile = await Profile.findOne({
     where: {
       userId: user.id,
@@ -74,7 +62,7 @@ const getById = async (user, privateInfo = true) => {
     order: [[{ model: Tag, as: 'tags' }, 'name', 'ASC']],
   });
 
-  const result = await mountProfilejson(profile, user, privateInfo);
+  const result = await mountProfilejson(profile, user);
 
   return result;
 };
@@ -95,10 +83,10 @@ const getByUserId = async (userId) => {
   return profile;
 };
 
-const getResidents = async (posterId) => {
+const getResidents = async (ProfileId) => {
   const options = {
     where: {
-      posterId,
+      ProfileId,
     },
     include: [
       {
@@ -138,18 +126,19 @@ const getResidents = async (posterId) => {
   return residents;
 };
 
-const getByPk = async (id) => Profile.findOne({
-  where: {
-    id,
-  },
-});
+const getByPk = async (id) =>
+  Profile.findOne({
+    where: {
+      id,
+    },
+  });
 
 const getSpecificProfiles = async (profilesIds) => {
   const options = {
     where: {
       id: {
-        [Op.or]: profilesIds 
-      }
+        [Op.or]: profilesIds,
+      },
     },
     include: [
       {
@@ -187,8 +176,8 @@ const getSpecificProfiles = async (profilesIds) => {
                 'updatedAt',
               ],
             },
-          }
-        ]
+          },
+        ],
       },
       {
         model: ProfilePicture,
@@ -201,10 +190,10 @@ const getSpecificProfiles = async (profilesIds) => {
     order: [[{ model: Tag, as: 'tags' }, 'name', 'ASC']],
   };
 
-  const profiles = await Profile.findAll(options)
+  const profiles = await Profile.findAll(options);
 
-  return profiles
-}
+  return profiles;
+};
 
 const edit = async (user, profileData) => {
   await Profile.update(profileData, {
@@ -224,10 +213,10 @@ const addPosterId = async (profile, posterId) => {
   return myProfile.save();
 };
 
-const removePosterId = async (profile) => {
+const removeProfileId = async (profile) => {
   const targetProfile = profile;
 
-  targetProfile.posterId = null;
+  targetProfile.ProfileId = null;
 
   return targetProfile.save();
 };
@@ -240,6 +229,148 @@ const delet = async (userId) => {
   return profile.destroy();
 };
 
+const getAll = async (query) => {
+  const page = parseInt(query.page, 10);
+  const pageSize = parseInt(query.pageSize, 10);
+  const tags =
+    query.tags !== null && query.tags !== undefined
+      ? query.tags.map((tag) => parseInt(tag, 10))
+      : null;
+
+  let offset = null;
+  let profilesFiltered = null;
+
+  if (page && pageSize) offset = (page - 1) * pageSize;
+
+  if (offset !== null && tags !== null) {
+    const optionsFilter = {
+      include: [
+        {
+          model: Tag,
+          as: 'tags',
+          where: {
+            id: {
+              [Op.in]: tags,
+            },
+          },
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+
+    const profiles = await Profile.findAll(optionsFilter);
+
+    const profilesIds = profiles.map((profile) => profile.dataValues.id);
+
+    let options = {
+      where: {
+        id: {
+          [Op.or]: profilesIds,
+        },
+      },
+      include: [
+        {
+          model: Tag,
+          as: 'tags',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+
+    options = {
+      ...options,
+      limit: pageSize,
+      offset,
+      distinct: true,
+    };
+
+    profilesFiltered = await Profile.findAndCountAll(options);
+
+    profilesFiltered.pages = Math.ceil(profilesFiltered.count / pageSize);
+  } else if (offset !== null && tags === null) {
+    let options = {
+      include: [
+        {
+          model: Tag,
+          as: 'tags',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+
+    options = {
+      ...options,
+      limit: pageSize,
+      offset,
+      distinct: true,
+    };
+    profilesFiltered = await Profile.findAndCountAll(options);
+
+    profilesFiltered.pages = Math.ceil(profilesFiltered.count / pageSize);
+  } else if (offset === null && tags !== null) {
+    const optionsFilter = {
+      include: [
+        {
+          model: Tag,
+          as: 'tags',
+          where: {
+            id: {
+              [Op.in]: tags,
+            },
+          },
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+
+    const profiles = await Profile.findAll(optionsFilter);
+
+    const profileIds = profiles.map((profile) => profile.dataValues.id);
+
+    const options = {
+      where: {
+        id: {
+          [Op.or]: profileIds,
+        },
+      },
+      include: [
+        {
+          model: Tag,
+          as: 'tags',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+
+    profilesFiltered = await Profile.findAll(options);
+  } else {
+    const options = {
+      include: [
+        {
+          model: Tag,
+          as: 'tags',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+      ],
+    };
+    profilesFiltered = await Profile.findAll(options);
+  }
+
+  return profilesFiltered;
+};
+
 module.exports = {
   create,
   getById,
@@ -248,7 +379,8 @@ module.exports = {
   getByUserId,
   getResidents,
   addPosterId,
-  removePosterId,
+  removeProfileId,
   getByPk,
-  getSpecificProfiles
+  getSpecificProfiles,
+  getAll,
 };

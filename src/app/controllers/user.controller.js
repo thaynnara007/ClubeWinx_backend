@@ -276,7 +276,7 @@ const forgetPassword = async (req, res) => {
 
     const forgetPasswordCode = getRandomNumber(
       FORGET_PASSWORD_CODE_MIN,
-      FORGET_PASSWORD_CODE_MAX,
+      FORGET_PASSWORD_CODE_MAX
     );
 
     log.info(`Salvando codigo para recuperação de senha. userEmail=${email}`);

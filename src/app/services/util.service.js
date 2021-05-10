@@ -95,9 +95,9 @@ function getDateTime(date, type) {
   if (!date) date = new Date();
 
   return `${date.getFullYear()}-${`0${date.getMonth() + 1}`.slice(
-    -2,
+    -2
   )}-${`0${date.getDate()}`.slice(-2)} ${`0${date.getHours()}`.slice(
-    -2,
+    -2
   )}:${`0${date.getMinutes()}`.slice(-2)}:${`0${date.getSeconds()}`.slice(-2)}`;
 }
 
@@ -133,11 +133,11 @@ const FORGET_PASSWORD_CODE_MIN = 1000;
 const FORGET_PASSWORD_CODE_MAX = 10000;
 const FIVE_MB = 5 * 1024 * 1024;
 const RECOMENDATION_TRUNCATE = 5;
-const CITY_RELEVANCE = 0.7
-const STATE_RELEVANCE = 0.3
-const TAGS_SIMILARITY_RELEVANCE = 0.6
-const ADDRESS_SIMILARITY_RELEVANCE = 0.4
-const CATEGORY_SIMILARITY_RELVANCE = 0.1
+const CITY_RELEVANCE = 0.7;
+const STATE_RELEVANCE = 0.3;
+const TAGS_SIMILARITY_RELEVANCE = 0.6;
+const ADDRESS_SIMILARITY_RELEVANCE = 0.4;
+const CATEGORY_SIMILARITY_RELVANCE = 0.1;
 
 const getRandomNumber = (min, max) => {
   min = Math.ceil(min);
@@ -146,7 +146,8 @@ const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
-const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+const capitalizeFirstLetter = (string) =>
+  string.charAt(0).toUpperCase() + string.slice(1);
 
 const formatDate = (date) => moment(date).format(DATE_FORMAT);
 
@@ -167,5 +168,5 @@ module.exports = {
   STATE_RELEVANCE,
   TAGS_SIMILARITY_RELEVANCE,
   ADDRESS_SIMILARITY_RELEVANCE,
-  CATEGORY_SIMILARITY_RELVANCE 
+  CATEGORY_SIMILARITY_RELVANCE,
 };

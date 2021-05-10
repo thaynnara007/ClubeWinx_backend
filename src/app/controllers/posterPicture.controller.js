@@ -11,7 +11,7 @@ const create = async (req, res) => {
     const { user, file } = req;
 
     log.info(
-      `Inicializando atualização da foto do anuncio do usuário. userId=${user.id}`,
+      `Inicializando atualização da foto do anuncio do usuário. userId=${user.id}`
     );
     log.info(`Buscando anuncio do usuário logado. userId=${user.id}`);
     const poster = await posterService.getByUserId(user.id);
@@ -47,7 +47,7 @@ const create = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/posterPicture.controller.js',
-      error.message,
+      error.message
     );
 
     return res
@@ -64,7 +64,7 @@ const delet = async (req, res) => {
     const { user } = req;
     const { pictureId } = req.params;
     log.info(
-      `Inicializando remoção da foto de poster do usuário. userId=${user.id}`,
+      `Inicializando remoção da foto de poster do usuário. userId=${user.id}`
     );
     log.info(`Buscando anuncio do usuário logado. userId=${user.id}`);
 
@@ -77,20 +77,20 @@ const delet = async (req, res) => {
     }
 
     const existedPictures = await posterPictureService.getByPictureId(
-      pictureId,
+      pictureId
     );
 
     if (!existedPictures) {
       log.info(
-        `A foto de id ${pictureId} não esta associada ao anuncio de id ${poster.id}`,
+        `A foto de id ${pictureId} não esta associada ao anuncio de id ${poster.id}`
       );
     }
 
     if (existedPictures.posterId === poster.id) {
       log.info(
-        `Deletando imagem do firebase. image_name=${existedPictures.image_name}`,
+        `Deletando imagem do firebase. image_name=${existedPictures.image_name}`
       );
-      await firebaseService.delet(existedPictures);
+      await firebaseService.delet(existedPictures.image_name);
 
       log.info(`Deletando imagem do bando da dados. posterId=${poster.id}`);
       await posterPictureService.delet(existedPictures);
@@ -105,7 +105,7 @@ const delet = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/posterPicture.controller.js',
-      error.message,
+      error.message
     );
 
     return res

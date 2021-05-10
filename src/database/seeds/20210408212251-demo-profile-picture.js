@@ -41,17 +41,19 @@ module.exports = {
             profileId: picture.profileId,
           },
         },
-        ['id'],
+        ['id']
       );
 
-      if (!existedPicture || existedPicture.length === 0) await queryInterface.bulkInsert('ProfilePictures', [picture], {});
+      if (!existedPicture || existedPicture.length === 0)
+        await queryInterface.bulkInsert('ProfilePictures', [picture], {});
       else {
         console.log(
-          `O perfil de id ${picture.profileId} ja tem uma foto de perfil`,
+          `O perfil de id ${picture.profileId} ja tem uma foto de perfil`
         );
       }
     }
   },
 
-  down: (queryInterface) => queryInterface.bulkDelete('ProfilePictures', pictures, {}),
+  down: (queryInterface) =>
+    queryInterface.bulkDelete('ProfilePictures', pictures, {}),
 };

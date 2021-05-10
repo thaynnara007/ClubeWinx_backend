@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       residents: DataTypes.INTEGER,
       vacancies: DataTypes.INTEGER,
     },
-    {},
+    {}
   );
   Poster.associate = (models) => {
     Poster.belongsToMany(models.Tag, {

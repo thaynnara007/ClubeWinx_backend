@@ -1,9 +1,5 @@
 const { Op } = require('sequelize');
-const { 
-  Address,
-  User,
-  Profile 
-} = require('../models');
+const { Address, User, Profile } = require('../models');
 
 const create = async (addressData) => {
   const address = await Address.create(addressData);
@@ -69,19 +65,23 @@ const getProfilesWithAddress = async (city, state, userId) => {
   const result = Address.findAll({
     where: {
       [Op.or]: [
-        { city : {
-          [Op.iLike]: city
-        }},
-        { state: {
-          [Op.iLike]: state
-        }}
+        {
+          city: {
+            [Op.iLike]: city,
+          },
+        },
+        {
+          state: {
+            [Op.iLike]: state,
+          },
+        },
       ],
       userId: {
-        [Op.not]: userId
-      }
+        [Op.not]: userId,
+      },
     },
     attributes: {
-      exclude: ['createdAt', 'updatedAt']
+      exclude: ['createdAt', 'updatedAt'],
     },
     include: [
       {
@@ -89,16 +89,16 @@ const getProfilesWithAddress = async (city, state, userId) => {
         as: 'user',
         attributes: {
           exclude: [
-            'birthday', 
-            'lastname', 
-            'gender', 
+            'birthday',
+            'lastname',
+            'gender',
             'phoneNumber',
-            'email', 
-            'passwordHash', 
+            'email',
+            'passwordHash',
             'forgetPasswordCode',
-            'createdAt', 
-            'updatedAt'
-          ]
+            'createdAt',
+            'updatedAt',
+          ],
         },
         include: [
           {
@@ -111,17 +111,17 @@ const getProfilesWithAddress = async (city, state, userId) => {
                 'socialMedia',
                 'posterId',
                 'createdAt',
-                'updatedAt'
-              ]
-            }
-          }
-        ]
-      }
-    ]
-  })
+                'updatedAt',
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  });
 
-  return result
-}
+  return result;
+};
 
 module.exports = {
   create,
@@ -130,5 +130,5 @@ module.exports = {
   getByUserId,
   edit,
   delet,
-  getProfilesWithAddress
+  getProfilesWithAddress,
 };

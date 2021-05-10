@@ -1,9 +1,5 @@
 const { Op } = require('sequelize');
-const { 
-  Category, 
-  Tag,
-  Profile
- } = require('../models');
+const { Category, Tag, Profile } = require('../models');
 
 const create = async (data) => {
   const category = await Category.create(data);
@@ -92,22 +88,22 @@ const edit = async (categoryId, data) => {
   return getById(categoryId);
 };
 
-const getProfilesByCategories =  async (categoriesIds, profileId) => {
+const getProfilesByCategories = async (categoriesIds, profileId) => {
   const result = await Category.findAll({
     where: {
       id: {
-        [Op.or] : categoriesIds
-      }
+        [Op.or]: categoriesIds,
+      },
     },
     attributes: {
-      exclude: ['description', 'createdAt', 'updatedAt']
+      exclude: ['description', 'createdAt', 'updatedAt'],
     },
     include: [
       {
         model: Tag,
         as: 'tags',
         attributes: {
-          exclude: ['isFixed','createdAt', 'updatedAt']
+          exclude: ['isFixed', 'createdAt', 'updatedAt'],
         },
         include: [
           {
@@ -115,8 +111,8 @@ const getProfilesByCategories =  async (categoriesIds, profileId) => {
             as: 'profiles',
             where: {
               id: {
-                [Op.not]: profileId
-              }
+                [Op.not]: profileId,
+              },
             },
             attributes: {
               exclude: [
@@ -125,18 +121,18 @@ const getProfilesByCategories =  async (categoriesIds, profileId) => {
                 'privateAtConnection',
                 'description',
                 'socialMedia',
-                'createdAt', 
-                'updatedAt'
-              ]
-            }
-          }
-        ]
-      }
-    ]
-  })
+                'createdAt',
+                'updatedAt',
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  });
 
-  return result
-}
+  return result;
+};
 
 module.exports = {
   create,
@@ -144,5 +140,5 @@ module.exports = {
   getById,
   getAll,
   edit,
-  getProfilesByCategories
+  getProfilesByCategories,
 };
