@@ -2,11 +2,12 @@ const httpStatus = require('http-status-codes');
 const service = require('../services/poster.service');
 const profileService = require('../services/profile.service');
 const addressService = require('../services/address.service');
+const userService = require('../services/user.service')
 const log = require('../services/log.service');
 
 const { StatusCodes } = httpStatus;
 
-const makeResult = async (userId, poster) => {
+const makeResult = async (userId, poster, user) => {
   log.info(`Buscando endereço do usuário. userId=${userId}`);
 
   const address = await addressService.getByUserId(userId);
@@ -17,6 +18,8 @@ const makeResult = async (userId, poster) => {
     ...poster.dataValues,
     owner: {
       id: userId,
+      name: user.name,
+      lastname: user.lastname,
       address,
     },
   };
@@ -82,7 +85,7 @@ const create = async (req, res) => {
     );
     await profileService.addPosterId(profile, poster.id);
 
-    const result = await makeResult(user.id, poster);
+    const result = await makeResult(user.id, poster, user);
 
     log.info('Criação finalizada com sucesso');
 
@@ -139,7 +142,7 @@ const getMy = async (req, res) => {
       });
     }
 
-    const result = await makeResult(user.id, myPoster);
+    const result = await makeResult(user.id, myPoster, user);
 
     log.info('Busca finalizada com sucesso');
 
@@ -177,7 +180,8 @@ const getById = async (req, res) => {
         .json({ error: 'Anúncio não encontrado' });
     }
 
-    const result = await makeResult(poster.userId, poster);
+    const user = await userService.getById(poster.userId)
+    const result = await makeResult(poster.userId, poster, user);
 
     log.info('Busca finalizada com sucesso');
 
@@ -373,7 +377,7 @@ const addResident = async (req, res) => {
 
     await profileService.addPosterId(profile, posterId);
     const updatedPoster = await service.getById(posterId);
-    const result = await makeResult(user.id, updatedPoster);
+    const result = await makeResult(user.id, updatedPoster, user);
 
     log.info('Adição de residente realizada com sucesso.');
 
@@ -435,7 +439,7 @@ const removeResident = async (req, res) => {
 
     await profileService.removePosterId(profile);
     const updatedPoster = await service.getById(posterId);
-    const result = await makeResult(user.id, updatedPoster);
+    const result = await makeResult(user.id, updatedPoster, user);
 
     log.info('Remoção de residente realizada com sucesso.');
 
