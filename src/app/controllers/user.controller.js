@@ -79,7 +79,6 @@ const create = async (req, res) => {
     log.info('Criando perfil no banco de dados');
     await profileService.create(profileData, newUser);
 
-
     log.info(`Usário ${email} cadastrado com sucesso`);
     log.info(`Enviando email de boas-vindas. userEmail=${newUser.email}`);
 
@@ -277,7 +276,7 @@ const forgetPassword = async (req, res) => {
 
     const forgetPasswordCode = getRandomNumber(
       FORGET_PASSWORD_CODE_MIN,
-      FORGET_PASSWORD_CODE_MAX,
+      FORGET_PASSWORD_CODE_MAX
     );
 
     log.info(`Salvando codigo para recuperação de senha. userEmail=${email}`);

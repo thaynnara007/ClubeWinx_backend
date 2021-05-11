@@ -37,7 +37,7 @@ const addTags = async (req, res) => {
     log.info(`Relacionando as tags ao poster. posterId=${poster.id}`);
     await service.addTags(poster.id, tags);
 
-    poster = await posterService.getById(user.id, false);
+    poster = await posterService.getByUserId(user.id, false);
 
     log.info('Cadastro das tag realizado com sucesso');
 
@@ -48,7 +48,7 @@ const addTags = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/tagposter.controller.js',
-      error.message,
+      error.message
     );
 
     return res
@@ -100,7 +100,7 @@ const removeTags = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/tagposter.controller.js',
-      error.message,
+      error.message
     );
 
     return res
@@ -115,7 +115,7 @@ const createTags = async (req, res) => {
     const { tags } = req.body;
 
     log.info(
-      `Inicializando adição das tags criadas pelo usuário ao Poster. userId=${user.id}`,
+      `Inicializando adição das tags criadas pelo usuário ao Poster. userId=${user.id}`
     );
 
     const poster = await posterService.getByUserId(user.id);
@@ -140,7 +140,7 @@ const createTags = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/tagProfile.controller.js',
-      error.message,
+      error.message
     );
 
     return res

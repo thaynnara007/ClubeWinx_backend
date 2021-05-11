@@ -33,7 +33,7 @@ const addTags = async (req, res) => {
     log.info(`Relacionando as tags ao perfil. profileId=${profile.id}`);
     await service.addTags(profile.id, tags);
 
-    profile = await profileService.getById(user.id, false);
+    profile = await profileService.getById(user, false);
 
     log.info('Cadastro das tag realizado com sucesso');
 
@@ -44,7 +44,7 @@ const addTags = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/tagProfile.controller.js',
-      error.message,
+      error.message
     );
 
     return res
@@ -73,7 +73,7 @@ const createTags = async (req, res) => {
     const { tags } = req.body;
 
     log.info(
-      `Inicializando adição das tags criadas pelo usuário ao profile. userId=${user.id}`,
+      `Inicializando adição das tags criadas pelo usuário ao profile. userId=${user.id}`
     );
 
     let profile = await profileService.getByUserId(user.id);
@@ -87,7 +87,7 @@ const createTags = async (req, res) => {
     log.info(`Relacionando as tags ao perfil. profileId=${profile.id}`);
     await service.createTags(profile.id, tags);
 
-    profile = await profileService.getById(user.id, false);
+    profile = await profileService.getById(user, false);
 
     log.info('Cadastro das tag realizado com sucesso');
 
@@ -98,7 +98,7 @@ const createTags = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/tagProfile.controller.js',
-      error.message,
+      error.message
     );
 
     return res
@@ -146,7 +146,7 @@ const removeTags = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/tagProfile.controller.js',
-      error.message,
+      error.message
     );
 
     return res

@@ -2,7 +2,7 @@ const { FIREBASE } = require('../../config/environment');
 
 module.exports = (sequelize, DataTypes) => {
   const PosterPicture = sequelize.define(
-    'PosterPicture', 
+    'PosterPicture',
     {
       image_name: {
         type: DataTypes.STRING,
@@ -17,11 +17,13 @@ module.exports = (sequelize, DataTypes) => {
           return `https://firebasestorage.googleapis.com/v0/b/${
             FIREBASE.storageBucket
           }/o/${this.getDataValue(
-            'image_name',
+            'image_name'
           )}?alt=media&token=${this.getDataValue('token')}`;
         },
       },
-  }, {});
+    },
+    {}
+  );
   PosterPicture.associate = (models) => {
     PosterPicture.belongsTo(models.Poster, {
       foreignKey: 'posterId',

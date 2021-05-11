@@ -1,4 +1,5 @@
-const { Address } = require('../models');
+const { Op } = require('sequelize');
+const { Address, User, Profile } = require('../models');
 
 const create = async (addressData) => {
   const address = await Address.create(addressData);
@@ -60,6 +61,68 @@ const delet = async (userId) => {
   return address.destroy();
 };
 
+const getProfilesWithAddress = async (city, state, userId) => {
+  const result = Address.findAll({
+    where: {
+      [Op.or]: [
+        {
+          city: {
+            [Op.iLike]: city,
+          },
+        },
+        {
+          state: {
+            [Op.iLike]: state,
+          },
+        },
+      ],
+      userId: {
+        [Op.not]: userId,
+      },
+    },
+    attributes: {
+      exclude: ['createdAt', 'updatedAt'],
+    },
+    include: [
+      {
+        model: User,
+        as: 'user',
+        attributes: {
+          exclude: [
+            'birthday',
+            'lastname',
+            'gender',
+            'phoneNumber',
+            'email',
+            'passwordHash',
+            'forgetPasswordCode',
+            'createdAt',
+            'updatedAt',
+          ],
+        },
+        include: [
+          {
+            model: Profile,
+            as: 'profile',
+            attributes: {
+              exclude: [
+                'description',
+                'privateAtConnection',
+                'socialMedia',
+                'posterId',
+                'createdAt',
+                'updatedAt',
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  });
+
+  return result;
+};
+
 module.exports = {
   create,
   getById,
@@ -67,4 +130,5 @@ module.exports = {
   getByUserId,
   edit,
   delet,
+  getProfilesWithAddress,
 };

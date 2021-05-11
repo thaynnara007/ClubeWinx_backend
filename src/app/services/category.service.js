@@ -1,4 +1,5 @@
-const { Category, Tag } = require('../models');
+const { Op } = require('sequelize');
+const { Category, Tag, Profile } = require('../models');
 
 const create = async (data) => {
   const category = await Category.create(data);
@@ -87,10 +88,57 @@ const edit = async (categoryId, data) => {
   return getById(categoryId);
 };
 
+const getProfilesByCategories = async (categoriesIds, profileId) => {
+  const result = await Category.findAll({
+    where: {
+      id: {
+        [Op.or]: categoriesIds,
+      },
+    },
+    attributes: {
+      exclude: ['description', 'createdAt', 'updatedAt'],
+    },
+    include: [
+      {
+        model: Tag,
+        as: 'tags',
+        attributes: {
+          exclude: ['isFixed', 'createdAt', 'updatedAt'],
+        },
+        include: [
+          {
+            model: Profile,
+            as: 'profiles',
+            where: {
+              id: {
+                [Op.not]: profileId,
+              },
+            },
+            attributes: {
+              exclude: [
+                'userId',
+                'posterId',
+                'privateAtConnection',
+                'description',
+                'socialMedia',
+                'createdAt',
+                'updatedAt',
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  });
+
+  return result;
+};
+
 module.exports = {
   create,
   getByName,
   getById,
   getAll,
   edit,
+  getProfilesByCategories,
 };

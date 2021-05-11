@@ -67,10 +67,11 @@ module.exports = {
             email: user.email,
           },
         },
-        ['id'],
+        ['id']
       );
 
-      if (!existedUser || existedUser.length === 0) await queryInterface.bulkInsert('Users', [user], {});
+      if (!existedUser || existedUser.length === 0)
+        await queryInterface.bulkInsert('Users', [user], {});
       else console.log(`usuario com o email '${user.email}' já existe`);
     }
   },

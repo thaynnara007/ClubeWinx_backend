@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: true,
       },
     },
-    {},
+    {}
   );
   Profile.associate = (models) => {
     Profile.belongsTo(models.User, {

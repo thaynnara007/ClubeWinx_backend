@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { Tag } = require('../models');
 
 const create = async (data) => {
@@ -9,7 +10,9 @@ const create = async (data) => {
 const getByName = async (name) => {
   const tag = await Tag.findOne({
     where: {
-      name,
+      name: {
+        [Op.iLike]: name,
+      },
     },
   });
 

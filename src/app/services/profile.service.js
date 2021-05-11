@@ -1,7 +1,5 @@
 const { Op } = require('sequelize');
-const {
-  Profile, ProfilePicture, Tag, User,
-} = require('../models');
+const { Profile, ProfilePicture, Tag, User, Address } = require('../models');
 const log = require('./log.service');
 const util = require('./util.service');
 const addressService = require('./address.service');
@@ -128,11 +126,74 @@ const getResidents = async (ProfileId) => {
   return residents;
 };
 
-const getByPk = async (id) => Profile.findOne({
-  where: {
-    id,
-  },
-});
+const getByPk = async (id) =>
+  Profile.findOne({
+    where: {
+      id,
+    },
+  });
+
+const getSpecificProfiles = async (profilesIds) => {
+  const options = {
+    where: {
+      id: {
+        [Op.or]: profilesIds,
+      },
+    },
+    include: [
+      {
+        model: Tag,
+        as: 'tags',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+      {
+        model: User,
+        as: 'user',
+        attributes: {
+          exclude: [
+            'phoneNumber',
+            'email',
+            'passwordHash',
+            'forgetPasswordCode',
+            'createdAt',
+            'updatedAt',
+          ],
+        },
+        include: [
+          {
+            model: Address,
+            as: 'address',
+            attributes: {
+              exclude: [
+                'street',
+                'number',
+                'district',
+                'complement',
+                'zipCode',
+                'createdAt',
+                'updatedAt',
+              ],
+            },
+          },
+        ],
+      },
+      {
+        model: ProfilePicture,
+        as: 'picture',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+    ],
+    order: [[{ model: Tag, as: 'tags' }, 'name', 'ASC']],
+  };
+
+  const profiles = await Profile.findAll(options);
+
+  return profiles;
+};
 
 const edit = async (user, profileData) => {
   await Profile.update(profileData, {
@@ -171,9 +232,10 @@ const delet = async (userId) => {
 const getAll = async (query) => {
   const page = parseInt(query.page, 10);
   const pageSize = parseInt(query.pageSize, 10);
-  const tags = query.tags !== null && query.tags !== undefined
-    ? query.tags.map((tag) => parseInt(tag, 10))
-    : null;
+  const tags =
+    query.tags !== null && query.tags !== undefined
+      ? query.tags.map((tag) => parseInt(tag, 10))
+      : null;
 
   let offset = null;
   let profilesFiltered = null;
@@ -319,5 +381,6 @@ module.exports = {
   addPosterId,
   removeProfileId,
   getByPk,
+  getSpecificProfiles,
   getAll,
 };

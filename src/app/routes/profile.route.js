@@ -9,25 +9,26 @@ const router = express.Router();
 
 router.get('/me', auth.verifyToken, controller.getMyProfile);
 router.get('/', auth.verifyToken, controller.getAllProfile);
+router.get('/recomendation', auth.verifyToken, controller.getRecomendation);
 router.get('/:userId', auth.verifyToken, controller.getProfileByUserId);
 router.post('/', auth.verifyToken, controller.create);
 router.post('/me/add/tags', auth.verifyToken, tagProfileController.addTags);
 router.post(
   '/me/create/tags',
   auth.verifyToken,
-  tagProfileController.createTags,
+  tagProfileController.createTags
 );
 router.put(
   '/me/remove/tags',
   auth.verifyToken,
-  tagProfileController.removeTags,
+  tagProfileController.removeTags
 );
 router.put('/me', auth.verifyToken, controller.edit);
 router.put(
   '/me/picture',
   auth.verifyToken,
   multer.single('file'),
-  profilePictureController.edit,
+  profilePictureController.edit
 );
 router.delete('/me/picture', auth.verifyToken, profilePictureController.delet);
 router.delete('/me', auth.verifyToken, controller.delet);

@@ -33,10 +33,11 @@ module.exports = {
             userId: poster.userId,
           },
         },
-        ['id'],
+        ['id']
       );
 
-      if (!existedPoster || existedPoster.length === 0) await queryInterface.bulkInsert('Posters', [poster], {});
+      if (!existedPoster || existedPoster.length === 0)
+        await queryInterface.bulkInsert('Posters', [poster], {});
       else {
         console.log(`O usuário de id ${poster.userId} ja tem um anúncio`);
       }

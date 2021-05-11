@@ -50,7 +50,7 @@ const create = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/category.controller.js',
-      error.message,
+      error.message
     );
 
     return res
@@ -72,7 +72,7 @@ const getById = async (req, res) => {
 
     log.info(`Iniciando busca pela categoria. categoryId=${categoryId}`);
     log.info(
-      `Buscando a categoria no banco de dados. categoryId=${categoryId}`,
+      `Buscando a categoria no banco de dados. categoryId=${categoryId}`
     );
 
     const category = await service.getById(categoryId);
@@ -92,7 +92,7 @@ const getById = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/category.controller.js',
-      error.message,
+      error.message
     );
 
     return res
@@ -125,7 +125,7 @@ const getAll = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/category.controller.js',
-      error.message,
+      error.message
     );
 
     return res
@@ -163,7 +163,7 @@ const edit = async (req, res) => {
     }
 
     log.info(
-      `Atualizando a categoria no banco de dados. categoryId=${categoryId}`,
+      `Atualizando a categoria no banco de dados. categoryId=${categoryId}`
     );
     const category = await service.edit(categoryId, req.body);
 
@@ -176,7 +176,7 @@ const edit = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/category.controller.js',
-      error.message,
+      error.message
     );
 
     return res

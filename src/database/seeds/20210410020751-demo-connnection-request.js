@@ -56,17 +56,19 @@ module.exports = {
             sendedUserId: request.sendedUserId,
           },
         },
-        ['id'],
+        ['id']
       );
 
-      if (!existedRequest || existedRequest.length === 0) await queryInterface.bulkInsert('ConnectionRequests', [request], {});
+      if (!existedRequest || existedRequest.length === 0)
+        await queryInterface.bulkInsert('ConnectionRequests', [request], {});
       else {
         console.log(
-          `O usuário de id ${request.requestedUserId} ja solicitou conexão com o usuário de id ${request.sendedUserId}`,
+          `O usuário de id ${request.requestedUserId} ja solicitou conexão com o usuário de id ${request.sendedUserId}`
         );
       }
     }
   },
 
-  down: (queryInterface) => queryInterface.bulkDelete('ConnectionRequests', requests, {}),
+  down: (queryInterface) =>
+    queryInterface.bulkDelete('ConnectionRequests', requests, {}),
 };

@@ -2,6 +2,8 @@ const httpStatus = require('http-status-codes');
 const log = require('../services/log.service');
 const userService = require('../services/user.service');
 const profileService = require('../services/profile.service');
+const addressService = require('../services/address.service');
+const recomendationService = require('../services/recomendation.service');
 const connectionRequestService = require('../services/connectionRequest.service');
 
 const { StatusCodes } = httpStatus;
@@ -134,7 +136,7 @@ const getProfileByUserId = async (req, res) => {
 
     const connection = await connectionRequestService.getByUsers(
       req.user.id,
-      userId,
+      userId
     );
     const profile = await profileService.getByUserId(userId);
 
@@ -156,6 +158,80 @@ const getProfileByUserId = async (req, res) => {
     return res.status(StatusCodes.OK).json(result);
   } catch (error) {
     const errorMsg = 'Erro ao buscar perfil de outro usuário';
+
+    log.error(errorMsg, 'app/controllers/profile.controller.js', error.message);
+
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: `${errorMsg} ${error.message}` });
+  }
+};
+
+const getRecomendation = async (req, res) => {
+  try {
+    const { user } = req;
+
+    log.info(`Iniciando recomedação de perfils. userId=${user.id}`);
+    log.info(`Buscando perfil do usuário. userId=${user.id}`);
+
+    const profile = await profileService.getById(user);
+
+    if (!profile) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: `Perfil do usuário não encontrado` });
+    }
+
+    const ids = recomendationService.getTagsIds(profile.tags);
+    const amountTags = ids.length;
+
+    log.info(
+      `Buscando a similaridade com o perfil de outros usuários a partir das tags. profileId=${profile.id}`
+    );
+    const tagsSimilarity = await recomendationService.getTagsSimilarity(
+      ids,
+      profile.id,
+      amountTags
+    );
+
+    log.info(`Buscando endereço do usuário. userId=${user.id}`);
+    const address = await addressService.getByUserId(user.id);
+
+    if (!address) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: `Endereço do usuário não encontrado` });
+    }
+
+    log.info(
+      `Buscando a similaridade com o perfil de outros usuários a partir do endereço. userId=${user.id}`
+    );
+    const addressesSimilarity = await recomendationService.getAddressSimilarity(
+      address
+    );
+
+    log.info(
+      `Buscando a similaridade com o perfil de outros usuários a partir das categorias. userId=${user.id}`
+    );
+    const categoriesSimilarity = await recomendationService.getCategorySimilarity(
+      profile.tags,
+      profile.id
+    );
+
+    log.info(`Calculando perfils mais similares`);
+    const profilesSimilarities = recomendationService.getProfileSimilarity(
+      tagsSimilarity,
+      addressesSimilarity,
+      categoriesSimilarity
+    );
+
+    const recomendation = await recomendationService.recomendationProfile(
+      profilesSimilarities
+    );
+
+    return res.status(StatusCodes.OK).json(recomendation);
+  } catch (error) {
+    const errorMsg = 'Erro ao buscar perfils recomendados';
 
     log.error(errorMsg, 'app/controllers/profile.controller.js', error.message);
 
@@ -244,6 +320,7 @@ const delet = async (req, res) => {
 
 module.exports = {
   create,
+  getRecomendation,
   getMyProfile,
   getAllProfile,
   getProfileByUserId,

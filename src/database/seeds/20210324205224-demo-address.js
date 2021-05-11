@@ -59,17 +59,19 @@ module.exports = {
             userId: address.userId,
           },
         },
-        ['id'],
+        ['id']
       );
 
-      if (!existedUser || existedUser.length === 0) await queryInterface.bulkInsert('Addresses', [address], {});
+      if (!existedUser || existedUser.length === 0)
+        await queryInterface.bulkInsert('Addresses', [address], {});
       else {
         console.log(
-          `O usuário de id ${address.userId} ja cadastrou um endereço`,
+          `O usuário de id ${address.userId} ja cadastrou um endereço`
         );
       }
     }
   },
 
-  down: (queryInterface) => queryInterface.bulkDelete('Addresses', addresses, {}),
+  down: (queryInterface) =>
+    queryInterface.bulkDelete('Addresses', addresses, {}),
 };

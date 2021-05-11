@@ -19,15 +19,16 @@ const sequelize = new Sequelize(
       acquire: 30000,
       idle: 10000,
     },
-  },
+  }
 );
 
 filesystem
   .readdirSync(__dirname)
   .filter(
-    (file) => file.indexOf('.') !== 0
-      && file !== path.basename(__filename)
-      && file.slice(-3) === '.js',
+    (file) =>
+      file.indexOf('.') !== 0 &&
+      file !== path.basename(__filename) &&
+      file.slice(-3) === '.js'
   )
   .forEach((file) => {
     const model = sequelize.import(path.join(__dirname, file));

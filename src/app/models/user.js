@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
           exclude: ['password', 'passwordHash', 'forgetPasswordCode'],
         },
       },
-    },
+    }
   );
 
   User.associate = (models) => {
@@ -64,6 +64,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     User.hasOne(models.Profile, {
       foreignKey: 'userId',
+      as: 'profile',
     });
     User.belongsToMany(models.User, {
       through: 'ConnectionRequests',
@@ -88,13 +89,13 @@ module.exports = (sequelize, DataTypes) => {
   };
 
   User.prototype.checkForgetPasswordCode = function checkForgetPasswordCode(
-    code,
+    code
   ) {
     return bcrypt.compare(code, this.forgetPasswordCode);
   };
 
   User.prototype.generateAuthToken = function generateAuthToken(
-    forgetPassword = false,
+    forgetPassword = false
   ) {
     const { secret, expirationMinutes } = config.JWT;
 
