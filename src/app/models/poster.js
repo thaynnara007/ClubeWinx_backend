@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {}
   );
+
   Poster.associate = (models) => {
     Poster.belongsToMany(models.Tag, {
       through: 'PosterTags',

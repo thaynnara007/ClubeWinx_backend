@@ -88,8 +88,8 @@ const getAddressSimilarityPercent = (
     const profileId = address.user.profile.id;
 
     let percent = 0;
-    const sameCity = city.toLowerCase() === searchedCity.toLowerCase();
-    const sameState = state.toLowerCase() === searchedState.toLowerCase();
+    const sameCity = city ? city.toLowerCase() === searchedCity.toLowerCase() : false;
+    const sameState = state? state.toLowerCase() === searchedState.toLowerCase() : false;
 
     if (sameCity) percent += util.CITY_RELEVANCE;
     if (sameState) percent += util.STATE_RELEVANCE;
@@ -135,7 +135,8 @@ const countProfilesByTagsinCategory = (categories) => {
         if (!(id in countProfiles[categoryId])) {
           countProfiles[categoryId][id] = 1;
           allProfilesIdsSet.add(id);
-        } else countProfiles[categoryId][id] += 1;
+        } 
+        else countProfiles[categoryId][id] += 1;
       });
     });
   });
@@ -243,8 +244,8 @@ const getProfileSimilarity = (
     const similarity =
       parseFloat(tagsSimilarity[profileId].similarity) *
       util.TAGS_SIMILARITY_RELEVANCE;
-    profilesIds.push(parseInt(profileId, 10));
 
+    profilesIds.push(parseInt(profileId, 10));
     profileSimilarity[profileId] = similarity;
   });
 

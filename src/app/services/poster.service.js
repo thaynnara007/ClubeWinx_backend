@@ -95,6 +95,8 @@ const getById = async (posterId) => {
   return poster;
 };
 
+const filterOwner = (posters) => posters.filter( poster => !!poster.owner )
+
 const getAll = async (query) => {
   const page = parseInt(query.page, 10);
   const pageSize = parseInt(query.pageSize, 10);
@@ -248,6 +250,7 @@ const getAll = async (query) => {
     }
   } else if (offset !== null && tags === null) {
     let options = {
+      distinct: true,
       order: [
         ['createdAt', 'DESC'],
       ],
@@ -269,13 +272,16 @@ const getAll = async (query) => {
               'updatedAt',
             ],
           },
-          include: {
-            model: Address,
-            as: 'address',
-            where: {
-              ...whereAddress
-            }
-          },
+          include: [
+            {
+              model: Address,
+              as: 'address',
+              where: {
+                ...whereAddress
+              },
+              distinct: true,
+            },
+          ],
         },
         {
           model: Profile,
@@ -310,9 +316,9 @@ const getAll = async (query) => {
     options = {
       ...options,
       limit: pageSize,
-      offset,
-      distinct: true,
-    };
+      offset
+    };    
+
     posters = await Poster.findAndCountAll(options);
 
     posters.pages = Math.ceil(posters.count / pageSize);
@@ -438,31 +444,6 @@ const getAll = async (query) => {
       ],
       include: [
         {
-          model: User,
-          as: 'owner',
-          attributes: {
-            exclude: [
-              'name',
-              'lastname',
-              'birthday',
-              'email',
-              'phoneNumber',
-              'gender',
-              'passwordHash',
-              'forgetPasswordCode',
-              'createdAt',
-              'updatedAt',
-            ],
-          },
-          include: {
-            model: Address,
-            as: 'address',
-            where: {
-              ...whereAddress
-            }
-          },
-        },
-        {
           model: Profile,
           as: 'profiles',
           attributes: {
@@ -489,9 +470,44 @@ const getAll = async (query) => {
             exclude: ['createdAt', 'updatedAt'],
           },
         },
+        {
+          model: User,
+          as: 'owner',
+          attributes: {
+            exclude: [
+              'name',
+              'lastname',
+              'birthday',
+              'email',
+              'phoneNumber',
+              'gender',
+              'passwordHash',
+              'forgetPasswordCode',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+          include: {
+            require: true,
+            model: Address,
+            as: 'address',
+            where: {
+              ...whereAddress
+            }
+          },
+        },
       ],
     };
+
     posters = await Poster.findAll(options);
+  }
+
+  if (offset != null) {
+    posters.rows = filterOwner(posters.rows)
+    posters.count = posters.rows.length
+  }
+  else {
+    posters = filterOwner(posters)
   }
 
   return posters;
