@@ -88,8 +88,8 @@ const getAddressSimilarityPercent = (
     const profileId = address.user.profile.id;
 
     let percent = 0;
-    const sameCity = city ? city.toLowerCase() === searchedCity.toLowerCase() : false;
-    const sameState = state? state.toLowerCase() === searchedState.toLowerCase() : false;
+    const sameCity = (city && searchedCity) ? city.toLowerCase() === searchedCity.toLowerCase() : false;
+    const sameState = (state && searchedCity) ? state.toLowerCase() === searchedState.toLowerCase() : false;
 
     if (sameCity) percent += util.CITY_RELEVANCE;
     if (sameState) percent += util.STATE_RELEVANCE;
