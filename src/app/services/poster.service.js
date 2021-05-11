@@ -137,8 +137,6 @@ const getAll = async (query) => {
           as: 'owner',
           attributes: {
             exclude: [
-              'name',
-              'lastname',
               'birthday',
               'email',
               'phoneNumber',
@@ -187,8 +185,6 @@ const getAll = async (query) => {
             as: 'owner',
             attributes: {
               exclude: [
-                'name',
-                'lastname',
                 'birthday',
                 'email',
                 'phoneNumber',
@@ -260,8 +256,6 @@ const getAll = async (query) => {
           as: 'owner',
           attributes: {
             exclude: [
-              'name',
-              'lastname',
               'birthday',
               'email',
               'phoneNumber',
@@ -330,8 +324,6 @@ const getAll = async (query) => {
           as: 'owner',
           attributes: {
             exclude: [
-              'name',
-              'lastname',
               'birthday',
               'email',
               'phoneNumber',
@@ -380,8 +372,6 @@ const getAll = async (query) => {
             as: 'owner',
             attributes: {
               exclude: [
-                'name',
-                'lastname',
                 'birthday',
                 'email',
                 'phoneNumber',
@@ -475,8 +465,6 @@ const getAll = async (query) => {
           as: 'owner',
           attributes: {
             exclude: [
-              'name',
-              'lastname',
               'birthday',
               'email',
               'phoneNumber',
