@@ -22,7 +22,7 @@ const normalizeCategoriesSimilarityPercent = (
     return {
       ...accumulator,
       [profileId]: {
-        similarity: similarity.toFixed(util.RECOMENDATION_TRUNCATE),
+        similarity: similarity ? similarity.toFixed(util.RECOMENDATION_TRUNCATE) : 0,
       },
     };
   }, {});
@@ -70,7 +70,7 @@ const getTagsSimilarityPercent = (count, totalAmountTags) => {
       ...accumulator,
       [profileId]: {
         amount,
-        similarity: percent.toFixed(util.RECOMENDATION_TRUNCATE),
+        similarity: percent ? percent.toFixed(util.RECOMENDATION_TRUNCATE) : 0,
       },
     };
   }, {});
@@ -112,7 +112,7 @@ const getCategoriesRelevance = (categories) => {
     return {
       ...accumulator,
       [id]: {
-        relevance: relevance.toFixed(util.RECOMENDATION_TRUNCATE),
+        relevance: relevance ? relevance.toFixed(util.RECOMENDATION_TRUNCATE) : 0,
       },
     };
   }, {});
