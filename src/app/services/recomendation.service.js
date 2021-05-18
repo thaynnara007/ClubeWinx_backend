@@ -182,6 +182,7 @@ const getTagsSimilarity = async (tagsIds, profileId, amountTags) => {
     tagsIds,
     profileId
   );
+
   const countTags = countAppear(profiles);
   const tagsSimilarity = getTagsSimilarityPercent(countTags, amountTags);
 

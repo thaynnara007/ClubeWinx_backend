@@ -185,14 +185,22 @@ const getRecomendation = async (req, res) => {
     const ids = recomendationService.getTagsIds(profile.tags);
     const amountTags = ids.length;
 
+    let tagsSimilarity = {}
+    let addressesSimilarity = {}
+    let categoriesSimilarity = {}
+
     log.info(
       `Buscando a similaridade com o perfil de outros usuários a partir das tags. profileId=${profile.id}`
     );
-    const tagsSimilarity = await recomendationService.getTagsSimilarity(
-      ids,
-      profile.id,
-      amountTags
-    );
+    
+    
+    if (amountTags > 0) {
+      tagsSimilarity = await recomendationService.getTagsSimilarity(
+        ids,
+        profile.id,
+        amountTags
+      );
+    }
 
     log.info(`Buscando endereço do usuário. userId=${user.id}`);
     const address = await addressService.getByUserId(user.id);
@@ -206,17 +214,20 @@ const getRecomendation = async (req, res) => {
     log.info(
       `Buscando a similaridade com o perfil de outros usuários a partir do endereço. userId=${user.id}`
     );
-    const addressesSimilarity = await recomendationService.getAddressSimilarity(
+    addressesSimilarity = await recomendationService.getAddressSimilarity(
       address
     );
 
     log.info(
       `Buscando a similaridade com o perfil de outros usuários a partir das categorias. userId=${user.id}`
     );
-    const categoriesSimilarity = await recomendationService.getCategorySimilarity(
-      profile.tags,
-      profile.id
-    );
+
+    if ( amountTags > 0) {
+      categoriesSimilarity = await recomendationService.getCategorySimilarity(
+        profile.tags,
+        profile.id
+      );
+    }
 
     log.info(`Calculando perfils mais similares`);
     const profilesSimilarities = recomendationService.getProfileSimilarity(
