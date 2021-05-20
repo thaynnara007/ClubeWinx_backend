@@ -278,6 +278,37 @@ const getAll = async (query) => {
             exclude: ['createdAt', 'updatedAt'],
           },
         },
+        {
+          model: User,
+          as: 'user',
+          attributes: {
+            exclude: [
+              'phoneNumber',
+              'email',
+              'passwordHash',
+              'forgetPasswordCode',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+          include: [
+            {
+              model: Address,
+              as: 'address',
+              attributes: {
+                exclude: [
+                  'street',
+                  'number',
+                  'district',
+                  'complement',
+                  'zipCode',
+                  'createdAt',
+                  'updatedAt',
+                ],
+              },
+            },
+          ],
+        },
       ],
     };
 
@@ -300,6 +331,37 @@ const getAll = async (query) => {
           attributes: {
             exclude: ['createdAt', 'updatedAt'],
           },
+        },
+        {
+          model: User,
+          as: 'user',
+          attributes: {
+            exclude: [
+              'phoneNumber',
+              'email',
+              'passwordHash',
+              'forgetPasswordCode',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+          include: [
+            {
+              model: Address,
+              as: 'address',
+              attributes: {
+                exclude: [
+                  'street',
+                  'number',
+                  'district',
+                  'complement',
+                  'zipCode',
+                  'createdAt',
+                  'updatedAt',
+                ],
+              },
+            },
+          ],
         },
       ],
     };
@@ -349,6 +411,37 @@ const getAll = async (query) => {
             exclude: ['createdAt', 'updatedAt'],
           },
         },
+        {
+          model: User,
+          as: 'user',
+          attributes: {
+            exclude: [
+              'phoneNumber',
+              'email',
+              'passwordHash',
+              'forgetPasswordCode',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+          include: [
+            {
+              model: Address,
+              as: 'address',
+              attributes: {
+                exclude: [
+                  'street',
+                  'number',
+                  'district',
+                  'complement',
+                  'zipCode',
+                  'createdAt',
+                  'updatedAt',
+                ],
+              },
+            },
+          ],
+        },
       ],
     };
 
@@ -362,6 +455,37 @@ const getAll = async (query) => {
           attributes: {
             exclude: ['createdAt', 'updatedAt'],
           },
+        },
+        {
+          model: User,
+          as: 'user',
+          attributes: {
+            exclude: [
+              'phoneNumber',
+              'email',
+              'passwordHash',
+              'forgetPasswordCode',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+          include: [
+            {
+              model: Address,
+              as: 'address',
+              attributes: {
+                exclude: [
+                  'street',
+                  'number',
+                  'district',
+                  'complement',
+                  'zipCode',
+                  'createdAt',
+                  'updatedAt',
+                ],
+              },
+            },
+          ],
         },
       ],
     };

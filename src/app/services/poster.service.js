@@ -350,7 +350,6 @@ const getAll = async (query) => {
     };
 
     const posterFiltered = await Poster.findAll(optionsFilter);
-    console.log("AQUIII ", posterFiltered);
     if (posterFiltered.length === 0) {
       posters = []
     } else {
