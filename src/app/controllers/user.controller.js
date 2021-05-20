@@ -66,7 +66,7 @@ const create = async (req, res) => {
       complement: body.complement,
       zipCode: body.zipCode,
       city: body.city,
-      state: body.street,
+      state: body.state,
     };
 
     log.info('Criando endereço e associando o mesmo ao usuário');
@@ -271,7 +271,7 @@ const forgetPassword = async (req, res) => {
     if (!user) {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .json({ error: 'Nenhum usuário com este email foi não encontrado' });
+        .json({ error: 'Nenhum usuário com este email foi encontrado' });
     }
 
     const forgetPasswordCode = getRandomNumber(

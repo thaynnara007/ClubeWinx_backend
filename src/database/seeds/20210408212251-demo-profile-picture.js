@@ -3,8 +3,8 @@
 const pictures = [
   {
     profileId: 1,
-    imageName: 'finn.jpg',
-    token: '10621565-fb77-43cd-9f0b-844c06903a2c',
+    imageName: 'finn.jpeg',
+    token: 'ebcc14fb-287d-4d06-949e-9889c063fba4',
     createdAt: new Date(),
     updatedAt: new Date(),
   },
@@ -17,8 +17,8 @@ const pictures = [
   },
   {
     profileId: 3,
-    imageName: 'marcy.jpg',
-    token: 'ccb72932-4c41-45cd-9f51-3078a1b51503',
+    imageName: 'marcy.png_1619209381676',
+    token: 'a9b515a0-c97c-44a0-83b8-3d883d7a24bd',
     createdAt: new Date(),
     updatedAt: new Date(),
   },
