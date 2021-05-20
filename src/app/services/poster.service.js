@@ -164,12 +164,11 @@ const getAll = async (query) => {
     };
 
     const posterFiltered = await Poster.findAll(optionsFilter);
-    
+
     if (posterFiltered.length === 0)
       posters = []
     else {
       const posterIds = posterFiltered.map((poster) => poster.dataValues.id);
-
       let options = {
         where: {
           id: {
@@ -351,10 +350,10 @@ const getAll = async (query) => {
     };
 
     const posterFiltered = await Poster.findAll(optionsFilter);
-
-    if (posterFiltered.length === 0) 
+    console.log("AQUIII ", posterFiltered);
+    if (posterFiltered.length === 0) {
       posters = []
-    else {
+    } else {
       const posterIds = posterFiltered.map((poster) => poster.dataValues.id);
 
       let options = {
@@ -428,11 +427,38 @@ const getAll = async (query) => {
       posters = await Poster.findAll(options);
     }
   } else {
-    const options = {
+    let options = {
+      distinct: true,
       order: [
         ['createdAt', 'DESC'],
       ],
       include: [
+        {
+          model: User,
+          as: 'owner',
+          attributes: {
+            exclude: [
+              'birthday',
+              'email',
+              'phoneNumber',
+              'gender',
+              'passwordHash',
+              'forgetPasswordCode',
+              'createdAt',
+              'updatedAt',
+            ],
+          },
+          include: [
+            {
+              model: Address,
+              as: 'address',
+              where: {
+                ...whereAddress
+              },
+              distinct: true,
+            },
+          ],
+        },
         {
           model: Profile,
           as: 'profiles',
@@ -460,42 +486,19 @@ const getAll = async (query) => {
             exclude: ['createdAt', 'updatedAt'],
           },
         },
-        {
-          model: User,
-          as: 'owner',
-          attributes: {
-            exclude: [
-              'birthday',
-              'email',
-              'phoneNumber',
-              'gender',
-              'passwordHash',
-              'forgetPasswordCode',
-              'createdAt',
-              'updatedAt',
-            ],
-          },
-          include: {
-            require: true,
-            model: Address,
-            as: 'address',
-            where: {
-              ...whereAddress
-            }
-          },
-        },
       ],
     };
 
     posters = await Poster.findAll(options);
   }
 
-  if (offset != null) {
-    posters.rows = filterOwner(posters.rows)
-    posters.count = posters.rows.length
-  }
-  else {
-    posters = filterOwner(posters)
+  if( posters.length > 0) {
+    if (offset != null) {
+      posters.rows = filterOwner(posters.rows)
+      posters.count = posters.rows.length
+    } else {
+      posters = filterOwner(posters)
+    }
   }
 
   return posters;
