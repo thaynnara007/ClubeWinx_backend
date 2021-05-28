@@ -89,7 +89,7 @@ const removeTags = async (req, res) => {
     log.info(`Removendo as tags do poster. posterId=${poster.id}`);
     await service.removeTags(poster.id, tags);
 
-    poster = await posterService.getById(user.id, false);
+    poster = await posterService.getByUserId(user.id, false);
 
     log.info('Remoção das tag realizado com sucesso');
 
@@ -129,7 +129,7 @@ const createTags = async (req, res) => {
     log.info(`Relacionando as tags ao poster. posterId=${poster.id}`);
     await service.createTags(poster.id, tags);
 
-    const posterUpdate = await posterService.getById(user.id, false);
+    const posterUpdate = await posterService.getByUserId(user.id, false);
 
     log.info('Cadastro das tag realizado com sucesso');
 
