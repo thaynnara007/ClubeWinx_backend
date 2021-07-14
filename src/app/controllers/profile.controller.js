@@ -31,6 +31,7 @@ const create = async (req, res) => {
       socialMedia: body.socialMedia,
       description: body.description,
       privateAtConnection: body.privateAtConnection,
+      headerImage: body.headerImage,
     };
 
     log.info('Criando perfil no banco de dados');
@@ -284,6 +285,7 @@ const edit = async (req, res) => {
       socialMedia: body.socialMedia,
       description: body.description,
       privateAtConnection: body.privateAtConnection,
+      headerImage: body.headerImage,
     };
 
     log.info(`Atualizando perfil no banco de dados. userId=${user.id}`);
