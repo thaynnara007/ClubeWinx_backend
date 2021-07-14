@@ -10,7 +10,8 @@ const pictures = [
   },
   {
     posterId: 2,
-    image_name: 'adventure-time-tree-house-nature-mountains-hd-wallpaper-preview.jpg_1620599764356',
+    image_name:
+      'adventure-time-tree-house-nature-mountains-hd-wallpaper-preview.jpg_1620599764356',
     token: '8f7b8336-7cdc-4503-8850-de0715a5fecd',
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -33,19 +34,17 @@ module.exports = {
             posterId: picture.posterId,
           },
         },
-        ['id']
+        ['id'],
       );
 
-      if (!existedPicture)
-        await queryInterface.bulkInsert('PosterPictures', [picture], {});
+      if (!existedPicture) await queryInterface.bulkInsert('PosterPictures', [picture], {});
       else {
         console.log(
-          `O perfil de id ${picture.posterId} ja tem uma foto de perfil`
+          `O perfil de id ${picture.posterId} ja tem uma foto de perfil`,
         );
       }
     }
   },
 
-  down: (queryInterface) =>
-    queryInterface.bulkDelete('PosterPictures', pictures, {}),
+  down: (queryInterface) => queryInterface.bulkDelete('PosterPictures', pictures, {}),
 };

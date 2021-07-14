@@ -58,17 +58,15 @@ module.exports = {
             name: category.name,
           },
         },
-        ['id']
+        ['id'],
       );
 
-      if (!existedCategory || existedCategory.length === 0)
-        await queryInterface.bulkInsert('Categories', [category], {});
+      if (!existedCategory || existedCategory.length === 0) await queryInterface.bulkInsert('Categories', [category], {});
       else {
         console.log(`A categoria de nome ${category.name} ja foi registrada.`);
       }
     }
   },
 
-  down: (queryInterface) =>
-    queryInterface.bulkDelete('Categories', categories, {}),
+  down: (queryInterface) => queryInterface.bulkDelete('Categories', categories, {}),
 };

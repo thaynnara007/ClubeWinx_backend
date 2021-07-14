@@ -11,7 +11,7 @@ const edit = async (req, res) => {
     const { user, file } = req;
 
     log.info(
-      `Inicializando atualização da foto de perfil do usuário. userId=${user.id}`
+      `Inicializando atualização da foto de perfil do usuário. userId=${user.id}`,
     );
     log.info(`Buscando perfil do usuário logado. userId=${user.id}`);
     const profile = await profileService.getByUserId(user.id);
@@ -23,7 +23,7 @@ const edit = async (req, res) => {
     }
 
     const existedPicture = await profilePictureService.getByProfileId(
-      profile.id
+      profile.id,
     );
 
     log.info(`Fazendo upload da imagem. file=${file}`);
@@ -49,7 +49,7 @@ const edit = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/profilePicture.controller.js',
-      error.message
+      error.message,
     );
 
     return res
@@ -63,7 +63,7 @@ const delet = async (req, res) => {
     const { user } = req;
 
     log.info(
-      `Inicializando remoção da foto de perfil do usuário. userId=${user.id}`
+      `Inicializando remoção da foto de perfil do usuário. userId=${user.id}`,
     );
     log.info(`Buscando perfil do usuário logado. userId=${user.id}`);
 
@@ -100,7 +100,7 @@ const delet = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/profilePicture.controller.js',
-      error.message
+      error.message,
     );
 
     return res
