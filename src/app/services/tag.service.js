@@ -29,8 +29,33 @@ const getById = async (id) => {
   return tag;
 };
 
+const getAll = async (query) => {
+  const page = parseInt(query.page, 10);
+  const pageSize = parseInt(query.pageSize, 10);
+  let offset = null;
+  let tags = null;
+
+  if (page && pageSize) offset = (page - 1) * pageSize;
+
+  if (offset !== null) {
+    const options = {
+      limit: pageSize,
+      offset,
+      distinct: true,
+    };
+    tags = await Tag.findAndCountAll(options);
+
+    tags.pages = Math.ceil(tags.count / pageSize);
+  } else {
+    tags = await Tag.findAll();
+  }
+
+  return tags;
+}
+
 module.exports = {
   create,
   getById,
   getByName,
+  getAll
 };
