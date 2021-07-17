@@ -1,7 +1,7 @@
+const { Op } = require('sequelize');
 const { ProfileTag } = require('../models');
 const tagService = require('./tag.service');
 const log = require('./log.service');
-const { Op } = require('sequelize');
 
 const addTag = async (profileId, tagId) => {
   const data = {
@@ -16,7 +16,7 @@ const addTag = async (profileId, tagId) => {
   if (!validation) await ProfileTag.create(data);
   else {
     log.info(
-      `A tag de id ${tagId} já esta associada ao perfil de id ${profileId}`
+      `A tag de id ${tagId} já esta associada ao perfil de id ${profileId}`,
     );
   }
 };
@@ -28,7 +28,7 @@ const addTags = async (profileId, tagIds) => {
 
       if (!tag) log.info(`Tag de id ${tagId} não existe`);
       else await addTag(profileId, tagId);
-    })
+    }),
   );
 };
 
@@ -42,7 +42,7 @@ const createTags = async (profileId, tags) => {
         tag = await tagService.create(tagInfo);
       }
       await addTag(profileId, tag.id);
-    })
+    }),
   );
 };
 
@@ -56,7 +56,7 @@ const deleteTag = async (profileId, tagId) => {
 
   if (!profileTag) {
     log.info(
-      `A tag de id ${tagId} não esta associada ao perfil de id ${profileId}`
+      `A tag de id ${tagId} não esta associada ao perfil de id ${profileId}`,
     );
   } else profileTag.destroy();
 };
@@ -65,7 +65,7 @@ const removeTags = async (profileId, tagIds) => {
   await Promise.all(
     tagIds.map(async (tagId) => {
       await deleteTag(profileId, tagId);
-    })
+    }),
   );
 };
 

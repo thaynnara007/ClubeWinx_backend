@@ -7,7 +7,7 @@ const {
   PosterPicture,
   Profile,
 } = require('../models');
-const util = require('./util.service')
+const util = require('./util.service');
 
 const getByUserId = async (userId) => {
   const poster = await Poster.findOne({
@@ -95,40 +95,39 @@ const getById = async (posterId) => {
   return poster;
 };
 
-const filterOwner = (posters) => posters.filter( poster => !!poster.owner )
+const filterOwner = (posters) => posters.filter((poster) => !!poster.owner);
 
 const getAll = async (query) => {
   const page = parseInt(query.page, 10);
   const pageSize = parseInt(query.pageSize, 10);
-  const { city, state } = query
+  const { city, state } = query;
 
-  const tags =
-    query.tags !== null && query.tags !== undefined
-      ? query.tags.map((tag) => parseInt(tag, 10))
-      : null;
+  const tags = query.tags !== null && query.tags !== undefined
+    ? query.tags.map((tag) => parseInt(tag, 10))
+    : null;
 
   let offset = null;
   let posters = null;
-  let whereAddress = {}
+  let whereAddress = {};
 
-  if (city) { 
-    whereAddress = { 
+  if (city) {
+    whereAddress = {
       city: {
-        [Op.iLike]: util.normalizeQuery(city)
-      }
-    }
+        [Op.iLike]: util.normalizeQuery(city),
+      },
+    };
   }
   if (state) {
-    whereAddress = { 
-      ...whereAddress, 
+    whereAddress = {
+      ...whereAddress,
       state: {
-        [Op.iLike]: util.normalizeQuery(state)
-      } 
-    }
+        [Op.iLike]: util.normalizeQuery(state),
+      },
+    };
   }
 
   if (page && pageSize) offset = (page - 1) * pageSize;
-  
+
   if (offset !== null && tags !== null) {
     const optionsFilter = {
       include: [
@@ -165,8 +164,7 @@ const getAll = async (query) => {
 
     const posterFiltered = await Poster.findAll(optionsFilter);
 
-    if (posterFiltered.length === 0)
-      posters = []
+    if (posterFiltered.length === 0) posters = [];
     else {
       const posterIds = posterFiltered.map((poster) => poster.dataValues.id);
       let options = {
@@ -175,9 +173,7 @@ const getAll = async (query) => {
             [Op.or]: posterIds,
           },
         },
-        order: [
-          ['createdAt', 'DESC'],
-        ],
+        order: [['createdAt', 'DESC']],
         include: [
           {
             model: User,
@@ -198,8 +194,8 @@ const getAll = async (query) => {
               model: Address,
               as: 'address',
               where: {
-                ...whereAddress
-              }
+                ...whereAddress,
+              },
             },
           },
           {
@@ -246,9 +242,7 @@ const getAll = async (query) => {
   } else if (offset !== null && tags === null) {
     let options = {
       distinct: true,
-      order: [
-        ['createdAt', 'DESC'],
-      ],
+      order: [['createdAt', 'DESC']],
       include: [
         {
           model: User,
@@ -270,7 +264,7 @@ const getAll = async (query) => {
               model: Address,
               as: 'address',
               where: {
-                ...whereAddress
+                ...whereAddress,
               },
               distinct: true,
             },
@@ -309,8 +303,8 @@ const getAll = async (query) => {
     options = {
       ...options,
       limit: pageSize,
-      offset
-    };    
+      offset,
+    };
 
     posters = await Poster.findAndCountAll(options);
 
@@ -351,7 +345,7 @@ const getAll = async (query) => {
 
     const posterFiltered = await Poster.findAll(optionsFilter);
     if (posterFiltered.length === 0) {
-      posters = []
+      posters = [];
     } else {
       const posterIds = posterFiltered.map((poster) => poster.dataValues.id);
 
@@ -361,9 +355,7 @@ const getAll = async (query) => {
             [Op.or]: posterIds,
           },
         },
-        order: [
-          ['createdAt', 'DESC'],
-        ],
+        order: [['createdAt', 'DESC']],
         include: [
           {
             model: User,
@@ -384,8 +376,8 @@ const getAll = async (query) => {
               model: Address,
               as: 'address',
               where: {
-                ...whereAddress
-              }
+                ...whereAddress,
+              },
             },
           },
           {
@@ -426,11 +418,9 @@ const getAll = async (query) => {
       posters = await Poster.findAll(options);
     }
   } else {
-    let options = {
+    const options = {
       distinct: true,
-      order: [
-        ['createdAt', 'DESC'],
-      ],
+      order: [['createdAt', 'DESC']],
       include: [
         {
           model: User,
@@ -452,7 +442,7 @@ const getAll = async (query) => {
               model: Address,
               as: 'address',
               where: {
-                ...whereAddress
+                ...whereAddress,
               },
               distinct: true,
             },
@@ -491,12 +481,12 @@ const getAll = async (query) => {
     posters = await Poster.findAll(options);
   }
 
-  if( posters.length > 0) {
+  if (posters.length > 0) {
     if (offset != null) {
-      posters.rows = filterOwner(posters.rows)
-      posters.count = posters.rows.length
+      posters.rows = filterOwner(posters.rows);
+      posters.count = posters.rows.length;
     } else {
-      posters = filterOwner(posters)
+      posters = filterOwner(posters);
     }
   }
 

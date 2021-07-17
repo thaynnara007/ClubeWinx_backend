@@ -31,6 +31,7 @@ const create = async (req, res) => {
       socialMedia: body.socialMedia,
       description: body.description,
       privateAtConnection: body.privateAtConnection,
+      headerImage: body.headerImage,
     };
 
     log.info('Criando perfil no banco de dados');
@@ -136,7 +137,7 @@ const getProfileByUserId = async (req, res) => {
 
     const connection = await connectionRequestService.getByUsers(
       req.user.id,
-      userId
+      userId,
     );
     const profile = await profileService.getByUserId(userId);
 
@@ -179,26 +180,25 @@ const getRecomendation = async (req, res) => {
     if (!profile) {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .json({ error: `Perfil do usuário não encontrado` });
+        .json({ error: 'Perfil do usuário não encontrado' });
     }
 
     const ids = recomendationService.getTagsIds(profile.tags);
     const amountTags = ids.length;
 
-    let tagsSimilarity = {}
-    let addressesSimilarity = {}
-    let categoriesSimilarity = {}
+    let tagsSimilarity = {};
+    let addressesSimilarity = {};
+    let categoriesSimilarity = {};
 
     log.info(
-      `Buscando a similaridade com o perfil de outros usuários a partir das tags. profileId=${profile.id}`
+      `Buscando a similaridade com o perfil de outros usuários a partir das tags. profileId=${profile.id}`,
     );
-    
-    
+
     if (amountTags > 0) {
       tagsSimilarity = await recomendationService.getTagsSimilarity(
         ids,
         profile.id,
-        amountTags
+        amountTags,
       );
     }
 
@@ -208,36 +208,36 @@ const getRecomendation = async (req, res) => {
     if (!address) {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .json({ error: `Endereço do usuário não encontrado` });
+        .json({ error: 'Endereço do usuário não encontrado' });
     }
 
     log.info(
-      `Buscando a similaridade com o perfil de outros usuários a partir do endereço. userId=${user.id}`
+      `Buscando a similaridade com o perfil de outros usuários a partir do endereço. userId=${user.id}`,
     );
     addressesSimilarity = await recomendationService.getAddressSimilarity(
-      address
+      address,
     );
 
     log.info(
-      `Buscando a similaridade com o perfil de outros usuários a partir das categorias. userId=${user.id}`
+      `Buscando a similaridade com o perfil de outros usuários a partir das categorias. userId=${user.id}`,
     );
 
-    if ( amountTags > 0) {
+    if (amountTags > 0) {
       categoriesSimilarity = await recomendationService.getCategorySimilarity(
         profile.tags,
-        profile.id
+        profile.id,
       );
     }
 
-    log.info(`Calculando perfils mais similares`);
+    log.info('Calculando perfils mais similares');
     const profilesSimilarities = recomendationService.getProfileSimilarity(
       tagsSimilarity,
       addressesSimilarity,
-      categoriesSimilarity
+      categoriesSimilarity,
     );
 
     const recomendation = await recomendationService.recomendationProfile(
-      profilesSimilarities
+      profilesSimilarities,
     );
 
     return res.status(StatusCodes.OK).json(recomendation);
@@ -285,6 +285,7 @@ const edit = async (req, res) => {
       socialMedia: body.socialMedia,
       description: body.description,
       privateAtConnection: body.privateAtConnection,
+      headerImage: body.headerImage,
     };
 
     log.info(`Atualizando perfil no banco de dados. userId=${user.id}`);

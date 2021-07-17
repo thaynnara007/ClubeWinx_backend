@@ -34,7 +34,7 @@ function write(message) {
       if (error) {
         log(error);
       }
-    }
+    },
   );
 }
 
@@ -49,7 +49,7 @@ function info(message, body) {
 
   if (body) {
     write(
-      `[${UtilService.getDateTime()}][INFO]: Body: ${JSON.stringify(body)}`
+      `[${UtilService.getDateTime()}][INFO]: Body: ${JSON.stringify(body)}`,
     );
   }
 
@@ -66,7 +66,7 @@ function warn(message, body) {
 
   if (body) {
     write(
-      `[${UtilService.getDateTime()}][WARN]: Body: ${JSON.stringify(body)}`
+      `[${UtilService.getDateTime()}][WARN]: Body: ${JSON.stringify(body)}`,
     );
   }
 
@@ -95,7 +95,7 @@ function error(message, path, error) {
     }
   } else {
     write(
-      `[${UtilService.getDateTime()}][ERROR]: Error: ${JSON.stringify(error)}`
+      `[${UtilService.getDateTime()}][ERROR]: Error: ${JSON.stringify(error)}`,
     );
   }
 

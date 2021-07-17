@@ -18,12 +18,12 @@ router.put('/my', auth.verifyToken, controller.edit);
 router.put(
   '/:posterId/add/resident/:profileId',
   auth.verifyToken,
-  controller.addResident
+  controller.addResident,
 );
 router.put(
   '/:posterId/remove/resident/:profileId',
   auth.verifyToken,
-  controller.removeResident
+  controller.removeResident,
 );
 
 router.delete('/my', auth.verifyToken, controller.delet);
@@ -32,25 +32,25 @@ router.post('/me/add/tags', auth.verifyToken, tagPosterController.addTags);
 router.put(
   '/me/remove/tags/',
   auth.verifyToken,
-  tagPosterController.removeTags
+  tagPosterController.removeTags,
 );
 
 router.post(
   '/me/picture',
   auth.verifyToken,
   multer.single('file'),
-  posterPictureController.create
+  posterPictureController.create,
 );
 router.delete(
   '/me/picture/:pictureId',
   auth.verifyToken,
-  posterPictureController.delet
+  posterPictureController.delet,
 );
 
 router.post(
   '/me/create/tags',
   auth.verifyToken,
-  tagPosterController.createTags
+  tagPosterController.createTags,
 );
 
 module.exports = router;

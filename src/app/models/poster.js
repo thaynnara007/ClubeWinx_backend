@@ -6,8 +6,11 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.STRING,
       residents: DataTypes.INTEGER,
       vacancies: DataTypes.INTEGER,
+      bathrooms: DataTypes.INTEGER,
+      beds: DataTypes.INTEGER,
+      headerImage: DataTypes.STRING,
     },
-    {}
+    {},
   );
 
   Poster.associate = (models) => {

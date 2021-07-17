@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       description: DataTypes.TEXT,
     },
-    {}
+    {},
   );
   Category.associate = (models) => {
     Category.hasMany(models.Tag, {

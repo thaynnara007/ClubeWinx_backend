@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false,
       },
     },
-    {}
+    {},
   );
   Tag.associate = (models) => {
     Tag.belongsTo(models.Category, {

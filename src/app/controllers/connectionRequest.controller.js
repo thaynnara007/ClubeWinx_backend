@@ -11,7 +11,7 @@ const requestConnection = async (req, res) => {
     const { userId } = req.params;
 
     log.info(
-      `Inicializando criação da requisição de conexão. sendedId=${user.id}, requestedUser=${userId}`
+      `Inicializando criação da requisição de conexão. sendedId=${user.id}, requestedUser=${userId}`,
     );
     log.info('Validando informações');
 
@@ -39,7 +39,7 @@ const requestConnection = async (req, res) => {
     }
 
     log.info(
-      `Criando requisição de conexão no banco de dados. requestedUserId=${userId}, sendedUserId=${user.id}`
+      `Criando requisição de conexão no banco de dados. requestedUserId=${userId}, sendedUserId=${user.id}`,
     );
     await service.create({
       requestedUserId: userId,
@@ -57,7 +57,7 @@ const requestConnection = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/connectionRequest.controller.js',
-      error.message
+      error.message,
     );
 
     return res
@@ -72,7 +72,7 @@ const acceptConnection = async (req, res) => {
     const { requestId } = req.params;
 
     log.info(
-      `Inicializando a confirmação de conexão. userId=${user.id}, requestId=${requestId}`
+      `Inicializando a confirmação de conexão. userId=${user.id}, requestId=${requestId}`,
     );
     log.info('Validando informações');
 
@@ -91,7 +91,7 @@ const acceptConnection = async (req, res) => {
     }
 
     log.info(
-      `Aceitando requisição de conexão no banco de dados. requestId=${requestId}`
+      `Aceitando requisição de conexão no banco de dados. requestId=${requestId}`,
     );
     await service.acceptConnection(request);
 
@@ -104,7 +104,7 @@ const acceptConnection = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/connectionRequest.controller.js',
-      error.message
+      error.message,
     );
 
     return res
@@ -119,7 +119,7 @@ const refuseConnection = async (req, res) => {
     const { requestId } = req.params;
 
     log.info(
-      `Inicializando recusa da conexão. userId=${user.id}, requestId=${requestId}`
+      `Inicializando recusa da conexão. userId=${user.id}, requestId=${requestId}`,
     );
     log.info('Validando informações');
 
@@ -132,9 +132,9 @@ const refuseConnection = async (req, res) => {
     }
 
     if (
-      request.accepted &&
-      request.requestedUserId !== user.id &&
-      request.sendedUserId !== user.id
+      request.accepted
+      && request.requestedUserId !== user.id
+      && request.sendedUserId !== user.id
     ) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         error: 'Você não pode encerrar a conexões entre outros usuários',
@@ -148,7 +148,7 @@ const refuseConnection = async (req, res) => {
     }
 
     log.info(
-      `Removendo requisição de conexão no banco de dados. requestId=${requestId}`
+      `Removendo requisição de conexão no banco de dados. requestId=${requestId}`,
     );
     await service.removeConnection(request);
 
@@ -161,7 +161,7 @@ const refuseConnection = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/connectionRequest.controller.js',
-      error.message
+      error.message,
     );
 
     return res
@@ -181,7 +181,7 @@ const getConnections = async (req, res) => {
     if (accepted) log.info(`Buscando conexões do usuário. userId=${user.id}`);
     else {
       log.info(
-        `Buscando requisições conexões para o usuário. userId=${user.id}`
+        `Buscando requisições conexões para o usuário. userId=${user.id}`,
       );
     }
 
@@ -196,7 +196,7 @@ const getConnections = async (req, res) => {
     log.error(
       errorMsg,
       'app/controllers/connectionRequest.controller.js',
-      error.message
+      error.message,
     );
 
     return res

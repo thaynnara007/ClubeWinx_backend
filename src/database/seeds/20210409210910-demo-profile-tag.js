@@ -104,19 +104,17 @@ module.exports = {
             tagId: profileTag.tagId,
           },
         },
-        ['id']
+        ['id'],
       );
 
-      if (!existedTag || existedTag.length === 0)
-        await queryInterface.bulkInsert('ProfileTags', [profileTag], {});
+      if (!existedTag || existedTag.length === 0) await queryInterface.bulkInsert('ProfileTags', [profileTag], {});
       else {
         console.log(
-          `O perfil de id ${profileTag.profileId} ja tem a tag de id ${profileTag.tagId}`
+          `O perfil de id ${profileTag.profileId} ja tem a tag de id ${profileTag.tagId}`,
         );
       }
     }
   },
 
-  down: (queryInterface) =>
-    queryInterface.bulkDelete('ProfileTags', profileTags, {}),
+  down: (queryInterface) => queryInterface.bulkDelete('ProfileTags', profileTags, {}),
 };

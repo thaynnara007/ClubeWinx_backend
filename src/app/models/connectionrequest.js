@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false,
       },
     },
-    {}
+    {},
   );
   ConnectionRequest.associate = (models) => {
     ConnectionRequest.belongsTo(models.User, {
