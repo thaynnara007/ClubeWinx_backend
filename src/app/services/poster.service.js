@@ -105,11 +105,16 @@ const getAll = async (query) => {
     state, 
     tagss,  
     district, 
-    price, 
+    expense,
+    expenseOp, 
     residents, 
+    residentsOp, 
     vacancies, 
+    vacanciesOp, 
     bathrooms, 
-    beds 
+    bathroomsOp, 
+    beds, 
+    bedsOp, 
   } = query
 
   const tags = query.tags !== null && query.tags !== undefined
@@ -145,13 +150,46 @@ const getAll = async (query) => {
     },
   ]
 
-
   if (page && pageSize) offset = (page - 1) * pageSize;
 
-  
+  if (expense) {
+    if (expenseOp === 'min')
+      where = { expense: { [Op.gte] : parseInt(expense, 10) }}
+    else
+      where = { expense: { [Op.lte] : parseInt(expense, 10) }}
+  } 
+
+  if (residents) { 
+    if (residentsOp === 'min')
+      where = { ...where, residents: { [Op.gte] : parseInt(residents, 10) }}
+    else
+      where = { ...where, residents: { [Op.lte] : parseInt(residents, 10) }}
+  }
+
+  if (vacancies) {
+    if (vacanciesOp === 'max')
+      where = { ...where, vacancies: { [Op.lte] : parseInt(vacancies, 10) }}
+    else 
+      where = { ...where, vacancies: { [Op.gte] : parseInt(vacancies, 10) }}
+  }
+
+  if (bathrooms) {
+    if (bathroomsOp === 'max' )
+      where = { ...where, bathrooms: { [Op.lte] : parseInt(bathrooms, 10) }}
+    else
+      where = { ...where, bathrooms: { [Op.gte] : parseInt(bathrooms, 10) }}
+  }
+
+  if (beds) { 
+    if (bedsOp === 'max')
+      where = { ...where, beds: { [Op.lte] : parseInt(beds, 10) }}
+    else
+      where = { ...where, beds: { [Op.gte] : parseInt(beds, 10) }}
+  }
   
   if (offset !== null && tags !== null) {
     const optionsFilter = {
+      where,
       include: [
         {
           model: User,
@@ -256,6 +294,7 @@ const getAll = async (query) => {
     }
   } else if (offset !== null && tags === null) {
     let options = {
+      where,
       distinct: true,
       order: [['createdAt', 'DESC']],
       include: [
@@ -316,6 +355,7 @@ const getAll = async (query) => {
     posters.pages = Math.ceil(posters.count / pageSize);
   } else if (offset === null && tags !== null) {
     const optionsFilter = {
+      where,
       include: [
         {
           model: User,
@@ -417,6 +457,7 @@ const getAll = async (query) => {
     }
   } else {
     const options = {
+      where,
       distinct: true,
       order: [['createdAt', 'DESC']],
       include: [
