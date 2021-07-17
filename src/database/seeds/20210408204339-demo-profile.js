@@ -49,11 +49,10 @@ module.exports = {
             userId: profile.userId,
           },
         },
-        ['id']
+        ['id'],
       );
 
-      if (!existedProfile || existedProfile.length === 0)
-        await queryInterface.bulkInsert('Profiles', [profile], {});
+      if (!existedProfile || existedProfile.length === 0) await queryInterface.bulkInsert('Profiles', [profile], {});
       else {
         console.log(`O usuário de id ${profile.userId} ja tem um perfil`);
       }

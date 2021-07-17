@@ -1,5 +1,7 @@
 const { Op } = require('sequelize');
-const { Profile, ProfilePicture, Tag, User, Address } = require('../models');
+const {
+  Profile, ProfilePicture, Tag, User, Address,
+} = require('../models');
 const log = require('./log.service');
 const util = require('./util.service');
 const addressService = require('./address.service');
@@ -126,12 +128,11 @@ const getResidents = async (ProfileId) => {
   return residents;
 };
 
-const getByPk = async (id) =>
-  Profile.findOne({
-    where: {
-      id,
-    },
-  });
+const getByPk = async (id) => Profile.findOne({
+  where: {
+    id,
+  },
+});
 
 const getSpecificProfiles = async (profilesIds) => {
   const options = {
@@ -232,10 +233,9 @@ const delet = async (userId) => {
 const getAll = async (query) => {
   const page = parseInt(query.page, 10);
   const pageSize = parseInt(query.pageSize, 10);
-  const tags =
-    query.tags !== null && query.tags !== undefined
-      ? query.tags.map((tag) => parseInt(tag, 10))
-      : null;
+  const tags = query.tags !== null && query.tags !== undefined
+    ? query.tags.map((tag) => parseInt(tag, 10))
+    : null;
 
   let offset = null;
   let profilesFiltered = null;

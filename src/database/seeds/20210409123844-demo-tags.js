@@ -559,11 +559,10 @@ module.exports = {
             name: tag.name,
           },
         },
-        ['id']
+        ['id'],
       );
 
-      if (!existedTag || existedTag.length === 0)
-        await queryInterface.bulkInsert('Tags', [tag], {});
+      if (!existedTag || existedTag.length === 0) await queryInterface.bulkInsert('Tags', [tag], {});
       else {
         console.log(`A tag de nome ${tag.name} ja foi registrada.`);
       }

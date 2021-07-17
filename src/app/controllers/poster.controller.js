@@ -2,7 +2,7 @@ const httpStatus = require('http-status-codes');
 const service = require('../services/poster.service');
 const profileService = require('../services/profile.service');
 const addressService = require('../services/address.service');
-const userService = require('../services/user.service')
+const userService = require('../services/user.service');
 const log = require('../services/log.service');
 
 const { StatusCodes } = httpStatus;
@@ -27,13 +27,12 @@ const makeResult = async (userId, poster, user) => {
   return result;
 };
 
-const isSameAddress = (address1, address2) =>
-  address1.street === address2.street &&
-  address1.number === address2.number &&
-  address1.district === address2.district &&
-  address1.zipCode === address2.zipCode &&
-  address1.city === address2.city &&
-  address1.state === address2.state;
+const isSameAddress = (address1, address2) => address1.street === address2.street
+  && address1.number === address2.number
+  && address1.district === address2.district
+  && address1.zipCode === address2.zipCode
+  && address1.city === address2.city
+  && address1.state === address2.state;
 
 const create = async (req, res) => {
   // #swagger.tags = ['Poster']
@@ -81,7 +80,7 @@ const create = async (req, res) => {
     const poster = await service.create(data);
 
     log.info(
-      `Adicionando perfil do usuário como residente. profileId=${profile.id}, posterId=${poster.id}`
+      `Adicionando perfil do usuário como residente. profileId=${profile.id}, posterId=${poster.id}`,
     );
     await profileService.addPosterId(profile, poster.id);
 
@@ -113,7 +112,7 @@ const getMy = async (req, res) => {
     const { user } = req;
 
     log.info(
-      `Iniciando busca pelo anúncio do usuário logado. userId=${user.id}`
+      `Iniciando busca pelo anúncio do usuário logado. userId=${user.id}`,
     );
     log.info(`Buscando anúncio. userId=${user.id}`);
 
@@ -128,7 +127,7 @@ const getMy = async (req, res) => {
         const { posterId } = profile;
 
         log.info(
-          `Buscando anúncio em que o usuário seja residente. posterId=${posterId}`
+          `Buscando anúncio em que o usuário seja residente. posterId=${posterId}`,
         );
         const poster = await service.getById(posterId);
 
@@ -180,7 +179,7 @@ const getById = async (req, res) => {
         .json({ error: 'Anúncio não encontrado' });
     }
 
-    const user = await userService.getById(poster.userId)
+    const user = await userService.getById(poster.userId);
     const result = await makeResult(poster.userId, poster, user);
 
     log.info('Busca finalizada com sucesso');
@@ -345,7 +344,7 @@ const addResident = async (req, res) => {
     }
 
     log.info(
-      `Buscando endereço. profileId=${profile.userId}, posterId=${poster.id}`
+      `Buscando endereço. profileId=${profile.userId}, posterId=${poster.id}`,
     );
 
     const addressProfile = await addressService.getByUserId(profile.userId);
@@ -364,14 +363,14 @@ const addResident = async (req, res) => {
     }
 
     log.info(
-      `Comparando endereços, addressPosterId=${addressPoster.id}, addressProfileId=${addressProfile.id}`
+      `Comparando endereços, addressPosterId=${addressPoster.id}, addressProfileId=${addressProfile.id}`,
     );
 
     if (!isSameAddress(addressPoster, addressProfile)) {
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json(
-          'Usuários que não moram no mesmo endereço do anúncio não podem ser adicionados como residente do mesmo'
+          'Usuários que não moram no mesmo endereço do anúncio não podem ser adicionados como residente do mesmo',
         );
     }
 

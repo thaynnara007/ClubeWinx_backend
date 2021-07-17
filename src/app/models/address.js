@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: null,
       },
     },
-    {}
+    {},
   );
   Address.associate = (models) => {
     Address.belongsTo(models.User, {

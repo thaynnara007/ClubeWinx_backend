@@ -25,7 +25,7 @@ module.exports = {
             id: profile.profileId,
           },
         },
-        ['id']
+        ['id'],
       );
 
       if (!existedProfile.posterId) {
@@ -36,11 +36,11 @@ module.exports = {
           },
           {
             id: profile.profileId,
-          }
+          },
         );
       } else {
         console.log(
-          `O profile de id ${profile.profileId} ja está vinculado a um poster`
+          `O profile de id ${profile.profileId} ja está vinculado a um poster`,
         );
       }
     }
@@ -55,7 +55,7 @@ module.exports = {
             id: profile.profileId,
           },
         },
-        ['id']
+        ['id'],
       );
 
       if (existedProfile.posterId) {
@@ -66,11 +66,11 @@ module.exports = {
           },
           {
             id: null,
-          }
+          },
         );
       } else {
         console.log(
-          `O profile de id ${profile.profileId} não está vinculado a um poster`
+          `O profile de id ${profile.profileId} não está vinculado a um poster`,
         );
       }
     }
