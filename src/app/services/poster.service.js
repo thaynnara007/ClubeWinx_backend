@@ -103,7 +103,7 @@ const getAll = async (query) => {
   const { 
     city, 
     state, 
-    tagss,  
+    tags,  
     district, 
     expense,
     expenseOp, 
@@ -117,9 +117,27 @@ const getAll = async (query) => {
     bedsOp, 
   } = query
 
-  const tags = query.tags !== null && query.tags !== undefined
-    ? query.tags.map((tag) => parseInt(tag, 10))
-    : null;
+  let includeTags = {
+    model: Tag,
+    as: 'tags',
+    attributes: {
+      exclude: ['createdAt', 'updatedAt'],
+    },
+  }
+
+  if (tags){
+    
+    const tagsIds = Array.isArray(tags) ? tags.map((tag) => parseInt(tag, 10)) : [parseInt(tags, 10)]
+
+    includeTags = {
+      ...includeTags,
+      where: {
+        id: {
+          [Op.or]: tagsIds
+        }
+      }
+    }
+  }
 
   let offset = null;
   let posters = null;
@@ -148,7 +166,11 @@ const getAll = async (query) => {
         exclude: ['createdAt', 'updatedAt'],
       },
     },
+    { 
+      ...includeTags, 
+    }
   ]
+
 
   if (page && pageSize) offset = (page - 1) * pageSize;
 
@@ -186,8 +208,30 @@ const getAll = async (query) => {
     else
       where = { ...where, beds: { [Op.gte] : parseInt(beds, 10) }}
   }
-  
-  if (offset !== null && tags !== null) {
+
+  let filter = {
+    where,
+    include,
+  }
+
+  if (offset !== null) {
+    filter = {
+      ...filter,
+      limit: pageSize,
+      offset,
+      distinct: true,
+    }
+
+    posters = await Poster.findAndCountAll(filter)
+
+    posters.pages = Math.ceil(posters.count / pageSize);
+  }
+  else  {
+    posters = await Poster.findAll(filter)
+  }
+
+  /*
+  if (offset !== null && tags) {
     const optionsFilter = {
       where,
       include: [
@@ -509,6 +553,7 @@ const getAll = async (query) => {
 
     posters = await Poster.findAll(options);
   }
+  */
 
   return posters;
 };
