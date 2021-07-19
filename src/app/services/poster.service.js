@@ -238,6 +238,7 @@ const getAll = async (query) => {
 
   let filter = {
     where,
+    order: [['createdAt', 'DESC']],
     include,
   };
 
