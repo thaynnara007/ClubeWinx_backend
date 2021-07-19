@@ -32,7 +32,7 @@ router.get(
   auth.verifyToken,
   connectionController.getConnections,
 );
-router.put('/:userId', auth.verifyToken, controller.edit);
+router.put('/', auth.verifyToken, controller.edit);
 router.put('/change/password', auth.verifyToken, controller.changePassword);
 router.delete('/:userId', auth.verifyToken, controller.delet);
 

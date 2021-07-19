@@ -172,20 +172,11 @@ const edit = async (req, res) => {
               description: 'Usuário modificado com sucesso.'
         } */
   try {
-    const { userId } = req.params;
+    const userId = req.user.id;
     const { body } = req;
     const { birthday } = body;
 
     log.info(`Iniciando atualização do usuário. userId=${userId}`);
-    log.info('Verificando se o usuário existe');
-
-    const existedUser = await service.getById(userId);
-
-    if (!existedUser) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ error: 'Usuário não encontrado' });
-    }
 
     delete body.email;
 
