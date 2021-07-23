@@ -5,6 +5,7 @@ const {
   Address,
   Tag,
   PosterPicture,
+  PosterHeaderImage,
   Profile,
 } = require('../models');
 
@@ -37,6 +38,13 @@ const getByUserId = async (userId) => {
       {
         model: PosterPicture,
         as: 'posterPictures',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+      {
+        model: PosterHeaderImage,
+        as: 'imageHeader',
         attributes: {
           exclude: ['createdAt', 'updatedAt'],
         },
@@ -83,6 +91,13 @@ const getById = async (posterId) => {
       {
         model: PosterPicture,
         as: 'posterPictures',
+        attributes: {
+          exclude: ['createdAt', 'updatedAt'],
+        },
+      },
+      {
+        model: PosterHeaderImage,
+        as: 'imageHeader',
         attributes: {
           exclude: ['createdAt', 'updatedAt'],
         },

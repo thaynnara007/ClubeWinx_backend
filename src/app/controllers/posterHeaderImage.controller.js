@@ -76,7 +76,7 @@ const getImageHeader = async (req, res) => {
     const image = await service.getByPosterId(poster.id);
 
     const result = {
-      imageHeader: image.pictureUrl,
+      imageHeader: image ? image.pictureUrl : null,
     };
 
     return res.status(StatusCodes.OK).json(result);
