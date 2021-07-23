@@ -12,6 +12,11 @@ router.get('/me', auth.verifyToken, controller.getMyProfile);
 router.get('/', auth.verifyToken, controller.getAllProfile);
 router.get('/recomendation', auth.verifyToken, controller.getRecomendation);
 router.get('/:userId', auth.verifyToken, controller.getProfileByUserId);
+router.get(
+  '/me/headerImage',
+  auth.verifyToken,
+  profileHeaderController.getImageHeader,
+);
 
 router.post('/', auth.verifyToken, controller.create);
 router.post('/me/add/tags', auth.verifyToken, tagProfileController.addTags);

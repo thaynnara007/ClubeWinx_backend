@@ -19,6 +19,8 @@ const mountProfilejson = async (profile, user) => {
 
   log.info(`Buscando foto de perfil. profileId=${profile.id}`);
   const picture = await profilePictureService.getByProfileId(profile.id);
+
+  log.info(`Buscando foto do cabeçalho do perfil. profileId=${profile.id}`);
   const imageHeader = await profileHeaderService.getByProfileId(profile.id);
 
   const bday = util.formatDate(user.birthday);
