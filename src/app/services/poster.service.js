@@ -252,7 +252,6 @@ const getAll = async (query) => {
 
     posters = await Poster.findAndCountAll(filter);
 
-    posters.count = posters.rows.length;
     posters.pages = Math.ceil(posters.count / pageSize);
   } else {
     posters = await Poster.findAll(filter);
