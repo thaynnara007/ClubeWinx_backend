@@ -6,6 +6,7 @@ const log = require('./log.service');
 const util = require('./util.service');
 const addressService = require('./address.service');
 const profilePictureService = require('./profilePicture.service');
+const profileHeaderService = require('./profileHeaderImage.service');
 
 const mountProfilejson = async (profile, user) => {
   log.info(`Montando json de retorno do profile do usuário. userId=${user.id}`);
@@ -18,6 +19,7 @@ const mountProfilejson = async (profile, user) => {
 
   log.info(`Buscando foto de perfil. profileId=${profile.id}`);
   const picture = await profilePictureService.getByProfileId(profile.id);
+  const imageHeader = await profileHeaderService.getByProfileId(profile.id);
 
   const bday = util.formatDate(user.birthday);
   let result = {};
@@ -26,6 +28,13 @@ const mountProfilejson = async (profile, user) => {
     result = {
       ...result,
       picture: picture.pictureUrl,
+    };
+  }
+
+  if (imageHeader) {
+    result = {
+      ...result,
+      imageHeader: picture.pictureUrl,
     };
   }
 

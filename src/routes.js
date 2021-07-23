@@ -4,7 +4,7 @@ const auth = require('./app/routes/auth.route');
 const address = require('./app/routes/address.route');
 const profile = require('./app/routes/profile.route');
 const category = require('./app/routes/category.route');
-const tag = require('./app/routes/tags.route')
+const tag = require('./app/routes/tags.route');
 
 const router = express.Router();
 
@@ -19,6 +19,6 @@ router.use('/auth', auth);
 router.use('/address', address);
 router.use('/profile', profile);
 router.use('/category', category);
-router.use('/tag', tag)
+router.use('/tag', tag);
 
 module.exports = router;

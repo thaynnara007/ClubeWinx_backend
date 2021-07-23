@@ -51,11 +51,11 @@ const getAll = async (query) => {
   }
 
   return tags;
-}
+};
 
 module.exports = {
   create,
   getById,
   getByName,
-  getAll
+  getAll,
 };

@@ -24,6 +24,6 @@ const getAll = async (req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: `${errorMsg} ${error.message}` });
   }
-}
+};
 
-module.exports = { getAll }
+module.exports = { getAll };
