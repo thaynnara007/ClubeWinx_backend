@@ -94,6 +94,16 @@ const getById = async (posterId) => {
   return poster;
 };
 
+const getByUserIdMin = async (userId) => {
+  const poster = await Poster.findOne({
+    where: {
+      userId,
+    },
+  });
+
+  return poster;
+};
+
 const getAll = async (query) => {
   const page = parseInt(query.page, 10);
   const pageSize = parseInt(query.pageSize, 10);
@@ -252,7 +262,6 @@ const getAll = async (query) => {
 
     posters = await Poster.findAndCountAll(filter);
 
-    posters.count = posters.rows.length;
     posters.pages = Math.ceil(posters.count / pageSize);
   } else {
     posters = await Poster.findAll(filter);
@@ -275,6 +284,7 @@ const delet = async (poster) => poster.destroy();
 
 module.exports = {
   getByUserId,
+  getByUserIdMin,
   create,
   getById,
   getAll,

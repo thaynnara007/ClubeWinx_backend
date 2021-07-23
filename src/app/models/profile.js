@@ -28,6 +28,11 @@ module.exports = (sequelize, DataTypes) => {
       as: 'picture',
       onDelete: 'CASCADE',
     });
+    Profile.hasOne(models.ProfileHeaderImage, {
+      foreignKey: 'profileId',
+      as: 'imageHeader',
+      onDelete: 'CASCADE',
+    });
     Profile.belongsToMany(models.Tag, {
       through: 'ProfileTags',
       as: 'tags',
