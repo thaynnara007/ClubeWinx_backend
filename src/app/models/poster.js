@@ -33,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
       as: 'posterPictures',
       onUpdate: 'cascade',
     });
+    Poster.hasOne(models.PosterHeaderImage, {
+      foreignKey: 'posterId',
+      as: 'imageHeader',
+      onDelete: 'CASCADE',
+    });
   };
 
   return Poster;
