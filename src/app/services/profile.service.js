@@ -36,7 +36,7 @@ const mountProfilejson = async (profile, user) => {
   if (imageHeader) {
     result = {
       ...result,
-      imageHeader: picture.pictureUrl,
+      imageHeader: imageHeader.pictureUrl,
     };
   }
 
