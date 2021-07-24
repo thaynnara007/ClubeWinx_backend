@@ -105,19 +105,22 @@ const getById = async (req, res) => {
         } */
   try {
     const { userId } = req.params;
+    const { user } = req;
+    let result = user;
 
-    log.info(`Iniciando busca ao usuário. userId=${userId}`);
-    const user = await service.getById(userId);
+    if (userId !== 'me') {
+      log.info(`Iniciando busca ao usuário. userId=${userId}`);
+      result = await service.getById(userId);
 
-    if (!user) {
-      return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ error: 'Usuário não encontrado' });
+      if (!user) {
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ error: 'Usuário não encontrado' });
+      }
+
+      log.info(`Finalizando busca ao usuário. userId=${userId}`);
     }
-
-    log.info(`Finalizando busca ao usuário. userId=${userId}`);
-
-    return res.status(StatusCodes.OK).json(user);
+    return res.status(StatusCodes.OK).json(result);
   } catch (error) {
     const errorMsg = 'Erro ao buscar usuário';
 
